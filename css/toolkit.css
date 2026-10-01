@@ -1,0 +1,1146 @@
+/* ═══════════════════════════════════════════════════════════════
+   MODULE SHELLS
+   Module shells fill remaining vertical space between the header and footer.
+   flex:1 1 0 + min-height:0 prevents flex items from overflowing body height.
+   ═══════════════════════════════════════════════════════════════ */
+#toolkit-module,
+#templates-module {
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#toolkit-module {
+    justify-content: flex-start;
+    align-items: stretch;
+    align-content: flex-start;
+    padding: 0;
+    margin: 0;
+    gap: 0;
+}
+
+/* Expansion zone fills remaining vertical space in graph view.
+   min-height:0 (not 170px) allows proper flex shrinking when space is tight. */
+#toolkit-graph-view .tk-expansion-zone {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TOOLKIT SUB-SECTION SWITCHER
+   ═══════════════════════════════════════════════════════════════ */
+.tk-section-switcher {
+    display: flex;
+    gap: var(--space-1, 2px);
+    background: var(--raised);
+    border: 1px solid var(--line-dim);
+    border-radius: var(--r-md);
+    padding: var(--space-1, 3px);
+    flex: 0 0 auto;
+    overflow: hidden;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    align-self: stretch;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), inset 0 -1px 0 rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.tk-section-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    height: var(--control-h, 26px);
+    border: 1px solid transparent;
+    border-radius: var(--r-sm);
+    background: transparent;
+    color: var(--tx-mute);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2, 4px);
+    transition: background var(--dur-base, 0.16s) var(--ease-out), color var(--dur-base, 0.16s) var(--ease-out), border-color var(--dur-base, 0.16s) var(--ease-out), box-shadow var(--dur-base, 0.16s) var(--ease-out);
+    padding: 0;
+    outline: none;
+    overflow: hidden;
+}
+
+.tk-section-btn svg {
+    width: 11px;
+    height: 11px;
+    flex-shrink: 0;
+}
+
+.tk-tab-label {
+    font-family: var(--font-mono);
+    font-size: var(--f-nano);
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 250px) {
+    .tk-tab-label {
+        display: none;
+    }
+}
+
+.tk-section-btn:hover:not(.active) {
+    background: var(--lift);
+    color: var(--tx-mid);
+    border-color: var(--line-dim);
+}
+
+.tk-section-btn.active {
+    background: linear-gradient(180deg, var(--p-tint), rgba(var(--primary-rgb), 0.06));
+    border-color: var(--p-rule);
+    color: var(--p-200);
+    box-shadow: inset 0 -2px 0 var(--p-400), inset 0 1px 0 rgba(255, 255, 255, 0.06), var(--glow-violet-soft);
+}
+
+.tk-section-btn:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: -1px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TOOLKIT MODULE — WORKBENCH SYSTEM
+   ═══════════════════════════════════════════════════════════════ */
+.toolkit-module {
+    min-width: var(--tk-min-width);
+    padding-top: 0;
+    margin-top: 0;
+}
+
+/* Views fill the remaining module height and scroll internally if needed.
+   display:none is toggled to display:flex by .active class. min-height:0
+   ensures flex shrinking works for nested scrollable content. */
+.tk-view {
+    display: none;
+    flex-direction: column;
+    flex: 1 1 0;
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    gap: var(--space-2, 4px);
+    padding: var(--space-2, 4px);
+    justify-content: flex-start;
+    align-content: flex-start;
+    align-items: stretch;
+    width: 100%;
+}
+
+.tk-view.active {
+    display: flex;
+    animation: view-reveal 0.18s var(--ease-out);
+}
+
+/* Smooth reveal for toolkit views when tab is switched */
+@keyframes view-reveal {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tk-view.active {
+        animation: none;
+    }
+
+    /* Disable the snap ripple/pulse (expanding box-shadow ring) under
+       Reduced_Motion (Req 22.4). !important: must override the JS-fired
+       .tk-snap animation unconditionally. */
+    .tk-ap-btn.tk-snap,
+    .tk-align-btn.tk-snap {
+        animation: none !important;
+    }
+}
+
+/* Tools view only: children fill width but internal buttons stay compact.
+   gap:0 so the .tk-region-label margins drive the section rhythm precisely
+   (inter-section spacing ≥ intra-section spacing — Req 7.1). */
+#toolkit-tools-view {
+    align-items: stretch;
+    gap: var(--space-3, 6px);
+}
+
+/* ─── REGION LABELS — section hierarchy for the Tools workbench ───
+   Each label leads its region (Req 7.4). Top margin = inter-section gap,
+   bottom margin = intra-section gap, so inter ≥ intra (Req 7.1). */
+.tk-region-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2, 4px);
+    margin: var(--section-gap, 12px) 0 var(--space-2, 4px);
+    font-family: var(--font-mono, monospace);
+    font-size: var(--f-nano, 9px);
+    font-weight: 700;
+    letter-spacing: 0.9px;
+    text-transform: uppercase;
+    line-height: 1;
+    color: var(--tx-mute, rgba(243, 245, 251, 0.45));
+    user-select: none;
+}
+
+.tk-region-label:first-child {
+    margin-top: var(--space-1, 2px);
+}
+
+/* Leading accent tick + trailing hairline rule so each region reads as a
+   distinct, visually separated section (Req 10.1). */
+.tk-region-label::before {
+    content: '';
+    width: var(--space-2, 4px);
+    height: var(--space-2, 4px);
+    border-radius: var(--r-xs, 3px);
+    background: var(--p-400, #4f8cff);
+    flex: 0 0 auto;
+    box-shadow: 0 0 6px var(--p-glow, rgba(var(--primary-rgb), 0.4));
+}
+
+.tk-region-label::after {
+    content: '';
+    flex: 1 1 auto;
+    height: 1px;
+    background: var(--hairline, rgba(130, 168, 255, 0.08));
+}
+
+/* ─── UNIFIED WORKBENCH STRIP: Anchor (left) + Right Stack ─── */
+.tk-workbench-strip {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: var(--space-3, 6px);
+    flex: 0 0 auto;
+    width: 100%;
+    min-width: 0;
+    background: var(--surface-1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--hairline-strong);
+    border-radius: var(--r-md);
+    padding: var(--section-pad, 6px);
+    box-sizing: border-box;
+    overflow: hidden;
+    /* Smooth gap/padding transition across breakpoints.
+       (Requirement 3.4: reflow without visual glitches or element jumping) */
+    transition: gap var(--dur-slow, 0.2s) var(--ease-out), padding var(--dur-slow, 0.2s) var(--ease-out);
+}
+
+/* ─── ANCHOR 3x3 GRID — clean single-node selector ─── */
+.tk-anchor-widget {
+    --ap-pad: var(--space-3, 6px);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 0;
+    background: var(--cs-canvas);
+    border: 1px solid var(--cs-border-medium);
+    border-radius: var(--r-md);
+    padding: var(--ap-pad);
+    flex: 0 0 auto;
+    aspect-ratio: 1 / 1;
+    align-self: stretch;
+    max-width: 100%;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(130, 168, 255, 0.04);
+    position: relative;
+    overflow: hidden;
+    /* Smooth resize across breakpoints (96px→118px→130px) to prevent abrupt jumps.
+       (Requirement 3.4: reflow without visual glitches or element jumping) */
+    transition: width 0.2s var(--ease-out), height 0.2s var(--ease-out), padding 0.2s var(--ease-out);
+}
+
+/* Very subtle thin connecting gridlines so the 9 cells read as ONE unified anchor pad */
+.tk-anchor-widget::before {
+    content: '';
+    position: absolute;
+    inset: var(--ap-pad);
+    border-radius: var(--r-xs);
+    background:
+        linear-gradient(to right, transparent calc(33.333% - 0.5px), rgba(130, 168, 255, 0.15) calc(33.333% - 0.5px), rgba(130, 168, 255, 0.15) calc(33.333% + 0.5px), transparent calc(33.333% + 0.5px)),
+        linear-gradient(to right, transparent calc(66.666% - 0.5px), rgba(130, 168, 255, 0.15) calc(66.666% - 0.5px), rgba(130, 168, 255, 0.15) calc(66.666% + 0.5px), transparent calc(66.666% + 0.5px)),
+        linear-gradient(to bottom, transparent calc(33.333% - 0.5px), rgba(130, 168, 255, 0.15) calc(33.333% - 0.5px), rgba(130, 168, 255, 0.15) calc(33.333% + 0.5px), transparent calc(33.333% + 0.5px)),
+        linear-gradient(to bottom, transparent calc(66.666% - 0.5px), rgba(130, 168, 255, 0.15) calc(66.666% - 0.5px), rgba(130, 168, 255, 0.15) calc(66.666% + 0.5px), transparent calc(66.666% + 0.5px));
+    pointer-events: none;
+    z-index: 0;
+}
+
+.tk-ap-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: var(--r-xs);
+    background: transparent;
+    color: var(--p-300);
+    cursor: pointer;
+    transition: background var(--dur-base, 0.18s) var(--ease-out), border-color var(--dur-base, 0.18s) var(--ease-out), color var(--dur-base, 0.18s) var(--ease-out), box-shadow var(--dur-base, 0.18s) var(--ease-out), transform var(--dur-fast, 0.12s) var(--ease-out);
+    padding: 0;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+    aspect-ratio: 1 / 1;
+}
+
+.tk-ap-btn svg {
+    width: 60%;
+    height: 60%;
+    transition: transform var(--dur-base, 0.18s) var(--ease-out);
+    overflow: visible;
+}
+
+/* The dot — single clean node at this cell's anchor position */
+.tk-ap-btn .ap-node {
+    fill: var(--p-300);
+    opacity: 0.55;
+    transition: fill 0.18s ease, opacity 0.18s ease, r 0.18s var(--ease-spring);
+}
+
+.tk-ap-btn:hover:not(.active) {
+    background: var(--p-bg);
+    border-color: transparent;
+}
+
+.tk-ap-btn:hover:not(.active) .ap-node {
+    fill: var(--primary-hover);
+    opacity: 1;
+}
+
+.tk-ap-btn:hover:not(.active) svg {
+    transform: scale(1.08);
+}
+
+.tk-ap-btn:active {
+    background: var(--p-tint);
+    transform: scale(0.94);
+}
+
+.tk-ap-btn:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: -1px;
+}
+
+/* SELECTED cell — clean purple-filled cell with a soft glow and a solid center dot */
+.tk-ap-btn.active {
+    background: var(--primary);
+    border-color: transparent;
+    box-shadow: 0 0 10px var(--p-glow);
+}
+
+.tk-ap-btn.active .ap-node {
+    fill: #ffffff;
+    opacity: 1;
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.8));
+}
+
+/* Snap pulse — expanding ring fired from JS when the op lands in AE */
+@keyframes tk-snap-ring {
+    0% {
+        box-shadow: 0 0 0 0 rgba(var(--primary-bright-rgb), 0.55), 0 0 14px rgba(var(--primary-rgb), 0.5);
+    }
+
+    100% {
+        box-shadow: 0 0 0 9px rgba(var(--primary-bright-rgb), 0), 0 0 14px rgba(var(--primary-rgb), 0.5);
+    }
+}
+
+.tk-ap-btn.tk-snap,
+.tk-align-btn.tk-snap {
+    animation: tk-snap-ring 0.45s var(--ease-out);
+}
+
+/* .tk-ap-center now relies only on its target-ring SVG for visual differentiation;
+   no pre-tinted background so all 9 cells read as equal until one is selected. */
+
+/* ─── RIGHT STACK: Create + Precomp + Align ─── */
+.tk-right-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1, 3px);
+    flex: 1 1 auto;
+    min-width: 0;
+    justify-content: space-between;
+}
+
+.tk-create-row {
+    display: flex;
+    gap: var(--space-1, 3px);
+    flex: 0 0 auto;
+    width: 100%;
+}
+
+.tk-create-row>.tk-icon-btn {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+/* ─── Align Strip ─── */
+.tk-align-strip {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: var(--space-1, 1px);
+    flex: 0 0 auto;
+    align-items: stretch;
+    min-width: 0;
+    background: rgba(0, 0, 0, 0.32);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--r-md);
+    padding: var(--space-1, 3px);
+    height: 32px;
+    max-height: 32px;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+}
+
+.tk-align-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 0;
+    min-width: 0;
+    border: 1px solid transparent;
+    border-radius: var(--r-xs);
+    background: transparent;
+    color: var(--p-300);
+    cursor: pointer;
+    transition: background var(--dur-base, 0.18s) var(--ease-out), border-color var(--dur-base, 0.18s) var(--ease-out), color var(--dur-base, 0.18s) var(--ease-out), box-shadow var(--dur-base, 0.18s) var(--ease-out), transform var(--dur-fast, 0.12s) var(--ease-out);
+    padding: 0;
+}
+
+.tk-align-btn svg {
+    width: 15px;
+    height: 15px;
+    transition: filter var(--dur-base, 0.18s) var(--ease-out), transform var(--dur-fast, 0.12s) var(--ease-out);
+}
+
+.tk-align-btn:hover {
+    background: var(--p-bg);
+    border-color: var(--p-rule);
+    color: #fff;
+    box-shadow: 0 0 8px rgba(var(--primary-rgb), 0.15);
+}
+
+.tk-align-btn:hover svg {
+    filter: drop-shadow(0 0 4px var(--p-glow));
+}
+
+.tk-align-btn:active {
+    background: var(--p-tint);
+}
+
+.tk-align-btn:focus-visible {
+    outline: 2px solid var(--primary-focus);
+    outline-offset: -1px;
+}
+
+.tk-align-sep {
+    width: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    flex: 0 0 1px;
+    margin: 2px 2px;
+}
+
+/* ─── FAST-ACCESS ROW ─── */
+.tk-fast-access-row {
+    display: flex;
+    gap: var(--space-1, 3px);
+    flex: 0 0 auto;
+    width: 100%;
+    min-width: 0;
+    padding: var(--section-pad, 4px);
+    margin: 0;
+    background: var(--surface-1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--hairline-strong);
+    border-radius: var(--r-md);
+    overflow: hidden;
+}
+
+/* ─── Icon Button — universal compact tool (fills row uniformly) ─── */
+.tk-icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    flex: 1 1 0;
+    min-width: 32px;
+    max-height: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--r-md);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--p-200);
+    cursor: pointer;
+    transition: background var(--dur-base, 0.18s) var(--ease-out), border-color var(--dur-base, 0.18s) var(--ease-out), color var(--dur-base, 0.18s) var(--ease-out), box-shadow var(--dur-base, 0.18s) var(--ease-out), transform var(--dur-fast, 0.12s) var(--ease-out), height var(--dur-slow, 0.2s) var(--ease-out);
+    box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    padding: 0;
+}
+
+.tk-icon-btn svg {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+    transition: filter var(--dur-base, 0.18s) var(--ease-out), transform var(--dur-fast, 0.12s) var(--ease-out);
+}
+
+.tk-icon-btn:hover:not(.active) {
+    background: var(--p-bg);
+    border-color: var(--p-rule);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4), 0 0 10px rgba(var(--primary-rgb), 0.2);
+}
+
+.tk-icon-btn:hover:not(.active) svg {
+    filter: drop-shadow(0 0 6px var(--p-glow));
+}
+
+/* Composite: active + hover — subtle highlight lift without overriding active state */
+.tk-icon-btn.active:hover {
+    background: var(--p-tint);
+    border-color: var(--primary-hover);
+}
+
+.tk-icon-btn:active {
+    transform: translateY(1px);
+    background: var(--p-tint);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.tk-icon-btn:focus-visible {
+    outline: 2px solid var(--primary-focus);
+    outline-offset: -1px;
+}
+
+.tk-icon-btn.active {
+    background: var(--p-tint);
+    border-color: var(--primary);
+    color: #fff;
+    box-shadow: inset 0 0 10px rgba(var(--primary-rgb), 0.2);
+}
+
+.tk-icon-btn--accent {
+    border-color: var(--hairline-strong);
+    color: var(--primary);
+}
+
+.tk-icon-btn--accent:hover {
+    color: var(--primary-hover);
+    border-color: var(--primary-focus);
+    background: var(--surface-2);
+}
+
+.tk-icon-btn--muted {
+    opacity: 0.62;
+    /* size now matches base .tk-icon-btn for row alignment */
+}
+
+.tk-icon-btn--muted:hover {
+    opacity: 1;
+}
+
+.tk-icon-btn--danger:hover {
+    background: var(--danger-bg);
+    border-color: var(--danger-rule);
+    color: var(--danger);
+}
+
+/* Unified disabled state for every toolkit control */
+.tk-icon-btn:disabled,
+.tk-icon-btn[disabled],
+.tk-ap-btn:disabled,
+.tk-align-btn:disabled,
+.tk-seq-btn:disabled {
+    opacity: 0.28;
+    cursor: not-allowed;
+    pointer-events: none;
+    filter: grayscale(0.4);
+    transform: none;
+    box-shadow: none;
+}
+
+.tk-row-sep {
+    width: 1px;
+    height: 16px;
+    background: var(--hairline);
+    margin: 0 2px;
+    align-self: center;
+    flex-shrink: 0;
+    opacity: 0.5;
+}
+
+/* ─── TIMING cluster ─── */
+.tk-cluster {
+    flex: 0 0 auto;
+    background: var(--surface-1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--hairline-strong);
+    border-radius: var(--r-lg);
+    padding: var(--section-pad, 6px);
+}
+
+.tk-cluster--timing {
+    flex: 0 0 auto;
+    min-height: auto;
+    max-height: none;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    min-width: 0;
+}
+
+.tk-cluster--timing .tk-modules-row {
+    flex: 0 0 auto;
+    min-height: 0;
+}
+
+/* [REMOVED] .tk-cluster-row — zero DOM matches, no JS references */
+
+.tk-modules-row {
+    display: flex;
+    gap: var(--space-2, 4px);
+    height: auto;
+    align-items: stretch;
+}
+
+.tk-sequence-block,
+.tk-colorflow-block {
+    flex: 1 1 50%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: var(--space-1, 3px);
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--r-md);
+    padding: var(--space-1, 3px) var(--space-2, 4px);
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+    overflow: visible;
+}
+
+.tk-seq-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1, 2px);
+}
+
+.tk-stepper {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    flex: 1;
+    min-width: 0;
+}
+
+.tk-stepper-label {
+    font-family: var(--font-mono);
+    font-size: 7px;
+    font-weight: 700;
+    color: var(--ink-subtle);
+    margin-right: 1px;
+    opacity: 0.7;
+}
+
+.tk-stepper-btn {
+    width: 14px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-xs);
+    background: var(--surface-1);
+    color: var(--ink-muted);
+    cursor: pointer;
+    font-size: var(--f-micro);
+    line-height: 1;
+    transition: background var(--dur-base, 0.15s) var(--ease-out), border-color var(--dur-base, 0.15s) var(--ease-out), color var(--dur-base, 0.15s) var(--ease-out);
+}
+
+.tk-stepper-btn:hover {
+    background: var(--p-bg);
+    border-color: var(--p-rule);
+    color: var(--p-300);
+}
+
+.tk-stepper-btn:active {
+    background: var(--surface-3);
+}
+
+.tk-stepper-val {
+    width: 18px;
+    height: 14px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: var(--f-nano);
+    font-weight: 600;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+}
+
+.tk-seq-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 0;
+    height: 20px;
+    min-width: 0;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    background: transparent;
+    color: var(--ink-subtle);
+    cursor: pointer;
+    transition: background var(--dur-fast, 0.1s) var(--ease-out), border-color var(--dur-fast, 0.1s) var(--ease-out), color var(--dur-fast, 0.1s) var(--ease-out);
+}
+
+.tk-seq-btn:hover:not(.active) {
+    background: var(--surface-2);
+    border-color: var(--hairline-strong);
+    color: var(--ink);
+}
+
+.tk-seq-btn:active {
+    background: var(--surface-3);
+}
+
+.tk-seq-btn.active {
+    background: var(--p-tint);
+    border-color: var(--p-rule);
+    color: var(--p-200);
+    box-shadow: inset 0 0 8px rgba(var(--primary-rgb), 0.2), 0 0 6px rgba(var(--primary-rgb), 0.12);
+}
+
+.tk-seq-btn.active svg {
+    filter: drop-shadow(0 0 3px var(--p-glow));
+}
+
+.tk-seq-btn:focus-visible {
+    outline: 2px solid var(--primary-focus);
+    outline-offset: -1px;
+}
+
+/* Expansion zone fills all remaining vertical space in the toolkit view.
+   flex:1 1 0 + min-height:0 = shrinks below content, grows to fill parent. */
+.tk-expansion-zone {
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* -- Resize comp-tree bar (Tools view, compact, left-aligned) -- */
+.tk-resize-cluster {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    min-width: 0;
+    background: var(--surface-1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--hairline-strong);
+    border-radius: var(--r-md);
+    padding: var(--space-2, 4px) var(--space-3, 6px);
+    overflow: hidden;
+}
+
+.tk-resize-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2, 4px);
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    width: 100%;
+    min-width: 0;
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+
+/* [REMOVED] .tk-resize-label — zero DOM matches, no JS references */
+
+.tk-resize-select {
+    height: 24px;
+    font-size: var(--f-xxs);
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--p-tint);
+    border-radius: var(--r-xs);
+    padding: 0 4px;
+    outline: none;
+    cursor: pointer;
+    /* Shrinkable so the whole row compresses with the panel. min-width keeps
+       it usable at narrow widths without forcing horizontal overflow. */
+    flex: 1 1 auto;
+    min-width: 52px;
+}
+
+.tk-resize-select:focus {
+    border-color: var(--p-rule);
+    /* Solid 2px primary ring for a focus indicator ≥3:1 (Req 22.1). */
+    box-shadow: 0 0 0 2px var(--primary);
+}
+
+.tk-resize-fps {
+    /* FPS only shows 2-3 digits — compact, shrinks slightly if needed */
+    flex: 0 1 auto;
+    width: 44px;
+    min-width: 34px;
+}
+
+.tk-resize-apply {
+    height: 24px;
+    padding: 0 6px;
+    font-size: var(--f-xxs);
+    font-weight: 600;
+    color: var(--cs-on-accent);
+    cursor: pointer;
+    background: var(--cs-accent);
+    border: 1px solid var(--p-rule);
+    border-radius: var(--r-xs);
+    /* Shrinkable buttons; ellipsis only kicks in at extreme narrow widths.
+       Row compresses with the panel instead of overflowing/clipping off-screen. */
+    flex: 1 1 auto;
+    min-width: 44px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tk-resize-apply:hover {
+    background: var(--cs-accent-hover);
+    color: var(--cs-on-accent);
+}
+
+.tk-resize-apply:active {
+    transform: scale(0.96);
+}
+
+/* ── Bounce (purple theme, inline with resize) ───────────────────── */
+.tk-inline-sep {
+    width: 1px;
+    height: 16px;
+    background: var(--p-tint);
+    margin: 0 2px;
+    flex-shrink: 0;
+    align-self: center;
+}
+
+.tk-bounce-gear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    border-radius: var(--r-xs);
+    border: 1px solid var(--p-tint);
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--p-300);
+    cursor: pointer;
+    transition: border-color var(--dur-base, 0.15s) var(--ease-out), color var(--dur-base, 0.15s) var(--ease-out);
+}
+
+.tk-bounce-gear:hover {
+    border-color: var(--p-rule);
+    color: var(--primary-hover);
+}
+
+/* [REMOVED] .tk-bounce-overlay, .tk-bounce-overlay-header, .tk-bounce-field —
+   zero DOM matches, no JS references. Bounce settings now use the modal overlay. */
+
+
+/* Reset icon button (top-right corner of bounce modal) */
+.bounce-modal-reset-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    border: 1px solid var(--p-tint);
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--p-300);
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    padding: 0;
+}
+
+.bounce-modal-reset-icon:hover {
+    border-color: var(--p-rule);
+    color: var(--primary-hover);
+    background: var(--p-bg);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   VALUE-CHIP CONFORMANCE (base.css .cs-value-chip — Req 6.6, 6.7)
+   The timing steppers (.tk-stepper for #seq-group / #seq-step) are instances
+   of the frozen Value-chip pattern: chip(label slot .cs-value-chip__label →
+   value slot .cs-value-chip__value); the +/- keys are the chip's controls and
+   there is no chevron/collapsible body, so that optional slot is simply absent
+   (its :empty collapse in base.css keeps a bare chip from leaving an empty box,
+   Req 8.4). The pattern classes are added in index.html alongside .tk-stepper /
+   .tk-stepper-label / .tk-stepper-val; those module classes (which load after
+   base.css) keep every appearance detail, so adopting the pattern changes no
+   rendering and preserves the id / data-dir contract.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════
+   MN DOCK — QUICK ACTIONS OBSIDIAN DOCK (MNTools Standard)
+   ═══════════════════════════════════════════════════════════════ */
+.cs-dock-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 4px 8px;
+    background: var(--cs-surface-1, #111624);
+    border: 1px solid var(--cs-border-subtle, rgba(255, 255, 255, 0.07));
+    border-radius: var(--cs-radius-lg, 10px);
+    box-shadow: var(--cs-elevation-2, 0 4px 16px rgba(0, 0, 0, 0.5));
+    margin-bottom: 6px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.cs-dock-item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--cs-radius-md, 6px);
+    border: 1px solid transparent;
+    background: var(--cs-surface-2, #181f33);
+    color: var(--cs-text-secondary, #94a3b8);
+    cursor: pointer;
+    transition:
+        transform var(--cs-duration-fast, 120ms) var(--cs-ease-standard),
+        background var(--cs-duration-fast, 120ms) var(--cs-ease-standard),
+        color var(--cs-duration-fast, 120ms) var(--cs-ease-standard),
+        border-color var(--cs-duration-fast, 120ms) var(--cs-ease-standard),
+        box-shadow var(--cs-duration-normal, 180ms) var(--cs-ease-standard);
+    position: relative;
+}
+
+.cs-dock-item:hover {
+    transform: translateY(-2px) scale(1.06);
+    color: var(--cs-text-primary, #f8fafc);
+}
+
+.cs-dock-item:active {
+    transform: translateY(0) scale(0.96);
+}
+
+/* MN DOCK Semantic Accents */
+.cs-dock-item[data-dock="precomp"]:hover {
+    background: rgba(248, 113, 113, 0.16);
+    border-color: var(--cs-dock-precomp, #f87171);
+    color: var(--cs-dock-precomp, #f87171);
+    box-shadow: 0 0 12px rgba(248, 113, 113, 0.4);
+}
+
+.cs-dock-item[data-dock="unprecomp"]:hover {
+    background: rgba(251, 146, 60, 0.16);
+    border-color: var(--cs-dock-unprecomp, #fb923c);
+    color: var(--cs-dock-unprecomp, #fb923c);
+    box-shadow: 0 0 12px rgba(251, 146, 60, 0.4);
+}
+
+.cs-dock-item[data-dock="adj"]:hover {
+    background: rgba(251, 191, 36, 0.16);
+    border-color: var(--cs-dock-adjustment, #fbbf24);
+    color: var(--cs-dock-adjustment, #fbbf24);
+    box-shadow: 0 0 12px rgba(251, 191, 36, 0.4);
+}
+
+.cs-dock-item[data-dock="null"]:hover {
+    background: rgba(74, 222, 128, 0.16);
+    border-color: var(--cs-dock-null, #4ade80);
+    color: var(--cs-dock-null, #4ade80);
+    box-shadow: 0 0 12px rgba(74, 222, 128, 0.4);
+}
+
+.cs-dock-item[data-dock="solid"]:hover {
+    background: rgba(34, 211, 238, 0.16);
+    border-color: var(--cs-dock-solid, #22d3ee);
+    color: var(--cs-dock-solid, #22d3ee);
+    box-shadow: 0 0 12px rgba(34, 211, 238, 0.4);
+}
+
+.cs-dock-item[data-dock="shape"]:hover,
+.cs-dock-item[data-dock="text"]:hover {
+    background: rgba(167, 139, 250, 0.16);
+    border-color: var(--cs-dock-text, #a78bfa);
+    color: var(--cs-dock-text, #a78bfa);
+    box-shadow: 0 0 12px rgba(167, 139, 250, 0.4);
+}
+
+.cs-dock-item[data-dock="camera"]:hover {
+    background: rgba(96, 165, 250, 0.16);
+    border-color: var(--cs-dock-camera, #60a5fa);
+    color: var(--cs-dock-camera, #60a5fa);
+    box-shadow: 0 0 12px rgba(96, 165, 250, 0.4);
+}
+
+/* Enhanced 3x3 Anchor Visuals */
+.tk-ap-btn:hover {
+    background: rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.2);
+    border-color: var(--cs-accent);
+    color: #ffffff;
+    box-shadow: 0 0 8px rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.5);
+}
+
+.tk-ap-btn.active,
+.tk-ap-btn.tk-snap {
+    background: var(--cs-accent);
+    border-color: var(--cs-accent);
+    color: #ffffff;
+    box-shadow: 0 0 14px var(--cs-accent);
+}
+
+/* ── Workbench grid column bands (Req 15.1–15.3, 15.6) ─────────
+   Explicit counts per Dock_Width band: 1 / 2 below 280px, 3 / 4 in
+   Standard_Mode, 4 / 5 / 6 in Wide_Mode. Never decreases as the panel
+   widens. */
+.cs-wb-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--cs-gap-card);
+    min-width: 0;
+}
+
+@media (min-width: 420px) {
+    .cs-wb-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (min-width: 760px) {
+    .cs-wb-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+@media (min-width: 940px) {
+    .cs-wb-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
+@media (max-width: 279.98px) {
+    .cs-wb-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 219.98px) {
+    .cs-wb-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+.cs-wb-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 0 0 auto;
+    gap: 4px;
+    padding: 0 0 8px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--cs-border-subtle);
+}
+
+.cs-wb-tabs button,
+.cs-wb-seg button,
+.cs-wb-actions button,
+.cs-wb-preset-item {
+    min-width: 0;
+    min-height: var(--cs-h-btn);
+    padding: 6px 8px;
+    border: 1px solid transparent;
+    border-radius: var(--cs-radius-sm);
+    background: var(--cs-surface-2);
+    color: var(--cs-text-secondary);
+    font: 500 11px var(--cs-font-sans);
+    letter-spacing: 0;
+    cursor: pointer;
+    overflow-wrap: anywhere;
+}
+
+.cs-wb-tabs button { min-height: 28px; background: var(--cs-surface-1); overflow-wrap: normal; padding: 4px 8px; }
+.cs-wb-tabs [aria-selected="true"],
+.cs-wb-seg [aria-checked="true"] {
+    background: var(--cs-accent-subtle);
+    color: var(--cs-text-primary);
+    border-color: var(--cs-border-focus);
+}
+
+.cs-wb-panel { min-width: 0; flex: 0 0 auto; }
+.cs-wb-panel[hidden] { display: none !important; }
+.cs-wb-heading {
+    margin: 16px 0 8px;
+    color: var(--cs-text-primary);
+    font: 600 12px var(--cs-font-sans);
+    letter-spacing: 0;
+}
+.cs-wb-heading:first-child { margin-top: 4px; }
+.cs-wb-seg, .cs-wb-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.cs-wb-seg button, .cs-wb-actions button { flex: 1 1 70px; }
+.cs-wb-seg { padding: 3px; background: var(--cs-canvas); border-radius: var(--cs-radius-sm); }
+.cs-wb-preset-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+.cs-wb-preset-item { width: 100%; text-align: left; }
+.cs-wb-preset-empty { padding: 12px 0; color: var(--cs-text-secondary); font-size: 12px; }
+.cs-wb-panel button:hover { color: var(--cs-text-primary); border-color: var(--cs-border-strong); }
+.cs-wb-tabs button:focus-visible, .cs-wb-panel button:focus-visible { outline: 2px solid var(--cs-accent); outline-offset: 2px; }
+.cs-wb-panel .tk-fast-access-row { flex-wrap: wrap; }
+.cs-wb-panel .tk-resize-bar { flex-wrap: wrap; }
+.cs-wb-panel .tk-workbench-strip { margin-top: 10px; flex-wrap: wrap; background: none; border: 0; padding: 0; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.cs-wb-panel .tk-anchor-widget { width: 96px; height: 96px; align-self: flex-start; }
+.cs-wb-panel .tk-right-stack { flex: 1 1 140px; gap: 6px; }
+.cs-wb-panel .tk-create-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(28px, 1fr)); gap: 4px; }
+.cs-wb-panel .tk-align-strip { display: grid; grid-template-columns: repeat(6, minmax(22px, 1fr)); height: auto; max-height: none; gap: 4px; }
+.cs-wb-panel .tk-align-sep { display: none; }
+.cs-wb-panel .tk-align-btn { min-height: 28px; background: var(--cs-surface-2); color: var(--cs-text-secondary); }
+.cs-wb-panel .tk-seq-row { flex-wrap: wrap; gap: 6px; }
+.cs-wb-panel .tk-stepper { flex: 1 1 140px; min-height: 34px; }
+.cs-wb-panel .tk-stepper-btn { flex: 0 0 28px; width: 28px; height: 28px; font-size: 14px; }
+.cs-wb-panel .tk-stepper-val { min-width: 24px; height: 28px; font-size: 12px; }
+.cs-wb-panel .tk-stepper-label { font-size: 11px; letter-spacing: 0; opacity: 1; }
+.cs-wb-panel .tk-seq-btn { min-height: 30px; }
+.cs-wb-panel .tk-cluster--timing { background: none; border: 0; padding: 0; backdrop-filter: none; -webkit-backdrop-filter: none; }
+#toolkit-tools-view { overflow-y: auto; }
+.cs-wb-field { display: grid; grid-template-columns: 60px minmax(0, 1fr); align-items: center; gap: 8px; margin: 8px 0; color: var(--cs-text-secondary); font-size: 11px; }
+.cs-wb-field input, .cs-wb-field select { width: 100%; min-width: 0; min-height: 30px; border: 1px solid var(--cs-border-medium); border-radius: var(--cs-radius-sm); background: var(--cs-canvas); color: var(--cs-text-primary); padding: 5px 8px; }
+.cs-wb-check { display: flex; align-items: center; gap: 6px; margin: 10px 0; font-size: 11px; color: var(--cs-text-secondary); }
+
+@media (max-width: 279.98px) {
+    .cs-wb-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cs-wb-panel .tk-workbench-strip { flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
+    .cs-wb-panel .tk-anchor-widget { align-self: center; }
+    .cs-wb-panel .tk-right-stack { flex: 0 0 auto; justify-content: flex-start; }
+}
+
+@media (max-width: 399px) {
+    .cs-wb-panel .tk-align-strip { grid-template-columns: repeat(3, minmax(22px, 1fr)); }
+}

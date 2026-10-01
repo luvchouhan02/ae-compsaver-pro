@@ -1,0 +1,96 @@
+/* ════════════════════════════════════════════════════════════════
+   CompSaver — Obsidian modal dialogs (Req 3.9, 4.4, 6.1)
+   ────────────────────────────────────────────────────────────────
+   Only modal dialog, backdrop and overlay container selectors. Loaded
+   after style.css; the legacy .modal-overlay / .modal-content rules in
+   base.css and templates.css stay in place. Tokens only.
+   ════════════════════════════════════════════════════════════════ */
+
+.cs-overlay-root {
+    position: static;
+}
+
+.modal-overlay {
+    background: var(--cs-scrim);
+    backdrop-filter: var(--cs-glass-blur);
+    -webkit-backdrop-filter: var(--cs-glass-blur);
+}
+
+.modal-overlay .modal-content {
+    width: 360px;
+    padding: 12px;
+    gap: 10px;
+    background: var(--cs-surface-1);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--cs-border-medium);
+    border-radius: var(--cs-radius-lg);
+    box-sizing: border-box;
+    max-width: calc(100vw - 16px);
+    max-height: calc(100vh - 16px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.modal-overlay .modal-content > * {
+    flex-shrink: 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.modal-overlay .modal-content::before {
+    content: none;
+}
+
+.modal-overlay .modal-content h3,
+.modal-overlay .modal-content .modal-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-align: left;
+}
+
+.modal-overlay .custom-select-dropdown {
+    position: static;
+    margin-top: 4px;
+    max-height: 150px;
+    background: var(--cs-surface-2);
+    border-color: var(--cs-border-medium);
+    border-radius: var(--cs-radius-md);
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.modal-overlay .custom-select-trigger {
+    text-align: left;
+    gap: 8px;
+}
+
+.modal-overlay .custom-select-trigger span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.modal-overlay .custom-select-option {
+    display: block;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.modal-overlay .custom-select-option:hover,
+.modal-overlay .custom-select-option.active {
+    background: var(--cs-accent-subtle);
+    color: var(--cs-text-primary);
+}
+
+.modal-overlay .custom-select-trigger:focus-visible,
+.modal-overlay .custom-select-option:focus-visible {
+    outline: 2px solid var(--cs-accent);
+    outline-offset: -2px;
+}

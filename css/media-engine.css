@@ -1,0 +1,68 @@
+/* Fast Media Engine Styles */
+
+/* Hover Video Element */
+.media-vid {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 2; /* Above the thumbnail img */
+    background: #000;
+    pointer-events: none; /* Let hover events pass through to card */
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.media-vid.fade-in {
+    opacity: 1;
+}
+
+/* Pending State (During Background Copy) */
+.media-pending .thumb-box {
+    position: relative;
+}
+
+.media-pending .thumb-box::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
+    animation: media-pulse 1.5s infinite alternate;
+    z-index: 3;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+@keyframes media-pulse {
+    0% {
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.1);
+    }
+    100% {
+        border-color: rgba(255, 255, 255, 0.5);
+        box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* Drop Overlay */
+.media-drop-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 10, 16, 0.72);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    color: white;
+    font-size: 24px;
+    font-weight: 500;
+    pointer-events: none; /* Let drops pass through to the listener */
+}
+
+.media-drop-overlay.active {
+    display: flex;
+}

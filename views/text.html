@@ -1,0 +1,112 @@
+                <!-- ========== TEXT ANIMATION VIEW (nested inside Toolkit) ========== -->
+                <div class="tk-view" id="toolkit-text-anim-view">
+                    <div class="ta-toolbar">
+                        <button type="button" class="tk-effects-save-btn" id="btn-ta-save"
+                            data-tooltip="Save Animation">
+                            <svg class="tk-save-plus" width="11" height="11" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                            <span>Save Selected Text</span>
+                        </button>
+                        <button type="button" class="ta-icon-btn" id="btn-ta-refresh" data-tooltip="Refresh"
+                            aria-label="Refresh text animations">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                            </svg>
+                        </button>
+                        <button type="button" class="ta-icon-btn" id="btn-ta-import" data-tooltip="Import FFX"
+                            aria-label="Import text animation files">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                                <line x1="12" y1="11" x2="12" y2="17" />
+                                <line x1="9" y1="14" x2="15" y2="14" />
+                            </svg>
+                        </button>
+                        <button type="button" class="ta-icon-btn ta-icon-btn--danger" id="btn-ta-bulk-toggle"
+                            data-tooltip="Bulk Delete" aria-label="Toggle bulk delete mode">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6" />
+                                <path
+                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                            </svg>
+                            <span id="ta-delete-count" class="ta-delete-count">(0)</span>
+                        </button>
+                        <button type="button" class="ta-icon-btn" id="btn-ta-reset" data-tooltip="Reset Text"
+                            aria-label="Reset text layer animation">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 21H7" />
+                                <path
+                                    d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21" />
+                                <path d="m5 11 9 9" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Compact Horizontal Category Navigation Bar -->
+                    <div class="tk-category-bar-wrap">
+                        <div class="tk-category-left">
+                            <button type="button" class="category-tab active" id="btn-ta-cat-all"
+                                data-category="All">All</button>
+                            <button type="button" class="category-tab" id="btn-ta-cat-fav" data-category="★ Fav">★
+                                Fav</button>
+                        </div>
+                        <div class="tk-category-right">
+                            <button type="button" class="tk-menu-toggle-btn" id="ta-menu-toggle-btn"
+                                data-tooltip="Categories">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                                </svg>
+                                <span class="tk-category-badge" id="ta-category-badge">+0</span>
+                            </button>
+                            <!-- Floating absolute dropdown menu -->
+                            <div class="tk-dropdown-menu" id="ta-dropdown-menu">
+                                <div class="tk-dropdown-header">CATEGORIES</div>
+                                <div class="tk-dropdown-list" id="ta-dropdown-list">
+                                    <!-- Dynamic subfolder rows will go here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ta-bulk-confirm" id="ta-bulk-confirm">
+                        <span class="ta-bulk-warning">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                <line x1="12" y1="9" x2="12" y2="13" />
+                                <line x1="12" y1="17" x2="12.01" y2="17" />
+                            </svg>
+                            Delete selected text animations from disk?
+                        </span>
+                        <div class="ta-bulk-actions">
+                            <button type="button" class="ta-confirm-btn" id="btn-ta-bulk-confirm">Confirm</button>
+                            <button type="button" class="ta-cancel-btn" id="btn-ta-bulk-cancel">Cancel</button>
+                        </div>
+                    </div>
+
+                    <div class="ta-grid-wrap">
+                        <div class="ta-grid" id="ta-grid">
+                            <div class="ta-empty-state cs-empty-state">
+                                <span class="cs-empty-state__icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M5 6V5h14v1" />
+                                        <path d="M12 5v14" />
+                                        <path d="M9 19h6" />
+                                    </svg>
+                                </span>
+                                <span class="cs-empty-state__title">No Text Animations</span>
+                                <small class="cs-empty-state__text">Select a text layer and click Save Current</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>

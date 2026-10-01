@@ -1,0 +1,15 @@
+{
+  "name": "Lint CSS Token Usage",
+  "description": "When a CSS file is saved, verify that no literal hex colors are used in redesigned component stylesheets — only --cs-* design tokens are allowed.",
+  "version": "1.0.0",
+  "event": {
+    "type": "onFileSave",
+    "fileMatch": ["css/**/*.css"]
+  },
+  "actions": [
+    {
+      "type": "prompt",
+      "prompt": "The file {{filePath}} was just saved. Check if this file contains any literal hex color values (#rrggbb or #rgb), rgb(), rgba(), hsl(), or hsla() color literals in rule declarations (not inside CSS custom property definitions in :root). The keywords transparent, currentColor, inherit, none are exempt. If violations are found, list them with line numbers and suggest using the appropriate --cs-* design token instead. Also verify that every backdrop-filter declaration has a matching -webkit-backdrop-filter in the same rule block."
+    }
+  ]
+}

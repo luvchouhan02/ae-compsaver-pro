@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>CompSaver isolated layout fixture</title>
+<style>body{margin:0;background:#444;color:white;font:12px sans-serif}iframe{display:block;border:0}#fixture-status{padding:8px}</style></head>
+<body><div id="fixture-status">Visual fixture only. Host actions are unavailable.</div><iframe id="panel" title="CompSaver visual fixture"></iframe>
+<script>
+(async function () {
+    const params = new URLSearchParams(location.search);
+    const panel = document.getElementById('panel');
+    panel.width = Number(params.get('width')) || 400;
+    panel.height = Number(params.get('height')) || 700;
+    const source = await (await fetch('../../index.html', { cache: 'no-store' })).text();
+    const parsed = new DOMParser().parseFromString(source, 'text/html');
+    parsed.querySelectorAll('script').forEach(script => script.remove());
+    const base = parsed.createElement('base');
+    base.href = new URL('../../', location.href).href;
+    parsed.head.prepend(base);
+    for (const link of parsed.querySelectorAll('link[rel="stylesheet"]')) {
+        const css = await (await fetch(new URL(link.getAttribute('href'), base.href), { cache: 'no-store' })).text();
+        const style = parsed.createElement('style');
+        if (link.getAttribute('href').split('?')[0] === 'css/style.css') {
+            const imports = [...css.matchAll(/@import url\("([^"]+)"\);/g)];
+            for (const match of imports) {
+                const imported = parsed.createElement('style');
+                imported.textContent = await (await fetch(new URL('css/' + match[1], base.href), { cache: 'no-store' })).text();
+                link.before(imported);
+            }
+        } else style.textContent = css;
+        link.replaceWith(style);
+    }
+    for (const mount of parsed.querySelectorAll('[data-view-mount]')) {
+        mount.innerHTML = await (await fetch(new URL('views/' + mount.dataset.viewMount + '.html', base.href), { cache: 'no-store' })).text();
+    }
+    const route = params.get('route') || 'tools';
+    parsed.body.classList.add(route === 'templates' ? 'mode-templates' : route === 'settings' ? 'mode-settings' : 'mode-toolkit');
+    parsed.querySelectorAll('.cs-route').forEach(mount => { mount.hidden = mount.id !== 'cs-route-' + route; });
+    parsed.querySelectorAll('[data-sidebar-route]').forEach(button => {
+        if (button.dataset.sidebarRoute === route) button.setAttribute('aria-current', 'page');
+        else button.removeAttribute('aria-current');
+    });
+    const module = parsed.getElementById('toolkit-module');
+    module.style.display = ['settings', 'templates'].includes(route) ? 'none' : 'flex';
+    const active = parsed.getElementById('cs-route-' + route);
+    active.style.display = 'flex';
+    const view = active.querySelector('.tk-view');
+    if (view) view.classList.add('active');
+    parsed.getElementById('cs-hdr-dot').setAttribute('data-state', 'warn');
+    panel.srcdoc = '<!doctype html>' + parsed.documentElement.outerHTML;
+    await new Promise(resolve => panel.onload = resolve);
+    document.getElementById('fixture-status').textContent = 'Visual fixture only: ' + route + '. No host execution.';
+    panel.contentDocument.querySelectorAll('form').forEach(form => form.addEventListener('submit', event => event.preventDefault()));
+    if (route === 'settings') {
+        const values = new Map([
+            ['appearance.accent', 'blue'], ['appearance.accentCustom', '#3b82f6'],
+            ['preview.maxDuration', 10], ['performance.searchDebounce', 150],
+            ['performance.pingInterval', 30], ['toolkit.sequencerStep', 1]
+        ]);
+        const listeners = new Map();
+        panel.contentWindow.Settings = {
+            get: key => values.get(key),
+            set: (key, value) => {
+                values.set(key, value);
+                (listeners.get(key) || []).forEach(callback => callback(value));
+            },
+            onChange: (key, callback) => {
+                const callbacks = listeners.get(key) || [];
+                callbacks.push(callback);
+                listeners.set(key, callbacks);
+                return () => listeners.set(key, callbacks.filter(entry => entry !== callback));
+            }
+        };
+        for (const name of ['accent', 'focus-trap', 'accent-picker', 'settings-panel']) {
+            const renderer = panel.contentDocument.createElement('script');
+            renderer.textContent = await (await fetch(new URL('js/ui/' + name + '.js', base.href), { cache: 'no-store' })).text();
+            panel.contentDocument.body.appendChild(renderer);
+        }
+        panel.contentWindow.Accent.init();
+        panel.contentWindow.SettingsPanel.open();
+        panel.contentDocument.querySelectorAll('.settings-action-btn, .settings-reset-btn').forEach(button => { button.disabled = true; });
+        panel.contentDocument.querySelectorAll('.settings-link').forEach(link => {
+            link.addEventListener('click', event => { event.preventDefault(); event.stopImmediatePropagation(); }, true);
+        });
+    }
+    if (params.has('capacity')) {
+        const doc = panel.contentDocument;
+        const runtime = panel.contentWindow;
+        const blocked = () => { throw new Error('Capacity fixture blocks host calls and persistence'); };
+        Object.defineProperty(runtime, 'localStorage', { value: { getItem: () => null, setItem: blocked, removeItem: blocked, clear: blocked } });
+        runtime.Settings = { get: () => undefined, set: blocked };
+        runtime.csInterface = { evalScript: blocked };
+        runtime.ToolBridge = { run: blocked };
+        runtime.escapeHTML = value => {
+            const span = doc.createElement('span');
+            span.textContent = String(value);
+            return span.innerHTML;
+        };
+        runtime.showToast = message => { window.capacityLastMessage = message; };
+        const matrix = await (await fetch('../../docs/redesign-capacity-matrix.md', { cache: 'no-store' })).text();
+        const lines = matrix.split(/\r?\n/);
+        const current = lines.filter(line => /^\| (Toolkit|Specialized tools) \|/.test(line))
+            .flatMap(line => line.split('|')[2].split(';').map(title => ({ title: title.trim(), category: 'Current', status: 'integrated' })));
+        const specs = lines.filter(line => /^\| \[(?:\d|AI-)/.test(line)).map(line => {
+            const cells = line.split('|');
+            const link = cells[1].match(/\[([^\]]+)\]\(([^)]+)\)/);
+            return { title: link[1], source: link[2], category: cells[2].trim(), status: cells[5].trim() };
+        });
+        const planned = specs.filter(entry => entry.status.startsWith('Planned'));
+        const entries = current.concat(planned);
+        const target = current.length + Math.max(35, planned.length);
+        const longest = planned.slice().sort((first, second) => second.title.length - first.title.length);
+        while (entries.length < target) {
+            const source = longest[(entries.length - current.length - planned.length) % longest.length];
+            entries.push({ ...source, title: source.title + ' / long translated user label / capacity repetition ' + (entries.length + 1), status: 'fixture repetition' });
+        }
+        if (params.get('capacity') === 'ai') entries.push(...specs.filter(entry => /^AI-0[2-8]/.test(entry.title)));
+        if (current.length !== 35 || planned.length !== 29 || target !== 70) throw new Error('Capacity matrix changed; reconcile fixture counts');
+        window.capacityFixtureEntries = entries;
+        const registry = doc.getElementById('toolkit-tools-view');
+        registry.replaceChildren();
+        const groups = new Map();
+        entries.forEach((entry, index) => {
+            let group = groups.get(entry.category);
+            if (!group) {
+                group = doc.createElement('div');
+                group.setAttribute('role', 'tabpanel');
+                group.id = 'cs-wb-panel-' + entry.category.replace(/[^a-z0-9]+/gi, '-');
+                group.hidden = true;
+                groups.set(entry.category, group);
+                registry.appendChild(group);
+            }
+            const button = doc.createElement('button');
+            button.type = 'button';
+            button.disabled = true;
+            button.dataset.toolkitAction = 'capacity-' + index;
+            button.title = 'Capacity: ' + entry.title;
+            button.textContent = entry.title;
+            group.appendChild(button);
+        });
+        for (const name of ['focus-trap', 'command-palette']) {
+            const script = doc.createElement('script');
+            script.textContent = await (await fetch(new URL('js/ui/' + name + '.js', base.href), { cache: 'no-store' })).text();
+            doc.body.appendChild(script);
+        }
+        runtime.CommandPalette.init();
+        window.openCapacityPalette = () => {
+            runtime.CommandPalette.open();
+            const input = doc.getElementById('cs-cmd-input');
+            input.value = 'capacity';
+            input.dispatchEvent(new runtime.Event('input', { bubbles: true }));
+        };
+        window.showCapacityPattern = name => {
+            runtime.CommandPalette.close();
+            const previous = doc.getElementById('capacity-parameters');
+            if (previous) previous.remove();
+            const overlay = doc.createElement('div');
+            overlay.id = 'capacity-parameters';
+            overlay.className = 'modal-overlay';
+            overlay.style.display = 'flex';
+            overlay.setAttribute('role', 'dialog');
+            overlay.setAttribute('aria-modal', 'true');
+            overlay.setAttribute('aria-labelledby', 'capacity-title');
+            const content = doc.createElement('div');
+            content.className = 'modal-content';
+            const title = doc.createElement('div');
+            title.id = 'capacity-title';
+            title.className = 'modal-title';
+            title.textContent = name + ' / capacity test';
+            content.appendChild(title);
+            const patterns = {
+                Gridder: [['Rows', 'number', '3'], ['Columns', 'number', '4'], ['Margin X (px)', 'number', '24'], ['Margin Y (px)', 'number', '24']],
+                Renamer: [['Prefix', 'text', 'Client_Project_'], ['Base name', 'text', 'Long localized composition name'], ['Suffix', 'text', '_approved'], ['Find', 'text', 'Draft'], ['Replace with', 'text', 'Final'], ['Start number', 'number', '1'], ['Padding', 'number', '2']],
+                Scatter: [['Rotation minimum (degrees)', 'range', '-15'], ['Rotation maximum (degrees)', 'range', '15'], ['Scale minimum (%)', 'number', '80'], ['Scale maximum (%)', 'number', '110']],
+                Mapping: [['Data file', 'file', ''], ['Client_Name_With_A_Long_Column_Header', 'select', 'Selected text layer'], ['Generate a composition per row', 'checkbox', '']],
+                Options: [['Matte type', 'select', 'Alpha inverted'], ['Auto-scale layers', 'checkbox', '']],
+                Progress: [['Output format', 'select', 'Transparent ProRes 4444'], ['Frames processed', 'progress', '42']],
+                Confirmation: [],
+                Action: []
+            };
+            if (!patterns[name]) throw new Error('Unknown capacity pattern: ' + name);
+            patterns[name].forEach((definition, index) => {
+                const field = doc.createElement('div');
+                field.className = 'modal-field';
+                const label = doc.createElement('label');
+                label.htmlFor = 'capacity-field-' + index;
+                label.textContent = definition[0];
+                const control = doc.createElement(definition[1] === 'select' ? 'select' : definition[1] === 'progress' ? 'progress' : 'input');
+                control.id = label.htmlFor;
+                if (control.tagName === 'INPUT') control.type = definition[1];
+                if (definition[1] === 'file') control.accept = '.csv,.json';
+                if (definition[1] === 'select') {
+                    const option = doc.createElement('option');
+                    option.textContent = definition[2];
+                    control.appendChild(option);
+                } else if (definition[1] !== 'file') {
+                    if (definition[1] === 'range') { control.min = '-180'; control.max = '180'; }
+                    if (definition[1] === 'progress') control.max = 100;
+                    control.value = definition[2];
+                }
+                field.append(label, control);
+                content.appendChild(field);
+            });
+            const status = doc.createElement('p');
+            status.setAttribute('role', 'status');
+            status.textContent = name === 'Confirmation' ? 'Reduce Project: selected composition and dependencies only.' : 'Capacity test. Execution unavailable.';
+            content.appendChild(status);
+            const actions = doc.createElement('div');
+            actions.className = 'modal-buttons';
+            const cancel = doc.createElement('button');
+            cancel.type = 'button';
+            cancel.textContent = 'Cancel';
+            const close = () => { runtime.FocusTrap.deactivate(); overlay.remove(); };
+            cancel.addEventListener('click', close);
+            const apply = doc.createElement('button');
+            apply.type = 'button';
+            apply.textContent = name === 'Confirmation' ? 'Reduce Project' : 'Apply';
+            apply.disabled = true;
+            actions.append(cancel, apply);
+            content.appendChild(actions);
+            overlay.appendChild(content);
+            overlay.addEventListener('keydown', event => { if (event.key === 'Escape') close(); });
+            doc.body.appendChild(overlay);
+            runtime.FocusTrap.activate(overlay, doc.getElementById('cs-cmd-input'));
+        };
+        document.getElementById('fixture-status').textContent = 'CAPACITY TEST: ' + entries.length + ' disabled entries. No host calls or persistence.';
+        if (params.has('pattern')) window.showCapacityPattern(params.get('pattern'));
+        else window.openCapacityPalette();
+    }
+    window.fixtureReady = true;
+}()).catch(error => { document.getElementById('fixture-status').textContent = error.message; });
+</script></body></html>

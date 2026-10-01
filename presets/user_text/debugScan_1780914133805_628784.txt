@@ -1,0 +1,16 @@
+gap outlier ignored: 3.503515625 (>2s after 0)
+keyframesFound: 2
+exprFound: 0
+animatorsFound: 1
+effectsFound: 0
+sourceTextKeys: 0
+minKeyTime: 0
+maxKeyTime: 0
+animLen: 0.5
+renderDur(DUR): 1
+startTimeToRender(pre-norm): 0
+comp.duration: 1.03333333333333
+workAreaStart: 0
+workAreaDuration: 1
+RQ render failed: Error: No PNG output module template found
+RQ produced 0 frames — falling back to saveFrameToPng

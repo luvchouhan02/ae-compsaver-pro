@@ -1,0 +1,1754 @@
+/* ═══════════════════════════════════════════════════════════════
+   TEMPLATES MODULE
+   ═══════════════════════════════════════════════════════════════ */
+#templates-module {
+    min-width: var(--tm-min-width);
+    /* Module shell backdrop (Req 4.9): opaque --surface-panel; two-arg var()
+       degrades to a defined opaque dark surface. */
+    background: var(--surface-panel, #0f0c1a);
+}
+
+/* Sectioned navigation header — groups the section switcher and the category
+   controls into a single region with intra-section rhythm from the
+   Spacing_Scale (Req 7.1, 14.1). flex layout justifies the container (Req 8.1). */
+.tpl-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2, 4px);
+    flex: 0 0 auto;
+    min-width: 0;
+    margin-bottom: var(--space-3, 6px);
+}
+
+.section-switcher {
+    display: flex;
+    gap: var(--space-1, 2px);
+    background: var(--cs-canvas);
+    border: 1px solid var(--cs-border-subtle);
+    border-radius: var(--r-md);
+    padding: var(--space-1, 3px);
+    flex: 0 0 auto;
+    overflow: hidden;
+    min-width: 0;
+    box-shadow: none;
+}
+
+.section-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    height: 34px;
+    border: 1px solid transparent;
+    border-radius: var(--r-sm);
+    background: transparent;
+    color: var(--tx-mute);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1, 1px);
+    transition: background var(--dur-base, 0.16s) var(--ease-out), color var(--dur-base, 0.16s) var(--ease-out), border-color var(--dur-base, 0.16s) var(--ease-out), box-shadow var(--dur-base, 0.16s) var(--ease-out);
+    padding: 0;
+    outline: none;
+    overflow: hidden;
+    position: relative;
+}
+
+.section-btn svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    transition: transform var(--dur-base, 0.16s) var(--ease-out);
+}
+
+/* Concise label beneath the icon (Req 14.9). Real .switcher-label span (was a
+   set of ::after pseudo-elements) so the shared Overflow_Menu helper can relocate
+   the whole button — icon + label — as one real node, and responsive.css can
+   collapse the label slot to icon-only across the constrained Dock_Range bands. */
+.section-btn .switcher-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: inherit;
+    line-height: 1;
+    text-transform: uppercase;
+    opacity: 0.85;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+@media (max-width: 250px) {
+    .section-btn {
+        height: 24px;
+    }
+}
+
+.section-btn:hover:not(.active) {
+    background: var(--lift);
+    color: var(--tx-mid);
+    border-color: var(--line-dim);
+}
+
+.section-btn:hover:not(.active) svg {
+    transform: none;
+}
+
+.section-btn.active {
+    background: var(--cs-accent-subtle);
+    border-color: var(--cs-border-focus);
+    color: var(--cs-text-primary);
+    box-shadow: none;
+}
+
+.section-btn.active .switcher-label {
+    opacity: 1;
+}
+
+.section-btn:focus-visible {
+    outline: 2px solid var(--accent-purple);
+    outline-offset: -2px;
+}
+
+.tabs-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1, 3px);
+    flex: 0 0 auto;
+    position: relative;
+    min-width: 0;
+    overflow: visible;
+    padding: 0 var(--space-2, 4px);
+    box-sizing: border-box;
+}
+
+.tabs-area {
+    display: flex;
+    gap: var(--space-2, 4px);
+    flex: 1;
+    overflow-x: auto;
+    overflow-y: hidden;
+    min-width: 0;
+    align-items: center;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: var(--space-1, 2px);
+}
+
+/* Custom scrollbar for tabs-area */
+.tabs-area::-webkit-scrollbar {
+    height: 2px;
+}
+
+.tabs-area::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.tabs-area::-webkit-scrollbar-thumb {
+    background: var(--p-tint);
+    border-radius: 1px;
+}
+
+.tabs-area::-webkit-scrollbar-thumb:hover {
+    background: var(--p-400);
+}
+
+.cat-pill {
+    height: 28px;
+    padding: 0 var(--space-3, 7px);
+    border-radius: var(--r-sm);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--tx-lo);
+    font-size: var(--f-xs);
+    font-weight: 500;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background var(--dur-fast, 0.1s) var(--ease-out), color var(--dur-fast, 0.1s) var(--ease-out), border-color var(--dur-fast, 0.1s) var(--ease-out);
+    letter-spacing: 0;
+}
+
+.cat-pill:hover:not(.active) {
+    background: var(--lift);
+    color: var(--tx-mid);
+    border-color: var(--line-dim);
+}
+
+.cat-pill.active {
+    background: var(--p-tint);
+    border-color: var(--p-rule);
+    color: var(--p-200);
+    font-weight: 600;
+    box-shadow: inset 0 -1px 0 var(--p-400);
+}
+
+.cat-pill:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 1px;
+}
+
+#btn-more-cats {
+    position: relative;
+    flex-shrink: 0;
+}
+
+#btn-more-cats[data-overflow]::after {
+    content: '+' attr(data-overflow);
+    position: absolute;
+    top: -4px;
+    right: -5px;
+    background: var(--p-500);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: var(--f-nano);
+    font-weight: 700;
+    padding: 0 3px;
+    border-radius: 8px;
+    min-width: 14px;
+    height: 12px;
+    line-height: 12px;
+    text-align: center;
+    pointer-events: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+#btn-more-cats.panel-open {
+    border-color: var(--p-rule);
+    background: var(--p-tint);
+    color: var(--p-300);
+}
+
+.cat-panel {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: auto;
+    right: 0;
+    width: 145px;
+    max-width: calc(100vw - 16px);
+    z-index: 500;
+    background: var(--cs-surface-1);
+    border: 1px solid var(--p-rule);
+    border-radius: var(--r-md);
+    padding: 4px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 0 1px var(--p-bg);
+    max-height: 220px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.cat-panel.open {
+    display: block;
+}
+
+.cat-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 8px;
+    background: var(--p-bg);
+    border-radius: var(--r-sm);
+    margin-bottom: 3px;
+    border: 1px solid var(--line-sub);
+}
+
+.cat-panel-header span {
+    font-family: var(--font-mono);
+    font-size: var(--f-xxs);
+    font-weight: 500;
+    color: var(--p-300);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+#btn-close-cats {
+    width: 16px;
+    height: 16px;
+    border-radius: var(--r-xs);
+    border: 1px solid var(--line-dim);
+    background: transparent;
+    color: var(--tx-lo);
+    cursor: pointer;
+    font-size: var(--f-xxs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.1s, border-color 0.1s, color 0.1s;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+#btn-close-cats:hover {
+    background: var(--danger-bg);
+    border-color: var(--danger-rule);
+    color: var(--danger);
+}
+
+.cat-panel-toggle-row {
+    padding: 5px 8px;
+    border-bottom: 1px solid var(--line-sub);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    user-select: none;
+    width: 100%;
+}
+
+.toggle-container input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 11px;
+    height: 11px;
+    border: 1px solid var(--line-dim);
+    border-radius: 2px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+    outline: none;
+    margin: 0;
+}
+
+.toggle-container input[type="checkbox"]:checked {
+    background: var(--p-400);
+    border-color: var(--p-rule);
+}
+
+.toggle-container input[type="checkbox"]:checked::after {
+    content: '';
+    width: 5px;
+    height: 3px;
+    border-left: 1.5px solid #fff;
+    border-bottom: 1.5px solid #fff;
+    transform: rotate(-45deg) translate(0.5px, -0.5px);
+    display: block;
+}
+
+.toggle-label {
+    font-size: var(--f-nano);
+    color: var(--tx-mid);
+    font-family: var(--font-sans);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.btn-cat-pin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    border: none;
+    background: transparent;
+    color: var(--tx-lo);
+    cursor: pointer;
+    border-radius: var(--r-xs);
+    margin-left: auto;
+    padding: 0;
+    transition: color 0.1s ease, background 0.1s ease;
+    flex-shrink: 0;
+}
+
+.btn-cat-pin:hover {
+    color: var(--p-300);
+    background: var(--p-tint);
+}
+
+.btn-cat-pin.pinned {
+    color: var(--p-300);
+    background: var(--p-tint);
+}
+
+.cat-panel-list {
+    max-height: 155px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.cat-panel-item {
+    padding: 5px 8px;
+    font-size: var(--f-sm);
+    color: var(--tx-mid);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: var(--r-sm);
+    transition: background 0.1s, color 0.1s;
+    margin-bottom: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.cat-panel-item:hover {
+    background: var(--p-bg);
+    color: var(--tx-hi);
+}
+
+.cat-panel-item.active {
+    background: var(--p-tint);
+    color: var(--p-300);
+    font-weight: 600;
+}
+
+.cat-count {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: var(--f-nano);
+    color: var(--p-400);
+    background: var(--p-bg);
+    border: 1px solid var(--line-sub);
+    padding: 1px 4px;
+    border-radius: var(--r-xs);
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+.btn-cat-pin+.cat-count {
+    margin-left: 4px;
+}
+
+/* Section content fills remaining space between tabs and footer.
+   flex:1 1 0 + min-height:0 ensures the flex item can shrink below its content
+   height and allow the grid inside to scroll. overflow:hidden prevents the
+   section from expanding beyond the module shell. */
+.section-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    animation: section-reveal 0.18s var(--ease-out);
+}
+
+/* Smooth reveal when section content becomes visible */
+@keyframes section-reveal {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .section-content {
+        animation: none;
+    }
+
+    /* Reveal the template/icon card hover overlay WITHOUT the Motion_System
+       entrance animation under Reduced_Motion (Req 14.4). Opacity/visibility
+       still toggle on hover via the rules above, but with no transition or
+       keyframe animation, so the overlay appears instantly. */
+    .card,
+    .card-name,
+    .thumb-img,
+    .btn-favorite,
+    .btn-icon,
+    .icon-card,
+    .icon-thumb img,
+    .icon-thumb svg,
+    .ic-btn,
+    .ic-btn-import-small,
+    .card-btn-del,
+    .card-btn-rename,
+    .card-btn-more,
+    .card-genprev {
+        transition: none !important;
+        animation: none !important;
+    }
+
+    .card.imported {
+        animation: none !important;
+    }
+}
+
+/* Grid fills all available vertical space in .section-content.
+   Card_Grid pattern (Component_System): repeat(auto-fill, minmax(...)) so the
+   column count derives from width — ≥1 and non-decreasing as width grows — with
+   no horizontal overflow across the Dock_Range (Req 14.2, 14.7). Gaps and padding
+   are drawn from the Spacing_Scale / grid tokens (Req 14.2). A denser templates-
+   scoped min-col lets two columns fit at the narrow end of the range while keeping
+   uniform card dimensions. */
+.grid-container {
+    --tpl-grid-min: 140px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--tpl-grid-min, 140px)), var(--grid-col-max, 1fr)));
+    grid-auto-rows: min-content;
+    gap: var(--grid-gap, 6px);
+    flex: 1 1 0;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-content: start;
+    padding: var(--space-3, 6px) var(--space-6, 14px) var(--space-3, 6px) var(--space-4, 8px);
+    min-width: 0;
+    /* Smooth padding/gap transition across breakpoints via Motion_System tokens.
+       (Requirement 3.4: reflow without visual glitches or element jumping) */
+    transition: padding var(--dur-slow, 0.2s) var(--ease-out), gap var(--dur-slow, 0.2s) var(--ease-out);
+}
+
+/* Styled scrollbar for templates grid — matches Design_Language */
+.grid-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.grid-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.grid-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(var(--primary-hover-rgb), 0.38), rgba(var(--primary-rgb), 0.24));
+    border-radius: var(--r-pill);
+}
+
+.grid-container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--accent-purple), var(--primary));
+}
+
+#icon-list-container.grid-container {
+    --tpl-grid-min: 60px;
+    gap: var(--grid-gap, 6px);
+}
+
+/* [REMOVED] .sub-section-tabs — zero DOM matches, no JS references */
+
+.sub-tab {
+    width: 26px;
+    height: 21px;
+    border: 1px solid var(--line-dim);
+    border-radius: var(--r-sm);
+    background: var(--void);
+    color: var(--tx-lo);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.1s, border-color 0.1s, color 0.1s, box-shadow 0.1s;
+    flex-shrink: 0;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.sub-tab svg {
+    width: 11px;
+    height: 11px;
+}
+
+.sub-tab:hover:not(.active) {
+    background: var(--lift);
+    color: var(--tx-mid);
+    border-color: var(--line-mid);
+}
+
+.sub-tab.active {
+    background: var(--p-tint);
+    border-color: var(--p-rule);
+    color: var(--p-300);
+    box-shadow: inset 0 -2px 0 var(--p-400), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARDS
+   ═══════════════════════════════════════════════════════════════ */
+.card {
+    position: relative;
+    width: 100%;
+    max-width: none;
+    aspect-ratio: 4 / 3;
+    box-sizing: border-box;
+    border-radius: var(--r-md);
+     background: var(--cs-surface-1);
+     border: 1px solid var(--cs-border-subtle);
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: none;
+    transition: background var(--dur-base, 0.18s) var(--ease-out), border-color var(--dur-base, 0.18s) var(--ease-out), box-shadow var(--dur-base, 0.18s) var(--ease-out), transform var(--dur-base, 0.16s) var(--ease-out);
+    contain: layout;
+}
+
+.card:hover {
+    border-color: var(--primary);
+    transform: none;
+    box-shadow: 0 0 0 1px var(--cs-accent);
+    z-index: 4;
+}
+
+.card:focus-visible {
+    outline: 2px solid var(--cs-accent);
+    outline-offset: -2px;
+    border-color: var(--cs-accent);
+}
+
+.card:active {
+    transform: none;
+}
+
+.card.imported {
+    animation: importFlash 0.5s ease;
+}
+
+@keyframes importFlash {
+    0% {
+        border-color: var(--t-400);
+        box-shadow: 0 0 0 1px var(--t-glow);
+    }
+
+    50% {
+        border-color: var(--t-400);
+        box-shadow: 0 0 14px var(--t-glow), 0 0 0 1px var(--t-glow);
+    }
+
+    100% {
+        border-color: var(--line-dim);
+        box-shadow: none;
+    }
+}
+
+.thumb-box {
+    position: absolute;
+    inset: 0;
+    bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+}
+
+#section-text .thumb-box {
+    background: transparent;
+}
+
+#section-effect .thumb-box {
+    background: transparent;
+}
+
+.thumb-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--dur-slow, 0.22s) var(--ease-out);
+    pointer-events: none;
+}
+
+
+.card:hover .thumb-img {
+    transform: none;
+}
+
+.card-name {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 6px;
+    background: var(--cs-canvas);
+    border-top: 1px solid var(--cs-border-subtle);
+    color: var(--cs-text-secondary);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color var(--dur-fast, 0.1s) var(--ease-out), background var(--dur-fast, 0.1s) var(--ease-out);
+    pointer-events: none;
+    z-index: 5;
+}
+
+.card:hover .card-name {
+    color: var(--cs-text-primary);
+    background: var(--cs-canvas);
+}
+
+/* [REMOVED] .card-strip — zero DOM matches, replaced by .btn-more + .btn-favorite approach */
+
+/* [REMOVED] .card-cat-chip, .card-cat-chip-empty — zero DOM matches, no JS references */
+
+/* [REMOVED] .card-strip-actions — zero DOM matches, no JS references */
+
+/* [REMOVED] .action-divider — zero DOM matches, no JS references */
+
+.btn-icon {
+    width: 16px;
+    height: 16px;
+    border: none;
+    border-radius: 3px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    opacity: 0.75;
+    flex-shrink: 0;
+    transition: opacity var(--dur-fast, 0.1s) var(--ease-out), background var(--dur-fast, 0.1s) var(--ease-out), transform var(--dur-fast, 0.1s) var(--ease-out);
+}
+
+.btn-icon svg {
+    flex-shrink: 0;
+}
+
+.btn-icon:hover {
+    /* !important: overrides inline opacity set via JS on .btn-icon elements */
+    opacity: 1 !important;
+    background: rgba(255, 255, 255, 0.08);
+    transform: scale(1.08);
+}
+
+.btn-icon:active {
+    transform: scale(0.92);
+}
+
+.btn-icon.card-act {
+    opacity: 0.8;
+    width: 16px;
+    pointer-events: all;
+}
+
+.card:hover .btn-icon.card-act:hover {
+    /* !important: overrides inline opacity set via JS */
+    opacity: 1 !important;
+}
+
+.btn-import {
+    opacity: 0.95;
+}
+
+.btn-import:hover {
+    background: var(--p-tint);
+}
+
+.btn-favorite {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 17px;
+    height: 17px;
+    border-radius: var(--r-sm);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(7, 8, 14, 0.82);
+    /* Performance: backdrop-filter acceptable — element is opacity:0 by default and
+       only rendered on individual card hover (fixed 17×17px size). (Req 13.3, 13.4) */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 25;
+    transition: opacity var(--dur-base, 0.14s) var(--ease-out), transform var(--dur-fast, 0.12s) var(--ease-out), background var(--dur-fast, 0.12s) var(--ease-out), border-color var(--dur-fast, 0.12s) var(--ease-out);
+}
+
+.card:hover .btn-favorite {
+    opacity: 0.85;
+    pointer-events: all;
+}
+
+
+.btn-favorite:hover {
+    /* !important: overrides inline opacity set via JS for show/hide transitions */
+    opacity: 1 !important;
+    transform: scale(1.15);
+    background: rgba(20, 15, 5, 0.9);
+    border-color: var(--gold-rule);
+}
+
+.card.is-fav .btn-favorite,
+.btn-favorite.active {
+    /* !important: overrides dynamic opacity:0 set in base state */
+    opacity: 1 !important;
+    pointer-events: all;
+    background: var(--gold-bg);
+    border-color: var(--gold-rule);
+    box-shadow: 0 0 0 1px rgba(255, 194, 75, 0.18), 0 2px 5px rgba(255, 194, 75, 0.18);
+}
+
+.btn-favorite.active svg,
+.card.is-fav .btn-favorite svg {
+    /* !important: overrides inline SVG fill/stroke attributes */
+    fill: var(--gold) !important;
+    stroke: var(--gold) !important;
+}
+
+.btn-favorite svg {
+    width: 9px;
+    height: 9px;
+    flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARD-HOVER-CONTROLS REALIZATION (base.css §2.4 — Req 14.11, 14.12, 21.2, 22.2, 22.4)
+   Template (.card) and icon (.icon-card) cards render their existing per-card
+   controls — favorite (.btn-favorite / .ic-star), rename/delete/more
+   (.card-btn-del / .card-btn-rename / .card-btn-more / .ic-btn), and the
+   template preview (.card-genprev) — as the hover-revealed control cluster:
+   they hold fixed in-card positions identical across every card of the grid,
+   are hidden + non-interactive at rest, and are revealed together on card
+   :hover (rules above / in the shared card-control block). This block completes
+   the cluster contract with NO JavaScript and WITHOUT touching a single existing
+   binding or class:
+     • :focus-within reveal so tabbing to a control shows the cluster (Req 22.2)
+     • instant reveal under Reduced_Motion (Req 22.4 — see the reduced-motion
+       block above, extended to the card-btn/genprev controls)
+   The persistent favorite badge is that same favorite control kept visible by
+   the existing .card.is-fav / .btn-favorite.active / .ic-star.ia-active class
+   while the card is not hovered (rules above, Req 14.12). No new wrapper, no new
+   class. Bulk-mode's display:none on these controls (rules below) still wins, so
+   focus-within cannot re-reveal a bulk-hidden control. */
+.card:focus-within .btn-favorite {
+    opacity: 0.85;
+    pointer-events: all;
+}
+
+.card:focus-within .card-btn-del,
+.card:focus-within .card-btn-rename,
+.card:focus-within .card-btn-more {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.card:focus-within .card-genprev {
+    opacity: 1;
+}
+
+.icon-card:focus-within .ic-btn {
+    opacity: 1;
+}
+
+/* [REMOVED] .card-actions — zero DOM matches, no JS references */
+
+/* ═══════════════════════════════════════════════════════════════
+   ICON GRID
+   ═══════════════════════════════════════════════════════════════ */
+/* [REMOVED] .icon-grid, .icon-grid.overlay-mode — zero DOM matches.
+   Grid containers use .grid-container class with dynamic .icon-mode/.overlay-mode */
+
+.icon-card {
+    /* Card_Grid tile surface (Req 4.9): opaque --surface-card base, --hairline
+       border, --elev-1 lift; two-arg var() degrades to a defined dark surface. */
+    background: var(--card-grad), var(--surface-card, #17122a);
+    border: 1px solid var(--hairline, rgba(167, 139, 250, 0.08));
+    border-radius: var(--r-xl);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: border-color 0.18s var(--ease-out), transform 0.16s var(--ease-out), box-shadow 0.18s var(--ease-out);
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    user-select: none;
+    box-shadow: var(--elev-1, 0 1px 2px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(40, 20, 90, 0.22)), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.icon-card:hover {
+    border-color: var(--t-400);
+    transform: translateY(-3px) scale(1.012);
+    box-shadow: 0 0 0 1px var(--t-400), 0 10px 30px var(--t-bg), var(--shadow-lg);
+}
+
+.icon-thumb {
+    flex: 0 0 75%;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    overflow: hidden;
+}
+
+.icon-thumb img,
+.icon-thumb svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform var(--dur-base, 0.18s) var(--ease-out);
+}
+
+.icon-card:hover .icon-thumb img,
+.icon-card:hover .icon-thumb svg {
+    transform: scale(1.07);
+}
+
+.icon-card-footer {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 0 4px;
+    flex: 0 0 25%;
+    min-height: 0;
+    background: rgba(0, 0, 0, 0.15);
+    border-top: 1px solid var(--line-sub);
+    min-width: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.icon-card:hover .icon-card-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    max-height: 100%;
+    background: rgba(9, 10, 18, 0.97);
+    border-top: 1px solid var(--p-rule);
+    z-index: 10;
+    box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.4);
+    padding: 4px;
+}
+
+.icon-name {
+    flex: 1;
+    font-size: var(--f-nano);
+    font-weight: 400;
+    color: var(--tx-mute);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.1s;
+}
+
+.icon-card:hover .icon-name {
+    color: var(--tx-hi);
+    white-space: normal;
+    word-break: break-all;
+    overflow: visible;
+    text-overflow: clip;
+}
+
+.ic-btn-import-small {
+    background: var(--p-bg);
+    border: 1px solid var(--p-tint);
+    color: var(--p-300);
+    width: 0;
+    height: 13px;
+    min-width: 0;
+    min-height: 13px;
+    border-radius: var(--r-xs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.15s, background 0.15s, border-color 0.15s, color 0.15s;
+    flex-shrink: 0;
+    padding: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.icon-card:hover .ic-btn-import-small {
+    width: 13px;
+    min-width: 13px;
+    opacity: 1;
+}
+
+.ic-btn-import-small:hover {
+    background: var(--p-tint);
+    border-color: var(--p-rule);
+    color: var(--tx-hi);
+}
+
+.ic-btn-import-small svg {
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+}
+
+.ic-btn {
+    position: absolute;
+    top: 5%;
+    background: rgba(6, 7, 14, 0.78);
+    /* Performance: backdrop-filter acceptable — element is opacity:0 by default and
+       only rendered on individual card hover (small fixed-size). (Req 13.3, 13.4) */
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid var(--line-dim);
+    border-radius: var(--r-xs);
+    width: 20%;
+    max-width: 20px;
+    min-width: 14px;
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity var(--dur-fast, 0.12s) var(--ease-out), background var(--dur-fast, 0.12s) var(--ease-out), border-color var(--dur-fast, 0.12s) var(--ease-out);
+    opacity: 0;
+    z-index: 10;
+    padding: 2%;
+}
+
+.icon-card:hover .ic-btn {
+    opacity: 1;
+}
+
+.ic-more {
+    left: 4%;
+}
+
+.ic-star {
+    right: 4%;
+}
+
+.ic-btn:hover {
+    background: var(--p-tint);
+    border-color: var(--p-rule);
+}
+
+.ic-btn:active {
+    background: var(--ui);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.ic-star.ia-active {
+    opacity: 1;
+    background: var(--gold-bg);
+    border-color: var(--gold-rule);
+}
+
+.ic-star.ia-active svg {
+    fill: var(--gold);
+    stroke: var(--gold);
+}
+
+.ic-btn svg {
+    width: 65%;
+    height: 65%;
+}
+
+.icon-more-popup {
+    display: none;
+    position: absolute;
+    background: rgba(9, 10, 18, 0.99);
+    border: 1px solid var(--p-rule);
+    border-radius: var(--r-lg);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65), 0 0 0 1px var(--p-bg);
+    z-index: 9999;
+    overflow: hidden;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    padding: 3px;
+}
+
+.icon-more-popup.open {
+    display: block;
+}
+
+.icon-more-item {
+    padding: 5px 9px;
+    font-size: var(--f-sm);
+    color: var(--tx-mid);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: var(--r-sm);
+    transition: background 0.09s, color 0.09s;
+    white-space: nowrap;
+    font-family: var(--font-sans);
+}
+
+.icon-more-item:hover {
+    background: var(--p-bg);
+    color: var(--tx-hi);
+}
+
+.icon-more-item.danger {
+    color: rgba(255, 42, 95, 0.75);
+}
+
+.icon-more-item.danger:hover {
+    background: var(--danger-bg);
+    color: var(--danger);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════════════════ */
+/* Footer sits at the bottom of the flex column naturally — no sticky needed.
+   Sticky inside a flex-column child with overflow:hidden caused dead vertical
+   gaps between .section-content and footer at some heights. */
+.footer-area {
+    padding: var(--space-3, 6px) var(--space-6, 14px) var(--space-4, 8px) var(--space-6, 14px);
+    flex: 0 0 auto;
+    z-index: 100;
+    background: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-top: none;
+    pointer-events: none;
+}
+
+.footer-area .btn-neon-outline {
+    pointer-events: auto;
+}
+
+.btn-neon-outline {
+    width: 100%;
+    height: 30px;
+    background: var(--p-tint);
+    backdrop-filter: blur(16px) saturate(1.2);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2);
+    color: var(--p-200);
+    border: 1.5px solid var(--p-rule);
+    border-radius: var(--r-md);
+    font-weight: 700;
+    font-size: var(--f-xxs);
+    letter-spacing: 0.5px;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: background 0.18s var(--ease-out), color 0.18s var(--ease-out), border-color 0.18s var(--ease-out), box-shadow 0.18s var(--ease-out), transform 0.12s var(--ease-out);
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    box-shadow: 0 2px 12px rgba(var(--primary-rgb), 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.btn-neon-outline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, 0.18) 50%, transparent 100%);
+    /* Use transform instead of left to avoid layout reflow during hover shimmer.
+       translateX(-200%) positions 60%-width element at equivalent of left:-120%.
+       (Requirement 13.1: avoid layout-triggering properties in transitions) */
+    transform: skewX(-22deg) translateX(-200%);
+    transition: transform 0.6s var(--ease-out);
+    pointer-events: none;
+}
+
+.btn-neon-outline:hover {
+    background: var(--cs-accent);
+    color: var(--cs-on-accent);
+    border-color: var(--primary);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 4px 18px rgba(var(--primary-rgb), 0.45), 0 0 0 1px var(--p-rule);
+    transform: translateY(-1px);
+}
+
+.btn-neon-outline:hover::before {
+    /* translateX(233%) positions 60%-width element at equivalent of left:140% */
+    transform: skewX(-22deg) translateX(233%);
+}
+
+.btn-neon-outline:active {
+    background: var(--p-700);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    transform: translateY(0) scale(0.98);
+}
+
+.btn-neon-outline:focus-visible {
+    outline: 2px solid var(--accent-purple);
+    outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MODALS
+   ═══════════════════════════════════════════════════════════════ */
+@keyframes modal-overlay-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modal-content-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, rgba(8, 11, 22, 0.55), rgba(0, 0, 0, 0.7));
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+}
+
+.modal-overlay.open {
+    display: flex;
+    animation: modal-overlay-in 0.18s var(--ease-out);
+}
+
+.modal-overlay.open .modal-content {
+    animation: modal-content-in 0.22s var(--ease-spring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .modal-overlay.open,
+    .modal-overlay.open .modal-content {
+        animation: none;
+    }
+}
+
+.modal-content {
+    background: rgba(9, 11, 19, 0.99);
+    border-radius: var(--r-xl);
+    width: 100%;
+    /* min() ensures modal never exceeds viewport minus overlay padding (8px × 2).
+       At 180px viewport: min(265px, 164px) = 164px — fits without overflow.
+       At 320px+: min(265px, 304px+) = 265px — stays at design maximum.
+       (Requirement 12.4: modal fits within available width at Breakpoint_Narrow) */
+    max-width: min(265px, calc(100vw - 16px));
+    border: 1px solid var(--line-mid);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(var(--primary-rgb), 0.10);
+    padding: clamp(8px, 2vw, 14px);
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    position: relative;
+    overflow: visible;
+    box-sizing: border-box;
+}
+
+.modal-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--p-400) 40%, var(--p-300) 50%, var(--p-400) 60%, transparent);
+    opacity: 0.4;
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+    pointer-events: none;
+}
+
+.modal-title {
+    font-size: var(--f-sm);
+    font-weight: 700;
+    color: var(--tx-hi);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line-dim);
+    text-align: center;
+    letter-spacing: -0.1px;
+}
+
+.modal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+    overflow: visible;
+}
+
+.modal-field label {
+    font-family: var(--font-mono);
+    font-size: var(--f-xxs);
+    font-weight: 500;
+    color: var(--p-300);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+.label-hint {
+    font-family: var(--font-sans);
+    font-size: var(--f-xxs);
+    color: var(--tx-lo);
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.modal-field input {
+    /* Recessed modal input (Req 4.9): opaque --surface-inset fill + inner
+       --hairline; two-arg var() degrades to a defined opaque dark surface. */
+    background: var(--surface-inset, #0b0912);
+    border: 1px solid var(--hairline, rgba(167, 139, 250, 0.08));
+    color: var(--tx-hi);
+    padding: 7px 10px;
+    border-radius: var(--r-md);
+    outline: none;
+    font-size: var(--f-ui);
+    width: 100%;
+    font-family: var(--font-sans);
+    transition: border-color 0.12s, background 0.12s, box-shadow 0.12s;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+.modal-field input:focus {
+    border-color: var(--p-rule);
+    background: var(--surface);
+    /* Solid 2px primary ring for a focus indicator ≥3:1 (Req 22.1). */
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35), 0 0 0 2px var(--primary);
+}
+
+.modal-field input::placeholder {
+    color: var(--tx-mute);
+}
+
+.save-type-picker {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(28px, 1fr));
+    gap: 2px;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.save-type-btn {
+    height: 26px;
+    border: 1px solid var(--line-dim);
+    background: var(--void);
+    color: var(--tx-lo);
+    border-radius: var(--r-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.1s var(--ease-out), border-color 0.1s var(--ease-out), color 0.1s var(--ease-out), box-shadow 0.1s var(--ease-out);
+    padding: 0;
+    width: 100%;
+    outline: none;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.35);
+}
+
+.save-type-btn svg {
+    width: 11px;
+    height: 11px;
+}
+
+.save-type-btn:hover:not(:disabled):not(.active) {
+    background: var(--p-bg);
+    border-color: var(--p-rule);
+    color: var(--tx-hi);
+}
+
+/* Disabled state for save-type buttons (JS sets .disabled when save capabilities don't match) */
+.save-type-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+    filter: grayscale(0.4);
+}
+
+.save-type-btn.active {
+    background: var(--p-tint);
+    border-color: var(--p-rule);
+    color: var(--p-300);
+    box-shadow: inset 0 -2px 0 var(--p-400), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.custom-select {
+    position: relative;
+    width: 100%;
+}
+
+.custom-select-trigger {
+    background: var(--void);
+    border: 1px solid var(--line-dim);
+    color: var(--tx-mid);
+    padding: 7px 10px;
+    border-radius: var(--r-md);
+    font-size: var(--f-ui);
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: border-color 0.12s, background 0.12s;
+    font-family: var(--font-sans);
+    user-select: none;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+.custom-select-trigger:hover,
+.custom-select.open .custom-select-trigger {
+    border-color: var(--p-rule);
+    background: var(--surface);
+}
+
+.custom-select-trigger svg {
+    transition: transform 0.15s;
+    flex-shrink: 0;
+}
+
+.custom-select.open .custom-select-trigger svg {
+    transform: rotate(180deg);
+}
+
+.custom-select-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: rgba(9, 11, 19, 0.99);
+    border: 1px solid var(--p-rule);
+    border-radius: var(--r-lg);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(var(--primary-rgb), 0.08);
+    z-index: 9999;
+    max-height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 3px;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-sizing: border-box;
+}
+
+.custom-select.open .custom-select-dropdown {
+    display: block;
+}
+
+.custom-select-option {
+    padding: 7px 9px;
+    font-size: var(--f-ui);
+    color: var(--tx-mid);
+    cursor: pointer;
+    border-radius: var(--r-sm);
+    transition: background 0.09s, color 0.09s;
+    font-family: var(--font-sans);
+}
+
+.custom-select-option:hover {
+    background: var(--p-bg);
+    color: var(--tx-hi);
+}
+
+.custom-select-option.active {
+    background: var(--p-tint);
+    color: var(--p-300);
+    font-weight: 600;
+}
+
+.save-path-info {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--p-bg);
+    border: 1px solid var(--line-sub);
+    border-radius: var(--r-sm);
+    padding: 5px 8px;
+    overflow: hidden;
+}
+
+.save-path-info span {
+    font-family: var(--font-sans);
+    font-size: var(--f-xxs);
+    color: var(--p-300);
+    opacity: 0.65;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 5px;
+    padding-top: 6px;
+    border-top: 1px solid var(--line-dim);
+    min-width: 0;
+}
+
+.modal-buttons button {
+    flex: 1;
+    padding: 8px;
+    border-radius: var(--r-md);
+    border: none;
+    cursor: pointer;
+    font-size: var(--f-ui);
+    font-weight: 600;
+    transition: background 0.12s, color 0.12s, border-color 0.12s, box-shadow 0.12s, filter 0.12s;
+    font-family: var(--font-sans);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#btn-cancel,
+#btn-rename-cancel,
+#btn-move-cancel {
+    background: var(--void);
+    color: var(--tx-mid);
+    border: 1px solid var(--line-dim);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+#btn-cancel:hover,
+#btn-rename-cancel:hover,
+#btn-move-cancel:hover {
+    background: var(--lift);
+    color: var(--tx-hi);
+    border-color: var(--line-mid);
+}
+
+#btn-confirm-save,
+#btn-rename-confirm,
+#btn-move-confirm {
+    background: linear-gradient(135deg, var(--p-500), var(--p-700));
+    color: #fff;
+    flex: 2;
+    box-shadow: 0 3px 12px rgba(var(--primary-rgb), 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+#btn-confirm-save:hover,
+#btn-rename-confirm:hover,
+#btn-move-confirm:hover {
+    box-shadow: 0 5px 18px rgba(var(--primary-rgb), 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    filter: brightness(1.08);
+}
+
+#btn-confirm-save:active,
+#btn-rename-confirm:active,
+#btn-move-confirm:active {
+    filter: brightness(0.92);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#btn-confirm-save:disabled {
+    background: var(--ui);
+    box-shadow: none;
+    cursor: not-allowed;
+    pointer-events: none;
+    filter: none;
+    color: var(--tx-lo);
+}
+
+/* Disabled state for all modal confirm buttons (JS disables during async operations) */
+#btn-tk-save-preset-confirm:disabled,
+#btn-ta-save-confirm:disabled {
+    background: var(--ui);
+    box-shadow: none;
+    cursor: not-allowed;
+    pointer-events: none;
+    filter: none;
+    color: var(--tx-lo);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════════════════════════════ */
+.toast {
+    position: fixed;
+    bottom: 34px;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: linear-gradient(180deg, rgba(18, 22, 34, 0.97), rgba(10, 11, 15, 0.98));
+    border: 1px solid var(--p-rule);
+    color: var(--tx-hi);
+    padding: 8px 16px;
+    border-radius: var(--r-lg);
+    font-size: var(--f-xs);
+    font-weight: 500;
+    font-family: var(--font-sans);
+    z-index: 99999;
+    opacity: 0;
+    transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-spring);
+    pointer-events: none;
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-word;
+    max-width: 85%;
+    box-sizing: border-box;
+    text-align: center;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-lg), var(--glow-violet-soft), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.toast::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary-hover) 50%, transparent);
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .toast {
+        transition: opacity 0.12s linear;
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   CARD SIZE VARIANTS (controlled by body class from Settings)
+   Small = current/default sizes. Medium/Large scale up.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── TEMPLATE CARDS (Comp/Layer/Text/Footage/Effect) ───────────── */
+/* Synchronize Image section grid sizes with Toolkit Text Type via body.ta-cards-* */
+body.ta-cards-medium #icon-list-container.grid-container {
+    --tpl-grid-min: 80px;
+}
+
+body.ta-cards-large #icon-list-container.grid-container {
+    --tpl-grid-min: 100px;
+}
+
+body.template-cards-medium .grid-container:not(#icon-list-container) {
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+}
+
+body.template-cards-medium .card {
+    max-width: 240px;
+}
+
+body.template-cards-medium .card-name {
+    height: 22px;
+    font-size: var(--f-xxs);
+}
+
+body.template-cards-medium .thumb-box {
+    bottom: 22px;
+}
+
+body.template-cards-large .grid-container:not(#icon-list-container) {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
+
+body.template-cards-large .card {
+    max-width: 300px;
+}
+
+body.template-cards-large .card-name {
+    height: 26px;
+    font-size: var(--f-xs);
+}
+
+body.template-cards-large .thumb-box {
+    bottom: 26px;
+}
+
+/* ── ICON CARDS ────────────────────────────────────────────────── */
+/* body.X compound selectors have higher specificity (0-1-2-1) than
+   base #icon-list-container.grid-container (0-1-1-0) and .icon-card (0-0-1-0) —
+   no !important needed */
+
+/* ═══════════════════════════════════════════════════════════════
+   CARD PATTERN CONFORMANCE (base.css .cs-card — Req 6.6, 6.7, 8.4)
+   Template and icon cards (.card / .icon-card) are instances of the frozen
+   Card pattern: the in-flow stack reads container → thumbnail(icon-slot) →
+   title(.card-name), while the favorite (.btn-favorite) and more/action
+   controls are the module-owned absolutely-positioned badge/action overlays.
+   The card markup is JS-rendered, so the pattern is enforced here in CSS
+   rather than by adding a class. Freeze the optional badge slot to a zero
+   layout box when absent so a card with no badge leaves no empty container
+   (Req 8.4). Additive and behavior-neutral — only a truly empty badge
+   collapses. */
+.card .btn-favorite:empty,
+.icon-card .btn-favorite:empty {
+    display: none;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   EMPTY-STATE PATTERN CONFORMANCE (base.css .cs-empty-state — Req 7.5, 7.6, 14.8)
+   The per-category / no-results empty state (JS-rendered in templates.js) now
+   adopts the shared .cs-empty-state pattern with the ordered slot set
+   icon-slot → title → text, rendered inside the grid region (spans all
+   columns via base.css). These rules restore the module's prior appearance
+   (muted title, soft-blue supporting text) on the slot elements. Two-arg
+   var(--token, fallback) form (Req 4.8); CEP/Chromium 88 safe. */
+.tpl-empty-state .cs-empty-state__icon {
+    color: var(--tx-lo, rgba(255, 255, 255, 0.25));
+    opacity: 0.7;
+    margin-bottom: var(--space-1, 2px);
+}
+
+.tpl-empty-state .cs-empty-state__icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.tpl-empty-state .cs-empty-state__title {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.25);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.tpl-empty-state .cs-empty-state__text {
+    margin: 0;
+    color: rgba(79, 140, 255, 0.35);
+    font-size: 9px;
+}
+
+/* ── Virtualized grid spacers (Problem 4 windowed rendering) ─────────
+   Full-row height keepers: they reserve the scroll height of unmounted
+   rows while cards stay direct grid children, so the auto-fill column
+   template is untouched. */
+.grid-container .vg-spacer {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: none;
+    pointer-events: none;
+}

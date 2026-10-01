@@ -1,0 +1,10 @@
+Developer note — DO NOT ship this .txt file in production builds.
+
+Place a static ffmpeg.exe in this folder (filename: ffmpeg.exe).
+Recommended build: https://www.gyan.dev/ffmpeg/builds/ ("release essentials" zip; only ffmpeg.exe is needed; ~80 MB unpacked).
+
+The extension auto-detects ffmpeg in this order:
+  1. System PATH
+  2. ./bin/ffmpeg.exe (this folder)
+
+End users never see this file or any setup instructions. Delete this .txt before zipping the extension for distribution.

@@ -1,0 +1,985 @@
+/* ═══════════════════════════════════════════════════════════════
+   SETTINGS PANEL — Refined Minimal / Industrial-Utility Design
+   Clean flat sections, no heavy borders, tight spacing.
+   Designed for CEP panel constraints (~280-400px width).
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── MODULE CONTAINER ───────────────────────────────────────────── */
+/* !important: settings.css loads after all other CSS via HTML; these overrides
+   hide/reposition header elements that are styled in header.css */
+#btn-browse {
+    display: none !important;
+}
+
+/* Hide refresh button from category bar (removed per design) */
+#btn-refresh-templates {
+    display: none !important;
+}
+
+/* Hide search toggle button — search is always visible now */
+#btn-search-toggle {
+    display: none !important;
+}
+
+/* Gear icon is now in flex flow within .hdr-status */
+#btn-settings-gear {
+    margin: 0;
+}
+
+/* Make header-inner position relative for absolute gear positioning */
+.header-inner {
+    /* !important: overrides header.css which sets no positioning context */
+    position: relative !important;
+}
+
+/* Search row: always expanded, fills space.
+   settings.css loads last — wins by cascade order over header.css .search-row. */
+.search-row {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    padding-right: 28px;
+}
+
+/* Search input: always visible and fills available width.
+   .search-row compound selector matches header.css .search-row.expanded #search-box
+   specificity (0-1-1-0), and wins by cascade order (settings.css loads last). */
+.search-row #search-box {
+    width: auto;
+    flex: 1;
+    min-width: 40px;
+    opacity: 1;
+    pointer-events: auto;
+    padding: 0 7px;
+    /* Inner hairline on the recessed inset surface (Req 4.9). */
+    border: 1px solid var(--hairline, rgba(167, 139, 250, 0.08));
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+/* Hide the brand-by count badge in header */
+.brand-by {
+    /* !important: overrides header.css display for brand badge */
+    display: none !important;
+}
+
+#settings-module {
+    flex: 1 1 auto;
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* Module shell backdrop (Req 4.9): opaque --surface-panel; two-arg var()
+       degrades to a defined opaque dark surface. */
+    background: var(--surface-panel, #0f0c1a);
+}
+
+/* ── HEADER ─────────────────────────────────────────────────────── */
+.settings-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    flex: 0 0 auto;
+    border-bottom: 1px solid var(--hairline-strong);
+}
+
+.settings-back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: var(--r-xs);
+    background: transparent;
+    color: var(--ink-subtle);
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s;
+    padding: 0;
+}
+
+.settings-back-btn:hover {
+    background: var(--surface-2);
+    color: var(--ink);
+}
+
+.settings-back-btn svg {
+    width: 12px;
+    height: 12px;
+}
+
+.settings-title {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0;
+}
+
+/* ── SCROLLABLE BODY ────────────────────────────────────────────── */
+.settings-scroll {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: var(--section-pad, 8px) var(--space-4, 8px);
+    min-height: 0;
+}
+
+.settings-scroll::-webkit-scrollbar {
+    width: 3px;
+}
+
+.settings-scroll::-webkit-scrollbar-thumb {
+    background: var(--p-tint);
+    border-radius: var(--r-md);
+}
+
+.settings-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* ── ACCORDION SECTIONS ─────────────────────────────────────────── */
+/* Container for the sectioned accordions: each .settings-section is now a
+   self-contained accordion card (.cs-accordion in base.css), separated by the
+   Spacing_Scale. Inter-section spacing (--section-gap) ≥ intra-section spacing
+   (--density-gap) per the Component_System (Req 7.1, 16.1). */
+.settings-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Sectioned accordion card. Layered over base.css .cs-accordion so the
+   Component_System border/radius/overflow apply; settings.css adds surface. */
+.settings-section {
+    flex-shrink: 0;
+    background: var(--surface-1);
+}
+
+/* Section Header — label slot (icon + title) and chevron slot.
+   Layered over base.css .cs-accordion__header for shared structure. */
+.settings-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    min-height: 34px;
+    text-align: left;
+    font: inherit;
+    user-select: none;
+    transition: background var(--dur-fast, 0.12s) var(--ease-out, ease);
+}
+
+.settings-section-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2, 4px);
+    flex: 1;
+    min-width: 0;
+}
+
+.settings-section-icon {
+    display: flex;
+    align-items: center;
+    width: 18px;
+    height: 18px;
+    color: var(--primary);
+    opacity: 1;
+    flex-shrink: 0;
+}
+
+.settings-section-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.settings-section-title {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    flex: 1;
+    min-width: 0;
+    letter-spacing: 0;
+    overflow-wrap: anywhere;
+}
+
+.settings-section.expanded .settings-section-title {
+    color: var(--ink);
+}
+
+.settings-section-chevron {
+    display: flex;
+    width: 12px;
+    height: 12px;
+    color: var(--ink-tertiary);
+    flex-shrink: 0;
+}
+
+.settings-section-chevron svg {
+    width: 8px;
+    height: 8px;
+}
+
+.settings-section.expanded .settings-section-chevron {
+    color: var(--primary);
+}
+
+/* Section Body — collapsed = non-interactive (no focus, no pointer);
+   expanded = interactive. display:none removes collapsed controls from the
+   focus/pointer flow entirely (Req 16.4, 16.5). */
+.settings-section:not(.expanded)>.settings-section-body {
+    display: none;
+}
+
+.settings-section.expanded>.settings-section-body {
+    display: block;
+    padding: 0;
+    /* Recessed accordion body (Req 4.9): opaque --surface-inset fill separated
+       from the header by an inner --hairline; two-arg var() degrades to a
+       defined opaque dark surface. */
+    background: var(--surface-inset, #0b0912);
+    border-top: 1px solid var(--hairline, rgba(167, 139, 250, 0.08));
+}
+
+.settings-section-content {
+    padding: 4px 8px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1, 2px);
+}
+
+/* ── SETTING ROWS ───────────────────────────────────────────────── */
+.settings-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4, 8px);
+    padding: var(--space-3, 6px) 0;
+    min-height: var(--control-h, 24px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.settings-row:last-child {
+    border-bottom: none;
+}
+
+.settings-row-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1, 2px);
+    flex: 1 1 100px;
+    min-width: 0;
+}
+
+.settings-row-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--ink-muted);
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.settings-row-desc {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    color: var(--ink-tertiary);
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+/* ── TOGGLE SWITCH (compact) ──────────────────────────────────────
+   Toggle-switch control pattern conformance (base.css .cs-switch — Req 6.6,
+   6.7): the boolean toggle rendered by settings-panel.js is an instance of the
+   frozen pattern track → thumb. The pattern classes (.cs-switch,
+   .cs-switch__track, .cs-switch__thumb) are added in the JS template alongside
+   the .settings-toggle* classes below; those module classes (which load after
+   base.css) keep every appearance detail, and the input's data-key +
+   checked-state selectors are unchanged, so behavior is identical. */
+.settings-toggle {
+    position: relative;
+    display: inline-flex;
+    width: 32px;
+    height: 20px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.settings-toggle input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.settings-toggle-track {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.settings-toggle-thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 14px;
+    height: 14px;
+    background: var(--ink-subtle);
+    border-radius: 50%;
+    transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1), background 0.15s;
+}
+
+.settings-toggle input:checked~.settings-toggle-track {
+    background: var(--primary);
+    border-color: var(--primary-hover);
+}
+
+.settings-toggle input:checked~.settings-toggle-thumb {
+    transform: translateX(12px);
+    background: #fff;
+}
+
+.settings-toggle input:focus-visible~.settings-toggle-track {
+    outline: 2px solid var(--cs-accent);
+    outline-offset: 2px;
+}
+
+/* ── DROPDOWN (compact) ─────────────────────────────────────────── */
+.settings-select {
+    position: relative;
+    display: inline-flex;
+    min-width: 64px;
+    max-width: 130px;
+    height: 30px;
+    flex-shrink: 0;
+}
+
+.settings-select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    padding: 0 5px;
+    background: var(--surface-1);
+    border: 1px solid var(--hairline-strong);
+    border-radius: 4px;
+    color: var(--ink-muted);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    gap: 3px;
+    transition: border-color 0.12s;
+}
+
+.settings-select-trigger:hover {
+    border-color: var(--primary);
+    color: var(--ink);
+}
+
+.settings-select-value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+}
+
+.settings-select-arrow {
+    display: flex;
+    width: 8px;
+    height: 8px;
+    color: var(--ink-tertiary);
+    transition: transform 0.15s;
+}
+
+.settings-select-arrow svg {
+    width: 7px;
+    height: 7px;
+}
+
+.settings-select.open .settings-select-arrow {
+    transform: rotate(180deg);
+}
+
+.settings-select-options {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    right: 0;
+    z-index: 500;
+    background: var(--cs-surface-1);
+    border: 1px solid var(--hairline-tertiary);
+    border-radius: 4px;
+    padding: 2px;
+    box-shadow: var(--shadow-md);
+    display: none;
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.settings-select.open .settings-select-options {
+    display: block;
+}
+
+.settings-select-option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: 0;
+    background: transparent;
+    padding: 6px;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    overflow-wrap: anywhere;
+    font-weight: 500;
+    color: var(--ink-muted);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.1s;
+}
+
+.settings-select-option:hover {
+    background: var(--surface-3);
+    color: var(--ink);
+}
+
+.settings-select-option.active {
+    background: var(--p-bg);
+    color: var(--primary-bright);
+}
+
+/* ── SLIDER (full-width, stacked below label) ──────────────────── */
+.settings-slider {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    max-width: 100%;
+}
+
+.settings-slider input[type="range"] {
+    -webkit-appearance: none;
+    flex: 1;
+    height: 3px;
+    background: var(--surface-3);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    min-width: 0;
+}
+
+.settings-slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    background: var(--primary);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 4px var(--p-rule);
+}
+
+.settings-slider input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+}
+
+/* Visible keyboard-focus indicator on the slider thumb ≥3:1 (Req 22.1);
+   the slider suppresses the default outline, so supply a solid primary ring. */
+.settings-slider input[type="range"]:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 2px var(--primary), 0 0 4px var(--p-rule);
+}
+
+.settings-slider-value {
+    font-family: var(--font-mono);
+    font-size: var(--f-micro);
+    font-weight: 600;
+    color: var(--ink-muted);
+    min-width: 32px;
+    text-align: right;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Slider rows stack vertically: label top, slider bottom full-width */
+.settings-row[data-key*="Debounce"],
+.settings-row[data-key*="Duration"],
+.settings-row[data-key*="duration"],
+.settings-row[data-key*="debounce"],
+.settings-row[data-key*="Interval"],
+.settings-row[data-key*="interval"],
+.settings-row[data-key*="Step"],
+.settings-row[data-key*="step"] {
+    flex-wrap: wrap;
+}
+
+.settings-row[data-key*="Debounce"] .settings-slider,
+.settings-row[data-key*="Duration"] .settings-slider,
+.settings-row[data-key*="duration"] .settings-slider,
+.settings-row[data-key*="debounce"] .settings-slider,
+.settings-row[data-key*="Interval"] .settings-slider,
+.settings-row[data-key*="interval"] .settings-slider,
+.settings-row[data-key*="Step"] .settings-slider,
+.settings-row[data-key*="step"] .settings-slider {
+    flex-basis: 100%;
+    margin-top: 3px;
+}
+
+/* ── TEXT INPUT ─────────────────────────────────────────────────── */
+.settings-input {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    flex-shrink: 0;
+    max-width: 130px;
+    width: 100%;
+    min-width: 0;
+}
+
+.settings-input input[type="text"] {
+    flex: 1;
+    height: 30px;
+    padding: 0 6px;
+    background: var(--surface-1);
+    border: 1px solid var(--hairline-strong);
+    border-radius: 4px;
+    color: var(--ink-muted);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    outline: none;
+    transition: border-color 0.12s;
+    min-width: 0;
+}
+
+.settings-input input[type="text"]:focus {
+    border-color: var(--primary);
+    color: var(--ink);
+}
+
+.settings-input input[type="text"]::placeholder {
+    color: var(--ink-tertiary);
+}
+
+.settings-input-browse {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--hairline-strong);
+    border-radius: 3px;
+    background: transparent;
+    color: var(--ink-subtle);
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.12s, border-color 0.12s;
+}
+
+.settings-input-browse:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.settings-input-browse svg {
+    width: 10px;
+    height: 10px;
+}
+
+/* ── ACTION BUTTONS ─────────────────────────────────────────────── */
+.settings-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    height: 24px;
+    padding: 0 10px;
+    border: 1px solid var(--hairline-strong);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--ink-muted);
+    font-family: var(--font-sans);
+    font-size: var(--f-nano);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s, color 0.12s;
+    white-space: nowrap;
+}
+
+.settings-action-btn:hover {
+    background: var(--surface-2);
+    border-color: var(--primary);
+    color: var(--ink);
+}
+
+.settings-action-btn:active {
+    transform: scale(0.97);
+}
+
+.settings-action-btn svg {
+    width: 10px;
+    height: 10px;
+}
+
+.settings-action-btn--danger {
+    border-color: var(--danger-rule);
+    color: var(--danger);
+}
+
+.settings-action-btn--danger:hover {
+    background: var(--danger-bg);
+    border-color: var(--danger);
+    color: #fff;
+}
+
+.settings-actions-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2, 5px);
+    padding-top: var(--space-2, 4px);
+}
+
+/* ── RESET BUTTON ───────────────────────────────────────────────── */
+.settings-reset-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    height: 18px;
+    padding: 0 6px;
+    border: none;
+    border-radius: 3px;
+    background: transparent;
+    color: var(--ink-tertiary);
+    font-family: var(--font-sans);
+    font-size: 7px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.12s, background 0.12s;
+    margin-top: 6px;
+    align-self: flex-start;
+}
+
+.settings-reset-btn:hover {
+    background: var(--danger-bg);
+    color: var(--danger);
+}
+
+.settings-reset-btn svg {
+    width: 8px;
+    height: 8px;
+}
+
+/* ── LINKS (About) ──────────────────────────────────────────────── */
+.settings-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--primary-hover);
+    font-family: var(--font-sans);
+    font-size: var(--f-nano);
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 2px 0;
+    transition: color 0.12s;
+}
+
+.settings-link:hover {
+    color: var(--primary-bright);
+}
+
+.settings-link svg {
+    width: 8px;
+    height: 8px;
+}
+
+.settings-about-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2, 5px);
+    padding: var(--space-2, 4px) 0;
+}
+
+.settings-about-version {
+    font-family: var(--font-mono);
+    font-size: var(--f-nano);
+    font-weight: 600;
+    color: var(--ink-subtle);
+}
+
+.settings-about-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1, 3px);
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────────────────── */
+@media (max-width: 220px) {
+    .settings-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .settings-slider,
+    .settings-select,
+    .settings-input {
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
+/* ── ACCENT COLOR CONTROL ───────────────────────────────────────────
+   Preset swatches + custom color picker. Layout/spacing comes from the
+   Spacing_Scale tokens (two-arg var form). The active ring uses neutral
+   tokens (canvas + ink) so it reads clearly on ANY swatch hue, and never
+   depends on the accent it is selecting. Swatch FILLS are literal color
+   choices set inline by the renderer (like the ColorFlow swatches), not
+   tokens — that is the value being chosen, not themed chrome. */
+.settings-row--accent {
+    flex-wrap: wrap;
+}
+
+.settings-accent {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: var(--space-2, 4px);
+}
+
+.settings-accent-swatches {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3, 6px);
+}
+
+.settings-accent-swatch {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 1px solid var(--hairline-strong, rgba(130, 168, 255, 0.15));
+    border-radius: var(--r-pill, 9999px);
+    cursor: pointer;
+    position: relative;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    transition: transform var(--dur-fast, 0.12s) var(--ease-out, ease),
+        box-shadow var(--dur-fast, 0.12s) var(--ease-out, ease);
+}
+
+.settings-accent-swatch:hover {
+    transform: scale(1.12);
+}
+
+.settings-accent-swatch:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* Active ring — a gap ring drawn from neutral tokens (canvas gap + ink ring)
+   so the selected state is visible regardless of the swatch color. */
+.settings-accent-swatch.active {
+    box-shadow: 0 0 0 2px var(--canvas, #0a0b0f), 0 0 0 3px var(--tx-hi, #f3f5fb);
+}
+
+/* Custom swatch — rainbow conic gradient (supported in Chromium 88) signals a
+   free color choice; clicking it opens the custom picker popover (below). */
+.settings-accent-swatch--custom {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: conic-gradient(#f43f5e, #f59e0b, #22c55e, #14b8a6, #4f8cff, #9b7bff, #f43f5e);
+}
+
+@media (max-width: 220px) {
+    .settings-accent {
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
+/* ── CUSTOM ACCENT PICKER POPOVER ───────────────────────────────────
+   Adobe/Figma-style floating picker. Premium dark glass surface built from
+   design tokens; appears anchored below the Custom swatch (fixed position +
+   JS viewport collision). Animated with transform + opacity only. The black/
+   white SV overlays and the hue spectrum are intrinsic HSV-picker mechanics,
+   not themeable colors. */
+.accent-pop {
+    position: fixed;
+    z-index: 99999;
+    width: 232px;
+    max-width: calc(100vw - 16px);
+    max-height: calc(100vh - 16px);
+    overflow-y: auto;
+    padding: var(--space-4, 8px);
+    background-color: var(--canvas, #0a0b0f);
+    background-image: linear-gradient(var(--surface-2, rgba(128, 165, 255, 0.075)), var(--surface-2, rgba(128, 165, 255, 0.075)));
+    border: 1px solid var(--hairline-strong, rgba(130, 168, 255, 0.15));
+    border-radius: var(--r-lg, 12px);
+    box-shadow: var(--shadow-lg, 0 14px 38px rgba(0, 0, 0, 0.6));
+    backdrop-filter: blur(18px) saturate(1.25);
+    -webkit-backdrop-filter: blur(18px) saturate(1.25);
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+    transform-origin: top left;
+    transition:
+        opacity var(--dur-base, 0.18s) var(--ease-out, ease),
+        transform var(--dur-base, 0.18s) var(--ease-out, ease);
+}
+
+.accent-pop.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.accent-pop-sv {
+    position: relative;
+    width: 100%;
+    height: 118px;
+    border-radius: var(--r-md, 8px);
+    border: 1px solid var(--hairline, rgba(130, 168, 255, 0.08));
+    cursor: crosshair;
+    overflow: hidden;
+    margin-bottom: var(--space-3, 6px);
+    background-image:
+        linear-gradient(to top, #000, transparent),
+        linear-gradient(to right, #fff, transparent);
+}
+
+.accent-pop-sv-handle,
+.accent-pop-hue-handle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: var(--r-pill, 9999px);
+    border: 2px solid #fff;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.accent-pop-hue {
+    position: relative;
+    width: 100%;
+    height: 12px;
+    border-radius: var(--r-pill, 9999px);
+    border: 1px solid var(--hairline, rgba(130, 168, 255, 0.08));
+    cursor: pointer;
+    margin-bottom: var(--space-4, 8px);
+    background: linear-gradient(to right,
+            #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+}
+
+.accent-pop-hue-handle {
+    top: 50%;
+}
+
+.accent-pop-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3, 6px);
+    margin-bottom: var(--space-4, 8px);
+}
+
+.accent-pop-preview {
+    width: 28px;
+    height: 28px;
+    flex: 0 0 auto;
+    border-radius: var(--r-md, 8px);
+    border: 1px solid var(--hairline-strong, rgba(130, 168, 255, 0.15));
+}
+
+.accent-pop-hex {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    height: var(--control-h, 26px);
+    padding: 0 var(--space-3, 6px);
+    background: var(--canvas, #0a0b0f);
+    border: 1px solid var(--hairline-strong, rgba(130, 168, 255, 0.15));
+    border-radius: var(--r-sm, 6px);
+}
+
+.accent-pop-hex:focus-within {
+    border-color: var(--primary, #4f8cff);
+}
+
+.accent-pop-hex-hash {
+    color: var(--tx-lo, rgba(243, 245, 251, 0.44));
+    font-family: var(--font-mono, monospace);
+    font-size: var(--f-sm, 12px);
+}
+
+.accent-pop-hex-input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--tx-hi, #f3f5fb);
+    font-family: var(--font-mono, monospace);
+    font-size: var(--f-sm, 12px);
+    text-transform: uppercase;
+    padding: 0 0 0 2px;
+}
+
+.accent-pop-btns {
+    display: flex;
+    gap: var(--space-2, 4px);
+}
+
+.accent-pop-btn {
+    flex: 1;
+    height: var(--control-h, 26px);
+    border-radius: var(--r-sm, 6px);
+    border: 1px solid var(--hairline-strong, rgba(130, 168, 255, 0.15));
+    font-family: var(--font-sans, sans-serif);
+    font-size: var(--f-sm, 12px);
+    cursor: pointer;
+    transition:
+        background var(--dur-base, 0.18s) var(--ease-out, ease),
+        border-color var(--dur-base, 0.18s) var(--ease-out, ease),
+        color var(--dur-base, 0.18s) var(--ease-out, ease),
+        transform var(--dur-fast, 0.12s) var(--ease-out, ease);
+}
+
+.accent-pop-btn:active {
+    transform: scale(0.96);
+}
+
+.accent-pop-btn:focus-visible {
+    outline: 2px solid var(--primary, #4f8cff);
+    outline-offset: 1px;
+}
+
+.accent-pop-btn--ghost {
+    background: var(--surface-1, rgba(124, 162, 255, 0.045));
+    color: var(--tx-mid, rgba(243, 245, 251, 0.70));
+}
+
+.accent-pop-btn--ghost:hover {
+    background: var(--surface-3, rgba(132, 170, 255, 0.115));
+    color: var(--tx-hi, #f3f5fb);
+    border-color: var(--hairline-tertiary, rgba(130, 168, 255, 0.22));
+}
+
+.accent-pop-btn--primary {
+    background: var(--primary, #4f8cff);
+    border-color: var(--primary, #4f8cff);
+    color: var(--cs-on-accent);
+}
+
+.accent-pop-btn--primary:hover {
+    background: var(--primary-hover, #6ba3ff);
+    border-color: var(--primary-hover, #6ba3ff);
+}

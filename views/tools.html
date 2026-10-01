@@ -1,0 +1,489 @@
+                <div class="tk-view active" id="toolkit-tools-view">
+                    <div class="cs-wb-tabs" role="tablist" aria-label="Workbench">
+                        <button type="button" role="tab" id="cs-wb-tab-layout" data-wb-tab="layout" aria-controls="cs-wb-panel-layout" aria-selected="true">Layout &amp; Rig</button>
+                        <button type="button" role="tab" id="cs-wb-tab-velocity" data-wb-tab="velocity" aria-controls="cs-wb-panel-velocity" aria-selected="false" tabindex="-1">Velocity</button>
+                        <button type="button" role="tab" id="cs-wb-tab-text" data-wb-tab="text" aria-controls="cs-wb-panel-text" aria-selected="false" tabindex="-1">Text</button>
+                        <button type="button" role="tab" id="cs-wb-tab-guides" data-wb-tab="guides" aria-controls="cs-wb-panel-guides" aria-selected="false" tabindex="-1">Guides</button>
+                    </div>
+                    <section class="cs-wb-panel" id="cs-wb-panel-layout" role="tabpanel" aria-labelledby="cs-wb-tab-layout">
+                    <h2 class="cs-wb-heading">Transform &amp; compose</h2>
+                    <div class="cs-wb-seg" role="radiogroup" aria-label="Alignment scope" data-wb-group="align-scope">
+                        <button type="button" role="radio" aria-checked="true" data-value="comp">Comp</button>
+                        <button type="button" role="radio" aria-checked="false" data-value="selection" tabindex="-1">Selection</button>
+                    </div>
+
+                    <!-- REGION: Transform workbench -->
+                    <!-- UNIFIED WORKBENCH: Anchor Grid (left) + Create/Align (right) -->
+                    <div class="tk-workbench-strip">
+                        <div class="tk-anchor-widget">
+                            <button class="tk-ap-btn" data-toolkit-action="anchor" data-mode="top_left"
+                                title="Top Left"><svg width="16" height="16" viewBox="0 0 18 18" fill="none">
+                                    <rect x="1" y="1" width="16" height="16" rx="2" stroke="currentColor"
+                                        stroke-width="0.8" opacity="0.2" />
+                                    <rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor" opacity="0.9" />
+                                </svg></button>
+                            <button class="tk-ap-btn" data-toolkit-action="anchor" data-mode="top" title="Top"><svg
+                                    width="16" height="16" viewBox="0 0 18 18" fill="none">
+                                    <rect x="1" y="1" width="16" height="16" rx="2" stroke="currentColor"
+                                        stroke-width="0.8" opacity="0.2" />
+                                    <rect x="6.5" y="2" width="5" height="5" rx="1" fill="currentColor" opacity="0.9" />
+                                </svg></button>
+                            <button class="tk-ap-btn" data-toolkit-action="anchor" data-mode="top_right"
+                                title="Top Right"><svg width="16" height="16" viewBox="0 0 18 18" fill="none">
+                                    <rect x="1" y="1" width="16" height="16" rx="2" stroke="currentColor"
+                                        stroke-width="0.8" opacity="0.2" />
+                                    <rect x="11" y="2" width="5" height="5" rx="1" fill="currentColor" opacity="0.9" />
+                                </svg></button>
+                            <button class="tk-ap-btn" data-toolkit-action="anchor" data-mode="left" title="Left"><svg
+                                    width="16" height="16" viewBox="0 0 18 18" fill="none">
+                                    <rect x="1" y="1" width="16" height="16" rx="2" stroke="currentColor"
+                                        stroke-width="0.8" opacity="0.2" />
+                                    <rect x="2" y="6.5" width="5" height="5" rx="1" fill="currentColor" opacity="0.9" />
+                                </svg></button>
+                            <button class="tk-ap-btn tk-ap-center" data-toolkit-action="anchor" data-mode="center"
+                                title="Center"><svg width="16" height="16" viewBox="0 0 18 18" fill="none">
+                                    <rect x="1" y="1" width="16" height="16" rx="2" stroke="currentColor"
+                                        stroke-width="0.8" opacity="0.3" />
+                                    <line x1="9" y1="1" x2="9" y2="17" stroke="currentColor" stroke-width="0.5"
+                                        opacity="0.2" />
+                                    <line x1="1" y1="9" x2="17" y2="9" stroke="currentColor" stroke-width="0.5"
+                                        opacity="0.2" />
+                                    <circle cx="9" cy="9" r="3" fill="currentColor" opacity="0.9" />
+                                    <circle cx="9" cy="9" r="1.2" fill="var(--tk-bg-deep)" />
+                                </svg></button>
+                            <button class="tk-ap-btn" data-toolkit-action="anchor" data-mode="right" title="Right"><svg
+                                    width="16" height="16" viewBox="0 0 18 18" fill="none">
+                                    <rect x="1" y="1" width="16" height="16" rx="2" stroke="currentColor"
+                                        stroke-width="0.8" opacity="0.2" />
+                                    <rect x="11" y="6.5" width="5" height="5" rx="1" fill="currentColor"
+                                        opacity="0.9" />
+                                </svg></button>
+                            <button class="tk-ap-btn" data-toolkit-action="anchor" data-mode="bottom_left"
+                                title="Bottom Left"><svg width="16" height="16" viewBox="0 0 18 18" fill="none">
+                                    <rect x="1" y="1" width="16" height="16" rx="2" stroke="currentColor"
+                                        stroke-width="0.8" opacity="0.2" />
+                                    <rect x="2" y="11" width="5" height="5" rx="1" fill="currentColor" opacity="0.9" />
+                                </svg></button>
+                            <button class="tk-ap-btn" data-toolkit-action="anchor" data-mode="bottom"
+                                title="Bottom"><svg width="16" height="16" viewBox="0 0 18 18" fill="none">
+                                    <rect x="1" y="1" width="16" height="16" rx="2" stroke="currentColor"
+                                        stroke-width="0.8" opacity="0.2" />
+                                    <rect x="6.5" y="11" width="5" height="5" rx="1" fill="currentColor"
+                                        opacity="0.9" />
+                                </svg></button>
+                            <button class="tk-ap-btn" data-toolkit-action="anchor" data-mode="bottom_right"
+                                title="Bottom Right"><svg width="16" height="16" viewBox="0 0 18 18" fill="none">
+                                    <rect x="1" y="1" width="16" height="16" rx="2" stroke="currentColor"
+                                        stroke-width="0.8" opacity="0.2" />
+                                    <rect x="11" y="11" width="5" height="5" rx="1" fill="currentColor" opacity="0.9" />
+                                </svg></button>
+                        </div>
+
+                        <!-- Right side: Create row + Precomp row + Align strip stacked -->
+                        <div class="tk-right-stack">
+                            <!-- Layer creation: Null, Adjustment, Camera, Solid, Text -->
+                            <div class="tk-create-row">
+                                <button class="tk-icon-btn" data-toolkit-action="create" data-mode="null"
+                                    title="Null Object">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <circle cx="12" cy="12" r="9" stroke-dasharray="3 2.5" />
+                                        <line x1="12" y1="3" x2="12" y2="21" />
+                                        <line x1="3" y1="12" x2="21" y2="12" />
+                                        <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+                                    </svg>
+                                </button>
+                                <button class="tk-icon-btn" data-toolkit-action="create" data-mode="adjustment"
+                                    title="Adjustment">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <line x1="5" y1="3" x2="5" y2="9" />
+                                        <line x1="5" y1="15" x2="5" y2="21" />
+                                        <circle cx="5" cy="12" r="2.4" fill="currentColor" stroke="none" />
+                                        <line x1="12" y1="3" x2="12" y2="14" />
+                                        <line x1="12" y1="20" x2="12" y2="21" />
+                                        <circle cx="12" cy="17" r="2.4" fill="currentColor" stroke="none" />
+                                        <line x1="19" y1="3" x2="19" y2="6" />
+                                        <line x1="19" y1="12" x2="19" y2="21" />
+                                        <circle cx="19" cy="9" r="2.4" fill="currentColor" stroke="none" />
+                                    </svg>
+                                </button>
+                                <button class="tk-icon-btn" data-toolkit-action="create" data-mode="camera"
+                                    title="Camera">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path
+                                            d="M2 8.5A2.5 2.5 0 0 1 4.5 6H14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.5A2.5 2.5 0 0 1 2 15.5z" />
+                                        <path d="M22 8 16 11.5v1L22 16z" />
+                                        <circle cx="9" cy="12" r="2.4" />
+                                    </svg>
+                                </button>
+                                <button class="tk-icon-btn" data-toolkit-action="create" data-mode="solid"
+                                    title="Solid">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <rect x="3" y="3" width="18" height="18" rx="2.5" fill="currentColor"
+                                            opacity="0.22" />
+                                        <rect x="3" y="3" width="18" height="18" rx="2.5" />
+                                    </svg>
+                                </button>
+                                <button class="tk-icon-btn" data-toolkit-action="create" data-mode="text" title="Text">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M5 6V4h14v2" />
+                                        <path d="M12 4v16" />
+                                        <path d="M9 20h6" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- Precomp operations -->
+                            <div class="tk-create-row">
+                                <button class="tk-icon-btn tk-icon-btn--accent" data-toolkit-action="precompose"
+                                    title="Precomp">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <rect x="3" y="3" width="13" height="13" rx="2" />
+                                        <rect x="8" y="8" width="13" height="13" rx="2" fill="currentColor"
+                                            fill-opacity="0.16" />
+                                        <path d="M11.5 14.5 14 12l-2.5-2.5" />
+                                    </svg>
+                                </button>
+                                <button class="tk-icon-btn tk-icon-btn--accent" data-toolkit-action="multiprecomp"
+                                    title="Multi Precomp">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <rect x="2.5" y="2.5" width="8" height="8" rx="1.5" />
+                                        <rect x="13.5" y="2.5" width="8" height="8" rx="1.5" />
+                                        <rect x="2.5" y="13.5" width="8" height="8" rx="1.5" />
+                                        <rect x="13.5" y="13.5" width="8" height="8" rx="1.5" fill="currentColor"
+                                            fill-opacity="0.22" />
+                                    </svg>
+                                </button>
+                                <button class="tk-icon-btn tk-icon-btn--accent" data-toolkit-action="truedup"
+                                    title="Duplicate">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <rect x="3" y="3" width="13" height="13" rx="2" />
+                                        <rect x="8" y="8" width="13" height="13" rx="2" fill="currentColor"
+                                            fill-opacity="0.18" />
+                                    </svg>
+                                </button>
+                                <button class="tk-icon-btn tk-icon-btn--accent" data-toolkit-action="decompose"
+                                    title="Un-precomp">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <rect x="7" y="7" width="10" height="10" rx="1.5" />
+                                        <path d="M3 7V3h4" />
+                                        <path d="M21 7V3h-4" />
+                                        <path d="M3 17v4h4" />
+                                        <path d="M21 17v4h-4" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- Align strip -->
+                            <div class="tk-align-strip">
+                                <button class="tk-align-btn" data-toolkit-action="align" data-mode="left"
+                                    title="Align Left">
+                                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                                        <line x1="2" y1="2" x2="2" y2="14" />
+                                        <rect class="align-bar" x="3" y="3.5" width="9" height="3" rx="0.6"
+                                            fill="currentColor" fill-opacity="0.9" stroke="none" />
+                                        <rect class="align-bar" x="3" y="9.5" width="6" height="3" rx="0.6"
+                                            fill="currentColor" fill-opacity="0.55" stroke="none" />
+                                    </svg>
+                                </button>
+                                <button class="tk-align-btn" data-toolkit-action="align" data-mode="hcenter"
+                                    title="Center Horizontal">
+                                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                                        <line x1="8" y1="2" x2="8" y2="14" stroke-dasharray="1.5 1.5" />
+                                        <rect class="align-bar" x="2" y="3.5" width="12" height="3" rx="0.6"
+                                            fill="currentColor" fill-opacity="0.9" stroke="none" />
+                                        <rect class="align-bar" x="3.5" y="9.5" width="9" height="3" rx="0.6"
+                                            fill="currentColor" fill-opacity="0.55" stroke="none" />
+                                    </svg>
+                                </button>
+                                <button class="tk-align-btn" data-toolkit-action="align" data-mode="right"
+                                    title="Align Right">
+                                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                                        <line x1="14" y1="2" x2="14" y2="14" />
+                                        <rect class="align-bar" x="4" y="3.5" width="9" height="3" rx="0.6"
+                                            fill="currentColor" fill-opacity="0.9" stroke="none" />
+                                        <rect class="align-bar" x="7" y="9.5" width="6" height="3" rx="0.6"
+                                            fill="currentColor" fill-opacity="0.55" stroke="none" />
+                                    </svg>
+                                </button>
+                                <span class="tk-align-sep"></span>
+                                <button class="tk-align-btn" data-toolkit-action="align" data-mode="top"
+                                    title="Align Top">
+                                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                                        <line x1="2" y1="2" x2="14" y2="2" />
+                                        <rect class="align-bar" x="3.5" y="3" width="3" height="9" rx="0.6"
+                                            fill="currentColor" fill-opacity="0.9" stroke="none" />
+                                        <rect class="align-bar" x="9.5" y="3" width="3" height="6" rx="0.6"
+                                            fill="currentColor" fill-opacity="0.55" stroke="none" />
+                                    </svg>
+                                </button>
+                                <button class="tk-align-btn" data-toolkit-action="align" data-mode="vcenter"
+                                    title="Center Vertical">
+                                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                                        <line x1="2" y1="8" x2="14" y2="8" stroke-dasharray="1.5 1.5" />
+                                        <rect class="align-bar" x="3.5" y="2" width="3" height="12" rx="0.6"
+                                            fill="currentColor" fill-opacity="0.9" stroke="none" />
+                                        <rect class="align-bar" x="9.5" y="3.5" width="3" height="9" rx="0.6"
+                                            fill="currentColor" fill-opacity="0.55" stroke="none" />
+                                    </svg>
+                                </button>
+                                <button class="tk-align-btn" data-toolkit-action="align" data-mode="bottom"
+                                    title="Align Bottom">
+                                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                                        <line x1="2" y1="14" x2="14" y2="14" />
+                                        <rect class="align-bar" x="3.5" y="4" width="3" height="9" rx="0.6"
+                                            fill="currentColor" fill-opacity="0.9" stroke="none" />
+                                        <rect class="align-bar" x="9.5" y="7" width="3" height="6" rx="0.6"
+                                            fill="currentColor" fill-opacity="0.55" stroke="none" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAST-ACCESS LAYER CREATION ROW -->
+                    <div class="tk-fast-access-row">
+                        <button class="tk-icon-btn tk-icon-btn--muted" data-toolkit-action="effects" title="Toggle FX">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M13 2 4 14h7l-1 8 9-12h-7z" fill="currentColor" fill-opacity="0.18" />
+                            </svg>
+                        </button>
+                        <button class="tk-icon-btn tk-icon-btn--muted" id="btn-paste-image" data-toolkit-action="paste"
+                            title="Paste Image">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <rect x="8" y="2.5" width="8" height="4" rx="1" />
+                                <path
+                                    d="M16 4.5h2a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2h2" />
+                                <circle cx="9.5" cy="13.5" r="1.4" />
+                                <path d="m8 18 3-3 2 2 1.5-1.5 2 2" />
+                            </svg>
+                        </button>
+                        <button type="button" class="tk-icon-btn tk-icon-btn--muted" id="btn-tk-crop-execute"
+                            data-tooltip="Crop Precomp" aria-label="Crop Precomp">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 1v15a2 2 0 0 0 2 2h15" />
+                                <path d="M1 6h15a2 2 0 0 1 2 2v15" />
+                            </svg>
+                        </button>
+                        <button class="tk-icon-btn tk-icon-btn--muted" data-toolkit-action="organize" title="Organize">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path
+                                    d="M3 7.5a2 2 0 0 1 2-2h4l2 2.5h8a2 2 0 0 1 2 2v8.5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                <path d="M8 12h8" />
+                                <path d="M8 16h5" />
+                            </svg>
+                        </button>
+                        <button class="tk-icon-btn tk-icon-btn--muted tk-icon-btn--danger" data-toolkit-action="cache"
+                            title="Purge Cache">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M21 12a9 9 0 1 1-2.6-6.4" />
+                                <path d="M21 4v5h-5" />
+                            </svg>
+                        </button>
+                        <span class="tk-row-sep"></span>
+                        <button class="tk-icon-btn tk-icon-btn--muted" data-toolkit-action="guides-on"
+                            title="Guides On">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <rect x="3" y="3" width="18" height="18" rx="2" />
+                                <line x1="3" y1="12" x2="21" y2="12" stroke-dasharray="2 2" />
+                                <line x1="12" y1="3" x2="12" y2="21" stroke-dasharray="2 2" />
+                                <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+                            </svg>
+                        </button>
+                        <button class="tk-icon-btn tk-icon-btn--muted" data-toolkit-action="guides-off"
+                            title="Guides Off">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <rect x="3" y="3" width="18" height="18" rx="2" opacity="0.4" />
+                                <line x1="3" y1="12" x2="21" y2="12" stroke-dasharray="2 2" opacity="0.4" />
+                                <line x1="12" y1="3" x2="12" y2="21" stroke-dasharray="2 2" opacity="0.4" />
+                                <line x1="5" y1="5" x2="19" y2="19" stroke="var(--danger)" stroke-width="2" />
+                            </svg>
+                        </button>
+                        <button class="tk-icon-btn tk-icon-btn--muted tk-icon-btn--danger"
+                            data-toolkit-action="delete-expression" title="Delete Expressions">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M8 4a3 3 0 0 0-3 3v3a2 2 0 0 1-2 2 2 2 0 0 1 2 2v3a3 3 0 0 0 3 3" />
+                                <path d="M16 4a3 3 0 0 1 3 3v3a2 2 0 0 0 2 2 2 2 0 0 0-2 2v3a3 3 0 0 1-3 3" />
+                                <line x1="10" y1="9" x2="14" y2="15" stroke="var(--danger)" stroke-width="2" />
+                                <line x1="14" y1="9" x2="10" y2="15" stroke="var(--danger)" stroke-width="2" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- TIMING: Sequence + ColorFlow -->
+                    <h2 class="cs-wb-heading">Layer helpers</h2>
+                    <div class="cs-wb-actions">
+                        <button type="button" data-toolkit-action="mirror" data-mode="h">Flip horizontal</button>
+                        <button type="button" data-toolkit-action="mirror" data-mode="v">Flip vertical</button>
+                        <button type="button" data-toolkit-action="unprecompose">Un-precompose</button>
+                    </div>
+                    <div class="cs-wb-actions">
+                        <select id="cs-wb-blend" aria-label="Blend mode" class="tk-resize-select">
+                            <option value="NORMAL">Normal</option><option value="MULTIPLY">Multiply</option>
+                            <option value="SCREEN">Screen</option><option value="ADD">Add</option>
+                            <option value="OVERLAY">Overlay</option><option value="SOFT_LIGHT">Soft light</option>
+                            <option value="DIFFERENCE">Difference</option>
+                        </select>
+                        <button type="button" data-toolkit-action="blend-mode">Apply blend</button>
+                    </div>
+                    </section>
+                    <section class="cs-wb-panel" id="cs-wb-panel-velocity" role="tabpanel" aria-labelledby="cs-wb-tab-velocity" hidden>
+                    <h2 class="cs-wb-heading">Speed ramp</h2>
+                    <div class="cs-wb-actions">
+                        <button type="button" data-toolkit-action="speed-ramp" data-mode="fast">Fast in / slow out</button>
+                        <button type="button" data-toolkit-action="speed-ramp" data-mode="punch">Punch impact</button>
+                        <button type="button" data-toolkit-action="speed-ramp" data-mode="smooth">Smooth ramp</button>
+                    </div>
+                    <div class="cs-wb-actions">
+                        <button type="button" data-toolkit-action="reverse-video">Reverse video</button>
+                        <button type="button" data-toolkit-action="split-playhead">Split at playhead</button>
+                        <button type="button" data-toolkit-action="compact-remap">Compact remap</button>
+                    </div>
+                    <h2 class="cs-wb-heading">Sequence &amp; stagger</h2>
+                    <div class="tk-cluster tk-cluster--timing">
+                        <div class="tk-modules-row">
+                            <div class="tk-sequence-block" id="sequence-card">
+                                <div class="tk-seq-row">
+                                    <!-- Value-chip control pattern: label → value (base.css .cs-value-chip).
+                                         The +/- keys are the chip's controls; no chevron/collapsible body
+                                         is present so that optional slot is absent. ids/data-dir preserved. -->
+                                    <div class="cs-value-chip tk-stepper" id="stepper-seq-group" title="Anchor Held">
+                                        <span class="cs-value-chip__label tk-stepper-label">N</span>
+                                        <button type="button" class="tk-stepper-btn" data-dir="dn" aria-label="Decrease sequence group size">&minus;</button>
+                                        <input type="text" id="seq-group" class="cs-value-chip__value tk-stepper-val"
+                                            value="1" aria-label="Sequence group size" readonly>
+                                        <button type="button" class="tk-stepper-btn" data-dir="up" aria-label="Increase sequence group size">+</button>
+                                    </div>
+                                    <div class="cs-value-chip tk-stepper" id="stepper-seq-step" title="Step Frames">
+                                        <span class="cs-value-chip__label tk-stepper-label">S</span>
+                                        <button type="button" class="tk-stepper-btn" data-dir="dn" aria-label="Decrease frame offset">&minus;</button>
+                                        <input type="text" id="seq-step" class="cs-value-chip__value tk-stepper-val"
+                                            value="5" aria-label="Frame offset" readonly>
+                                        <button type="button" class="tk-stepper-btn" data-dir="up" aria-label="Increase frame offset">+</button>
+                                    </div>
+                                </div>
+                                <div class="tk-seq-row">
+                                    <button class="tk-seq-btn active" data-seq-mode="down" title="Normalize CTI"><svg
+                                            width="12" height="12" viewBox="0 0 16 16" fill="none">
+                                            <line x1="3.5" y1="2" x2="3.5" y2="14" stroke="currentColor"
+                                                stroke-width="1.8" stroke-linecap="round" />
+                                            <polygon points="1.5,2 5.5,2 3.5,4.5" fill="currentColor" />
+                                            <line x1="6" y1="4.5" x2="14.5" y2="4.5" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" />
+                                            <line x1="6" y1="8.5" x2="14.5" y2="8.5" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" />
+                                            <line x1="6" y1="12.5" x2="14.5" y2="12.5" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" />
+                                        </svg></button>
+                                    <button class="tk-seq-btn" data-seq-mode="up" title="Forward Stagger"><svg
+                                            width="12" height="12" viewBox="0 0 16 16" fill="none">
+                                            <line x1="2" y1="3" x2="7.5" y2="3" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" />
+                                            <line x1="4.5" y1="6.3" x2="10" y2="6.3" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" />
+                                            <line x1="7" y1="9.6" x2="12.5" y2="9.6" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" />
+                                            <line x1="9.5" y1="13" x2="15" y2="13" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" />
+                                        </svg></button>
+                                    <button class="tk-seq-btn" data-seq-mode="center" title="Reverse Stagger"><svg
+                                            width="12" height="12" viewBox="0 0 16 16" fill="none">
+                                            <line x1="9.5" y1="3" x2="15" y2="3" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" />
+                                            <line x1="7" y1="6.3" x2="12.5" y2="6.3" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" />
+                                            <line x1="4.5" y1="9.6" x2="10" y2="9.6" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" />
+                                            <line x1="2" y1="13" x2="7.5" y2="13" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" />
+                                        </svg></button>
+                                    <button class="tk-seq-btn" data-seq-mode="random" title="Random Stagger"><svg
+                                            width="12" height="12" viewBox="0 0 16 16" fill="none">
+                                            <line x1="5" y1="3" x2="11" y2="3" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" />
+                                            <line x1="2" y1="6.3" x2="8" y2="6.3" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" />
+                                            <line x1="8.5" y1="9.6" x2="14" y2="9.6" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" />
+                                            <line x1="3.5" y1="13" x2="9" y2="13" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" />
+                                        </svg></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RESIZE + BOUNCE: same inline row with clear separator -->
+                    <h2 class="cs-wb-heading">Composition &amp; motion</h2>
+                    <div class="tk-resize-cluster">
+                        <div class="tk-resize-bar">
+                            <select id="resize-res" class="tk-resize-select" title="Resolution">
+                                <option value="720">HD · 720</option>
+                                <option value="1080" selected>1K · 1080</option>
+                                <option value="1440">2K · 1440</option>
+                                <option value="2160">4K · 2160</option>
+                            </select>
+                            <select id="resize-fps" class="tk-resize-select tk-resize-fps" title="Frame Rate">
+                                <option value="24">24</option>
+                                <option value="25">25</option>
+                                <option value="30" selected>30</option>
+                                <option value="50">50</option>
+                                <option value="60">60</option>
+                                <option value="120">120</option>
+                            </select>
+                            <button type="button" class="tk-resize-apply" id="btn-resize-apply"
+                                title="Resize Tree">Resize</button>
+                            <span class="tk-inline-sep"></span>
+                            <button type="button" class="tk-resize-apply" id="btn-bounce-apply"
+                                title="Apply Bounce">Bounce</button>
+                            <button type="button" class="tk-bounce-gear" id="btn-bounce-gear" title="Bounce Settings">
+                                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="3" />
+                                    <path
+                                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68 1.65 1.65 0 0 0 10 3.17V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+
+                    </section>
+                    <section class="cs-wb-panel" id="cs-wb-panel-text" role="tabpanel" aria-labelledby="cs-wb-tab-text" hidden>
+                        <h2 class="cs-wb-heading">Captions</h2>
+                        <div class="cs-wb-actions"><button type="button" data-toolkit-action="text-box">Create responsive background</button></div>
+                        <h2 class="cs-wb-heading">Split text</h2>
+                        <label class="cs-wb-field" for="cs-wb-text-stagger">Stagger <select id="cs-wb-text-stagger"><option value="0">Off</option><option value="1">1 frame</option><option value="2">2 frames</option><option value="3">3 frames</option></select></label>
+                        <div class="cs-wb-actions">
+                            <button type="button" data-toolkit-action="split-text" data-mode="letters">Letters</button>
+                            <button type="button" data-toolkit-action="split-text" data-mode="words">Words</button>
+                            <button type="button" data-toolkit-action="split-text" data-mode="lines">Lines</button>
+                        </div>
+                        <h2 class="cs-wb-heading">Find &amp; replace</h2>
+                        <label class="cs-wb-field" for="cs-wb-find">Find <input id="cs-wb-find" type="text" autocomplete="off" spellcheck="false"></label>
+                        <label class="cs-wb-field" for="cs-wb-replace">Replace <input id="cs-wb-replace" type="text" autocomplete="off" spellcheck="false"></label>
+                        <label class="cs-wb-field" for="cs-wb-find-scope">Scope <select id="cs-wb-find-scope"><option value="selection">Selection</option><option value="comp">Composition</option><option value="project">Whole project</option></select></label>
+                        <label class="cs-wb-check"><input id="cs-wb-match-case" type="checkbox"> Match case</label>
+                        <div class="cs-wb-actions"><button type="button" data-toolkit-action="find-replace">Replace all</button></div>
+                        <h2 class="cs-wb-heading">Text presets</h2>
+                        <ul id="cs-wb-preset-list" class="cs-wb-preset-list" tabindex="-1" aria-label="Text presets"></ul>
+                    </section>
+                    <section class="cs-wb-panel" id="cs-wb-panel-guides" role="tabpanel" aria-labelledby="cs-wb-tab-guides" hidden>
+                        <h2 class="cs-wb-heading">Social safe zones</h2>
+                        <div class="cs-wb-actions">
+                            <button type="button" data-toolkit-action="toggle-ig-guide" title="Toggle Instagram Reel guide layer">Instagram Reel guide</button>
+                        </div>
+                        <h2 class="cs-wb-heading">Aspect ratio</h2>
+                        <div class="cs-wb-actions">
+                            <button type="button" data-toolkit-action="aspect-ratio" data-mode="9:16">9:16 Reel</button>
+                            <button type="button" data-toolkit-action="aspect-ratio" data-mode="16:9">16:9 Video</button>
+                            <button type="button" data-toolkit-action="aspect-ratio" data-mode="1:1">1:1 Square</button>
+                            <button type="button" data-toolkit-action="aspect-ratio" data-mode="4:5">4:5 Feed</button>
+                        </div>
+                        <h2 class="cs-wb-heading">Composition guides</h2>
+                        <div class="cs-wb-actions">
+                            <button type="button" data-toolkit-action="guides-on">Add guides</button>
+                            <button type="button" data-toolkit-action="guides-off">Clear guides</button>
+                        </div>
+                    </section>
+                </div>

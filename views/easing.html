@@ -1,0 +1,233 @@
+                <!-- ========== FLOW & CURVE STUDIO (Ground-Up Redesign) ========== -->
+                <div class="tk-view" id="toolkit-graph-view">
+                    <div class="tk-expansion-zone">
+                        <div class="tk-flow-root">
+
+                            <!-- Studio Top Header -->
+                            <div class="tk-flow-header">
+                                <div class="tk-flow-header-left">
+                                    <svg class="tk-flow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 3v18h18" />
+                                        <path d="M3 18 Q9 18 12 12 T21 6" />
+                                    </svg>
+                                    <span class="tk-flow-title">FLOW &amp; CURVE</span>
+                                </div>
+
+                                <!-- Studio Curve Modes: Bezier, Elastic, Bounce, Steps -->
+                                <div class="cs-segmented tk-flow-mode-selector" id="flow-mode-selector">
+                                    <button type="button" class="cs-segment active" data-flow-mode="bezier"><span class="cs-segment__label">Bezier</span></button>
+                                    <button type="button" class="cs-segment" data-flow-mode="elastic"><span class="cs-segment__label">Elastic</span></button>
+                                    <button type="button" class="cs-segment" data-flow-mode="bounce"><span class="cs-segment__label">Bounce</span></button>
+                                    <button type="button" class="cs-segment" data-flow-mode="steps"><span class="cs-segment__label">Steps</span></button>
+                                </div>
+
+                                <!-- Quick Utilities -->
+                                <div class="tk-flow-actions">
+                                    <button id="btn-flow-flip-h" class="tk-flow-mini-btn" type="button" title="Flip Horizontal" aria-label="Flip Horizontal">
+                                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="7 8 3 12 7 16" />
+                                            <polyline points="17 8 21 12 17 16" />
+                                            <line x1="12" y1="2" x2="12" y2="22" stroke-dasharray="2 2" />
+                                        </svg>
+                                    </button>
+                                    <button id="btn-flow-flip-v" class="tk-flow-mini-btn" type="button" title="Flip Vertical" aria-label="Flip Vertical">
+                                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="8 7 12 3 16 7" />
+                                            <polyline points="8 17 12 21 16 17" />
+                                            <line x1="2" y1="12" x2="22" y2="12" stroke-dasharray="2 2" />
+                                        </svg>
+                                    </button>
+                                    <button id="btn-flow-reset-graph" class="tk-flow-mini-btn" type="button" title="Reset Linear" aria-label="Reset Linear">
+                                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="4" y1="20" x2="20" y2="4" />
+                                            <circle cx="4" cy="20" r="2" fill="currentColor" />
+                                            <circle cx="20" cy="4" r="2" fill="currentColor" />
+                                        </svg>
+                                    </button>
+                                    <button id="btn-flow-reset" class="tk-flow-mini-btn" type="button" title="Reset Default Ease" aria-label="Reset Default Ease">
+                                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+                                            <path d="M21 3v5h-5" />
+                                            <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+                                            <path d="M8 16H3v5" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Split Studio Row (Canvas Left + Presets Right) -->
+                            <div class="tk-flow-split-row">
+
+                                <!-- Left Column: Bezier Canvas & Controls -->
+                                <div class="tk-flow-col-left">
+
+                                    <!-- Canvas Container -->
+                                    <div class="tk-flow-canvas-wrap">
+                                        <div class="tk-flow-values">
+                                            <div class="tk-flow-handle-readout">
+                                                <span class="tk-flow-handle-tag in">IN</span>
+                                                <span id="flow-val-in" class="tk-flow-badge">33%</span>
+                                            </div>
+                                            <div class="tk-flow-handle-readout">
+                                                <span class="tk-flow-handle-tag out">OUT</span>
+                                                <span id="flow-val-out" class="tk-flow-badge">66%</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- SVG Bezier Studio Canvas -->
+                                        <svg id="flow-graph-svg" class="tk-flow-svg" viewBox="-8 -8 116 116" preserveAspectRatio="none">
+                                            <defs>
+                                                <!-- High-tech Grid Pattern -->
+                                                <pattern id="graph-grid-dots" width="20" height="20" patternUnits="userSpaceOnUse">
+                                                    <circle cx="10" cy="10" r="0.8" fill="rgba(255,255,255,0.06)" />
+                                                    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.3" />
+                                                </pattern>
+                                                <!-- Gradient Curve Line -->
+                                                <linearGradient id="flow-curve-grad" gradientUnits="userSpaceOnUse" x1="0" y1="100" x2="100" y2="0">
+                                                    <stop offset="0%" stop-color="var(--cs-accent)" />
+                                                    <stop offset="50%" stop-color="var(--cs-accent-hover)" />
+                                                    <stop offset="100%" stop-color="var(--cs-accent-hover)" />
+                                                </linearGradient>
+                                                <!-- Ambient glow area under curve -->
+                                                <linearGradient id="flow-curve-glow-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="100">
+                                                    <stop offset="0%" stop-color="var(--cs-accent)" stop-opacity="0.18" />
+                                                    <stop offset="100%" stop-color="var(--cs-accent)" stop-opacity="0.0" />
+                                                </linearGradient>
+                                                <!-- Filter for Neon Glow -->
+                                                <filter id="glow-curve" x="-20%" y="-20%" width="140%" height="140%">
+                                                    <feGaussianBlur stdDeviation="1.5" result="blur" />
+                                                    <feMerge>
+                                                        <feMergeNode in="blur" />
+                                                        <feMergeNode in="SourceGraphic" />
+                                                    </feMerge>
+                                                </filter>
+                                            </defs>
+
+                                            <!-- Canvas Background & Grid -->
+                                            <rect class="flow-graph-bg" x="-8" y="-8" width="116" height="116" fill="var(--cs-canvas)" />
+                                            <rect x="0" y="0" width="100" height="100" fill="url(#graph-grid-dots)" />
+
+                                            <!-- Reference Guidelines (0%, 25%, 50%, 75%, 100%) -->
+                                            <line x1="0" y1="25" x2="100" y2="25" stroke="rgba(255,255,255,0.04)" stroke-width="0.5" />
+                                            <line x1="0" y1="50" x2="100" y2="50" stroke="rgba(255,255,255,0.06)" stroke-width="0.5" stroke-dasharray="2 2" />
+                                            <line x1="0" y1="75" x2="100" y2="75" stroke="rgba(255,255,255,0.04)" stroke-width="0.5" />
+                                            <line x1="0" y1="100" x2="100" y2="0" stroke="rgba(255,255,255,0.07)" stroke-width="0.5" stroke-dasharray="3 3" />
+
+                                            <!-- Live Bezier Curve Path with glow -->
+                                            <path id="flow-curve-path" d="M 0 100 C 33 100 66 0 100 0" stroke="url(#flow-curve-grad)" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round" shape-rendering="geometricPrecision" filter="url(#glow-curve)" />
+
+                                            <!-- Anchors (Start & End) -->
+                                            <circle class="flow-anchor-dot" cx="0" cy="100" r="2.2" fill="var(--cs-accent-hover)" />
+                                            <circle class="flow-anchor-dot" cx="100" cy="0" r="2.2" fill="var(--cs-accent-hover)" />
+
+                                            <!-- Velocity Bars (Connecting Lines) -->
+                                            <line id="flow-handle-line-1" x1="0" y1="100" x2="33" y2="100" stroke="var(--cs-accent-hover)" stroke-width="1" opacity="0.6" stroke-dasharray="2.5 2" />
+                                            <line id="flow-handle-line-2" x1="100" y1="0" x2="66" y2="0" stroke="var(--cs-accent-hover)" stroke-width="1" opacity="0.6" stroke-dasharray="2.5 2" />
+
+                                            <!-- Interactive Control Handle Knobs -->
+                                            <circle id="flow-handle-1" cx="33" cy="100" r="4.2" fill="#ffffff" stroke="var(--cs-accent)" stroke-width="2" cursor="pointer" />
+                                            <circle id="flow-handle-2" cx="66" cy="0" r="4.2" fill="#ffffff" stroke="var(--cs-accent)" stroke-width="2" cursor="pointer" />
+                                        </svg>
+                                    </div>
+
+                                    <!-- Direction & Target Controls Row -->
+                                    <div class="tk-flow-direction-bar">
+                                        <div class="tk-flow-ctrl-group">
+                                            <span class="tk-flow-ctrl-label">Direction:</span>
+                                            <div class="cs-segmented tk-flow-segmented" id="flow-dir-toggle">
+                                                <button type="button" class="cs-segment active" data-flow-dir="both"><span class="cs-segment__label">⟷ Both</span></button>
+                                                <button type="button" class="cs-segment" data-flow-dir="in"><span class="cs-segment__label">⟶ In</span></button>
+                                                <button type="button" class="cs-segment" data-flow-dir="out"><span class="cs-segment__label">⟵ Out</span></button>
+                                            </div>
+                                        </div>
+                                        <div class="tk-flow-ctrl-group">
+                                            <span class="tk-flow-ctrl-label">Target:</span>
+                                            <div class="cs-segmented tk-flow-segmented" id="flow-apply-target-toggle">
+                                                <button type="button" class="cs-segment active" data-flow-target="keys"><span class="cs-segment__label">◆ Keys</span></button>
+                                                <button type="button" class="cs-segment" data-flow-target="expr"><span class="cs-segment__label">&lt;/&gt; Expr</span></button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Advanced Parameters (Elastic / Bounce / Steps) -->
+                                    <div class="tk-flow-advanced-panel" id="flow-advanced-panel" style="display: none;">
+                                        <div class="tk-flow-param-row">
+                                            <span class="tk-flow-param-label">Bounces:</span>
+                                            <input type="range" class="tk-flow-range" id="flow-param-bounces" min="1" max="10" value="4">
+                                            <span class="tk-flow-param-val" id="flow-val-bounces">4</span>
+                                        </div>
+                                        <div class="tk-flow-param-row">
+                                            <span class="tk-flow-param-label">Elasticity:</span>
+                                            <input type="range" class="tk-flow-range" id="flow-param-elasticity" min="5" max="100" value="40">
+                                            <span class="tk-flow-param-val" id="flow-val-elasticity">40%</span>
+                                        </div>
+                                        <div class="tk-flow-param-row">
+                                            <span class="tk-flow-param-label">Decay:</span>
+                                            <input type="range" class="tk-flow-range" id="flow-param-decay" min="1" max="20" step="0.5" value="5">
+                                            <span class="tk-flow-param-val" id="flow-val-decay">5.0</span>
+                                        </div>
+                                        <div class="tk-flow-param-row tk-flow-toggle-row">
+                                            <label class="tk-flow-switch-label">
+                                                <input type="checkbox" id="flow-protect-path" checked>
+                                                <span>Protect Motion Path</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Primary Apply CTA Bar -->
+                                    <div class="tk-flow-cta-bar">
+                                        <button class="tk-flow-save-btn" id="btn-flow-save-inline" type="button" title="Save Preset">
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                                                <polyline points="17 21 17 13 7 13 7 21" />
+                                            </svg>
+                                        </button>
+                                        <button id="btn-flow-apply" class="tk-flow-apply-btn cs-btn-cta" type="button">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="20 6 9 17 4 12" />
+                                            </svg>
+                                            <span>Apply Ease to Keyframes</span>
+                                        </button>
+                                    </div>
+
+                                </div> <!-- /.tk-flow-col-left -->
+
+                                <!-- Resizable Splitter -->
+                                <div class="tk-flow-splitter" id="flow-graph-splitter">
+                                    <div class="tk-flow-splitter-handle"></div>
+                                </div>
+
+                                <!-- Right Column: Speed & Curve Presets Studio -->
+                                <div class="tk-flow-col-right">
+                                    <div class="tk-flow-presets-header">
+                                        <!-- Presets Tab Switcher -->
+                                        <div class="cs-segmented tk-flow-tabs-mini">
+                                            <button class="cs-segment tk-flow-tab active" data-flow-tab="built-in"><span class="cs-segment__label">CORE</span></button>
+                                            <button class="cs-segment tk-flow-tab" data-flow-tab="extra"><span class="cs-segment__label">EXTRA</span></button>
+                                            <button class="cs-segment tk-flow-tab" data-flow-tab="user"><span class="cs-segment__label">USER</span></button>
+                                            <button class="cs-segment tk-flow-tab" data-flow-tab="recent"><span class="cs-segment__label">REC</span></button>
+                                        </div>
+                                        <div class="tk-flow-actions-inline">
+                                            <button class="tk-flow-action-icon" id="btn-flow-favorite" type="button" title="Toggle Favorite">
+                                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <polygon points="12 2 15 8 22 9 17 14 18 21 12 18 6 21 7 14 2 9 9 8 12 2" />
+                                                </svg>
+                                            </button>
+                                            <button class="tk-flow-action-icon" id="btn-flow-delete-preset" type="button" title="Delete User Preset" disabled>
+                                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="3 6 5 6 21 6" />
+                                                    <path d="M19 6l-2 14H7L5 6" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Preset Cards Grid -->
+                                    <div id="flow-presets-grid" class="tk-flow-presets-grid"></div>
+                                </div> <!-- /.tk-flow-col-right -->
+
+                            </div> <!-- /.tk-flow-split-row -->
+
+                        </div> <!-- /.tk-flow-root -->
+                    </div> <!-- /.tk-expansion-zone -->
+                </div> <!-- /#toolkit-graph-view -->

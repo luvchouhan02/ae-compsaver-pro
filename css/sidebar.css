@@ -1,0 +1,110 @@
+/* ════════════════════════════════════════════════════════════════
+   CompSaver — Obsidian Sidebar
+   ────────────────────────────────────────────────────────────────
+   56px rail, 8 items and 1 divider (Req 6.3, 6.4, 7.1, 7.8, 18.3).
+   Only [aria-current="page"] draws the active plate; `.active` on an
+   item has no style, so a stray legacy class cannot add a highlight.
+   Tokens only (Req 5.7).
+   ════════════════════════════════════════════════════════════════ */
+
+.cs-sidebar {
+    width: var(--cs-sidebar-width);
+    min-width: var(--cs-sidebar-width);
+    padding: 6px 4px;
+    box-sizing: border-box;
+    background: var(--cs-sidebar);
+    box-shadow: inset -1px 0 0 var(--cs-border-subtle);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+}
+
+.cs-sidebar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
+}
+
+/* ── Nav list ───────────────────────────────────────────────── */
+.cs-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    min-height: 100%;
+}
+
+/* ── Item ───────────────────────────────────────────────────── */
+.cs-sidebar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 100%;
+    min-width: 0;
+    min-height: 52px;
+    flex-shrink: 0;
+    padding: 7px 1px;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    border-radius: var(--cs-radius-md);
+    background: transparent;
+    color: var(--cs-text-secondary);
+    font-family: var(--cs-font-sans);
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        border-color var(--cs-duration-fast) var(--cs-ease-standard),
+        color var(--cs-duration-fast) var(--cs-ease-standard);
+}
+
+.cs-sidebar-item__icon {
+    width: var(--cs-rail-ico);
+    height: var(--cs-rail-ico);
+    stroke-width: var(--cs-nav-ico-stroke);
+    flex-shrink: 0;
+}
+
+.cs-sidebar-item__label {
+    display: block;
+    max-width: 100%;
+    font-size: 8px;
+    font-weight: var(--cs-weight-bold);
+    line-height: 1.1;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cs-sidebar-item:hover {
+    background: var(--cs-surface-2);
+    color: var(--cs-text-primary);
+}
+
+.cs-sidebar-item[aria-current="page"] {
+    background: linear-gradient(145deg, var(--cs-accent-subtle), var(--cs-surface-1));
+    border-color: var(--cs-border-focus);
+    color: var(--cs-text-primary);
+}
+
+.cs-sidebar-item:focus-visible {
+    outline-offset: 1px;
+}
+
+/* ── Divider ────────────────────────────────────────────────── */
+.cs-sidebar-divider {
+    height: 1px;
+    margin: auto 8px 4px;
+    background: var(--cs-border-subtle);
+    flex-shrink: 0;
+}
+
+/* ── Legacy sidebar switcher compat ─────────────────────────── */
+.sidebar-switcher {
+    display: none !important;
+}

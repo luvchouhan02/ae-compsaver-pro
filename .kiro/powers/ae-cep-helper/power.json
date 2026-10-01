@@ -1,0 +1,6 @@
+{
+  "name": "ae-cep-helper",
+  "version": "1.0.0",
+  "description": "Adobe After Effects CEP Extension development power. Provides specialized knowledge about CEP architecture, ExtendScript ES3 constraints, bridge protocol encoding, manifest configuration, and panel lifecycle management for building robust After Effects extensions.",
+  "instructions": "instructions.md"
+}

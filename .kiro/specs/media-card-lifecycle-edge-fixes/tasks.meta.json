@@ -1,0 +1,301 @@
+{
+  "pbtResults": {
+    "1. Write bug condition exploration test": {
+      "status": "passed",
+      "failingExample": "8 failed / 2 passed — the predicted split. E1-E8 failed (bugs confirmed), E9-E10 passed (clauses 1.8 and 2.11 hold).\n\nE1 startupWarmPaint — thumb-box emitted `<svg ... ><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"3\"/></svg>` for the icon entry and `<img class=\"thumb-img\" alt=\"\">` (no src) for the media entry. Entry had thumbnailPath \"C:/lib/icon/Logos/Acme/thumbnail.png\", thumbStatus \"ready\", and NO `thumbnail` own property. 0 filesystem calls.\n\nE2 loadTemplates warm branch — identical `<rect>` placeholder from the second warm-paint implementation; 2 entries adopted, 1 background reconcile scheduled.\n\nE3 [DIAGNOSTIC, stays red by design/D1] — persisted entry keys after renderOptimisticCard + refreshCardThumbnail: [id,name,category,section,folderPath,thumbnailPath,thumbStatus,favorite]; persisted.thumbnail === undefined while allTemplates[0].thumbnail === \"file:///C:/lib/icon/Logos/Acme/thumbnail.png?v=1787510663644-1\". tpl !== indexEntry.\n\nE4 removeUITemplate — real folder \".../footage/Broll/media-006d-0065-...-0031\"; reconstructed \"C:/lib/footage/Broll/clip\" (no media- segment). li.size() 1 -> 1, has(real) true, needsFullScan() true, lastError \"LibraryIndex.removeEntry: no entry for C:/lib/footage/Broll/clip\", allTemplates emptied.\n\nE5 patchUITemplate — persisted favorite false, in-memory favorite true, needsFullScan() true, lastError \"LibraryIndex.patchEntry: no entry for C:/lib/footage/Broll/clip\".\n\nE6 category segment — \"My\\tCat\": panel \"My_Cat\" vs host \"MyCat\". \"My  Cat\": panel \"My  Cat\" vs host \"My Cat\". \"My\\r\\nCat\": panel \"My__Cat\" vs host \"MyCat\". \" My Cat \": panel \"My Cat\" === host \"My Cat\" (this input does NOT diverge — getSafeName already trims).\n\nE7 confirmSave PNG — host call savePNGOnly(\"MyTemplate\",\"My  Cat\",\"/lib\",\"icon\",\"\"); host folder \"/lib/icon/My Cat/MyTemplate\"; BOTH panel sites produced \"/lib/icon/My  Cat/MyTemplate\" (optimistic card folderPath and refreshCardThumbnail folder).\n\nE8 reconcile — catalogSourceChanged() === false. _templatesRevision 0 -> 0, sourceStamp 0, array identity/length/first/last all unchanged, catalog size 5. Model category \"Brands\" but catalog counts still {Logos: 5}, search \"brands\" -> [], search \"logos\" -> [t0..t4].",
+      "lastRunTimestamp": 1787510774249
+    }
+  },
+  "executionHistory": {
+    "1. Write bug condition exploration test": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509332144
+      },
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509348467
+      },
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787510817941
+      }
+    ],
+    "2. Write preservation property tests (BEFORE implementing any fix)": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509332337
+      },
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787510823149
+      },
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787513847977
+      }
+    ],
+    "3.1 Inject `cleanName` into the `save-return-shape` harness": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509332560
+      },
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787513853923
+      },
+      {
+        "executionId": "a14cd6fd-0df1-45a3-b29c-f1213f2af071",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787517920811
+      }
+    ],
+    "3.2 Inject `cleanName` into the `comp-pipeline-integration` harness": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509332969
+      },
+      {
+        "executionId": "a14cd6fd-0df1-45a3-b29c-f1213f2af071",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787517926158
+      },
+      {
+        "executionId": "a14cd6fd-0df1-45a3-b29c-f1213f2af071",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787520435305
+      }
+    ],
+    "3.3 Add the `safeCategorySegment(cat)` helper": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509333213
+      },
+      {
+        "executionId": "a14cd6fd-0df1-45a3-b29c-f1213f2af071",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787520443433
+      }
+    ],
+    "3.4 Switch both PNG derivation sites to the helper": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509333478
+      }
+    ],
+    "3.5 Verify BUG 3 — fix check and preservation": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509333662
+      }
+    ],
+    "4.1 Add the `_findUITemplateRecord(name, cat)` helper": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509333879
+      }
+    ],
+    "4.2 Add the media early return inside `_getTemplateFolderPath`": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509333984
+      }
+    ],
+    "4.3 Verify BUG 2 — fix check and preservation": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509334209
+      }
+    ],
+    "5.1 S1 + S2 — `startupReconcileScanned`'s processor": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509334400
+      }
+    ],
+    "5.2 S3 — `startupReconcileFinish`'s removal pass": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509334634
+      }
+    ],
+    "5.3 S4 — `removeUITemplate`": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509334880
+      }
+    ],
+    "5.4 S5 — `patchUITemplate`": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509335093
+      }
+    ],
+    "5.5 S6 — `markCardFailed`": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509335356
+      }
+    ],
+    "5.6 S7 — `renderOptimisticCard`": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509335479
+      }
+    ],
+    "5.7 Confirm the three dropped candidates stay uncalled": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509335668
+      }
+    ],
+    "5.8 Verify BUG 5 — fix check and preservation": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509335902
+      }
+    ],
+    "6.1 Add `buildBustedThumbUrl(raw, token)` and route `refreshCardThumbnail` through it": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509336066
+      }
+    ],
+    "6.2 Add `hydrateWarmPaintThumbnail(entry)`": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509336247
+      }
+    ],
+    "6.3 Call it from `startupWarmPaint` — the production reopen path": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509336505
+      }
+    ],
+    "6.4 Call it from `loadTemplates`'s warm branch": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509336720
+      }
+    ],
+    "6.5 Verify BUG 1 — fix check and preservation": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509336979
+      }
+    ],
+    "7.1 Extend the comment above `STARTUP_SCAN_SECTIONS`": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509337311
+      }
+    ],
+    "7.2 Verify BUG 6 is comment-only": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509337494
+      }
+    ],
+    "8.1 Delete the declaration": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509337726
+      }
+    ],
+    "8.2 Confirm the survivors are untouched": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509338051
+      }
+    ],
+    "8.3 Verify BUG 4 — fix check and preservation": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509338300
+      }
+    ],
+    "9.1 Re-run the exploration suite": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509338516
+      }
+    ],
+    "9.2 Re-run the preservation suite": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509338705
+      }
+    ],
+    "9.3 (a) Run the spec's verification command": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509338962
+      }
+    ],
+    "9.4 (b) Run the CEP compatibility scan": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509339151
+      }
+    ],
+    "9.5 (c) Run the four startup performance suites that touch warm paint": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509339379
+      }
+    ],
+    "9.6 (d) Hold the full-suite baseline": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509339542
+      }
+    ],
+    "10. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "6b61fb88-2d03-47c5-8c15-8252233b4995",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787509339739
+      }
+    ]
+  }
+}

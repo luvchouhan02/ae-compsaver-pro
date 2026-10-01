@@ -1,0 +1,388 @@
+/* ════════════════════════════════════════════════════════════════
+   CompSaver v2.0 — App Layout Shell
+   ────────────────────────────────────────────────────────────────
+   3-zone architecture: Header (fixed) + Sidebar (left) + Content
+   ════════════════════════════════════════════════════════════════ */
+
+/* sidebar.css, components.css, command-palette.css and media-engine.css are
+   loaded once each through their <link> tags in index.html. */
+
+/* ── Reset & Body ───────────────────────────────────────────── */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--cs-canvas);
+    color: var(--cs-text-primary);
+    font-family: var(--cs-font-sans);
+    font-size: var(--cs-type-11);
+    line-height: var(--cs-line-control);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Shell grid (Standard_Mode areas) ───────────────────────── */
+body.cs-app {
+    display: grid;
+    grid-template-columns: var(--cs-sidebar-width) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-areas:
+        "header header"
+        "sidebar main";
+    padding: 0;
+    gap: 0;
+}
+
+/* ── Header Zone ────────────────────────────────────────────── */
+.header {
+    flex: 0 0 var(--cs-header-height);
+    height: var(--cs-header-height);
+    min-height: var(--cs-header-height);
+    z-index: var(--cs-z-header);
+    position: relative;
+}
+
+.cs-app > .header {
+    grid-area: header;
+    min-width: 0;
+    display: block;
+    height: auto;
+    min-height: 0;
+    padding: 0;
+    border-bottom: 0;
+}
+
+/* ── Obsidian Header (Req 8.1–8.4, 8.13, 18.6) ──────────────── */
+.cs-hdr {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    row-gap: 4px;
+    column-gap: 8px;
+    padding: 8px 12px;
+    background: linear-gradient(180deg, var(--cs-surface-1), var(--cs-sidebar));
+    box-shadow: inset 0 -1px 0 var(--cs-border-subtle);
+    min-width: 0;
+}
+
+.cs-hdr__brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    min-width: 0;
+    min-height: var(--cs-h-ico);
+}
+
+.cs-hdr .brand-title {
+    color: var(--cs-text-primary);
+    font-family: var(--cs-font-sans);
+    font-size: var(--cs-type-11);
+    font-weight: var(--cs-weight-bold);
+    letter-spacing: 0;
+}
+
+.cs-hdr .hdr-status {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+}
+
+.cs-hdr__dot {
+    position: relative;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    flex: 0 0 8px;
+    border-radius: var(--cs-radius-pill);
+    background: var(--cs-text-muted);
+}
+
+.cs-hdr__dot[data-state="ok"] {
+    background: var(--cs-success);
+}
+
+.cs-hdr__dot[data-state="warn"] {
+    background: var(--cs-warning);
+}
+
+.cs-hdr__dot[data-state="ok"]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: var(--cs-radius-pill);
+    background: var(--cs-success);
+    animation: cs-hdr-pulse 2s ease-out infinite;
+}
+
+@keyframes cs-hdr-pulse {
+    from { transform: scale(1); opacity: 0.55; }
+    to { transform: scale(2.6); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cs-hdr__dot[data-state="ok"]::after {
+        content: none;
+        animation: none;
+    }
+}
+
+/* Comp_Monitor pill: only the name shrinks (Req 8.13). */
+.cs-comp-monitor {
+    display: flex;
+    align-items: center;
+    flex: 1 0 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: 28px;
+    padding: 0 8px;
+    box-sizing: border-box;
+    border: 1px solid var(--cs-border-subtle);
+    border-radius: var(--cs-radius-sm);
+    background: var(--cs-canvas);
+    color: var(--cs-text-primary);
+    font-family: var(--cs-font-sans);
+    font-size: var(--cs-type-11);
+    cursor: pointer;
+    text-align: left;
+}
+
+.cs-comp-monitor__name {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: var(--cs-weight-semibold);
+    color: var(--cs-text-primary);
+}
+
+.cs-comp-monitor__meta {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    font-family: var(--cs-font-mono);
+    font-size: var(--cs-type-10);
+    color: var(--cs-text-secondary);
+}
+
+/* ── Left Sidebar (grid placement only; styling in sidebar.css) ─ */
+.app-sidebar {
+    grid-area: sidebar;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    z-index: var(--cs-z-sidebar);
+    position: relative;
+}
+
+/* ── Main Content Area ──────────────────────────────────────── */
+.app-content {
+    grid-area: main;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--cs-canvas);
+    position: relative;
+}
+
+/* ── Route mounts ───────────────────────────────────────────── */
+/* `hidden` alone hides a mount; no rule gives .cs-route a display
+   outside :not([hidden]) (Req 7.4, 18.2). */
+.cs-route:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* ── Module containers ──────────────────────────────────────── */
+#toolkit-module,
+#templates-module {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#settings-module {
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* ── Scrollbar Theme ────────────────────────────────────────── */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--cs-scrollbar-thumb);
+    border-radius: var(--cs-radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--cs-scrollbar-thumb-hover);
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+/* ── Selection ──────────────────────────────────────────────── */
+::selection {
+    background: var(--cs-accent-subtle);
+    color: var(--cs-text-primary);
+}
+
+/* ── Header notifications list (Req 8.11, 8.12, 8.15) ────────── */
+/* No display on .cs-notify: the hidden attribute alone controls it. */
+.cs-notify {
+    position: absolute;
+    top: 40px;
+    right: 8px;
+    width: min(280px, calc(100vw - 16px));
+    max-height: 50vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 4px 0;
+    background: var(--cs-surface-2);
+    border: 1px solid var(--cs-border-medium);
+    border-radius: var(--cs-radius-lg);
+    z-index: var(--cs-z-dropdown);
+}
+
+.cs-notify__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.cs-notify__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 10px;
+    color: var(--cs-text-primary);
+    font-family: var(--cs-font-sans);
+    font-size: var(--cs-type-11);
+    overflow-wrap: anywhere;
+}
+
+.cs-notify__icon {
+    flex: 0 0 14px;
+    width: 14px;
+    height: 14px;
+    color: var(--cs-toast-info);
+}
+
+.cs-notify__icon svg {
+    width: 14px;
+    height: 14px;
+}
+
+.cs-notify__item[data-toast-type="success"] .cs-notify__icon { color: var(--cs-success); }
+.cs-notify__item[data-toast-type="warning"] .cs-notify__icon { color: var(--cs-warning); }
+.cs-notify__item[data-toast-type="error"] .cs-notify__icon { color: var(--cs-danger); }
+
+.cs-notify__text {
+    min-width: 0;
+}
+
+.cs-notify__empty {
+    margin: 0;
+    padding: 8px 10px;
+    color: var(--cs-text-secondary);
+    font-family: var(--cs-font-sans);
+    font-size: var(--cs-type-11);
+}
+
+.cs-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ── Responsive modes (Req 7.8, 8.13, 15.1–15.5, 15.9) ─────────
+   Narrow_Mode  (max-width: 279.98px): Header across both columns,
+                icon-only Sidebar at the constant 56px width.
+   Standard_Mode 280–550px: the base rules above.
+   Wide_Mode    (min-width: 550.02px): as Standard for the Shell.
+   Mode rules hide label spans only, never a focusable element. */
+@media (max-width: 279.98px) {
+    body.cs-app {
+        grid-template-columns: var(--cs-sidebar-width-narrow) minmax(0, 1fr);
+        grid-template-areas:
+            "header header"
+            "sidebar main";
+    }
+
+    .cs-sidebar {
+        width: var(--cs-sidebar-width-narrow);
+        min-width: var(--cs-sidebar-width-narrow);
+    }
+
+    .cs-sidebar-item__label {
+        display: none;
+    }
+}
+
+/* Text fitting: flex and grid children may shrink, view scrollers never
+   scroll horizontally (Req 15.4). */
+.cs-app > *,
+.cs-main > *,
+.cs-route > * {
+    min-width: 0;
+}
+
+.cs-route:not([hidden]) {
+    overflow-x: hidden;
+}
+
+/* ── Focus ring: accessibility override (Req 6.8, 18.3) ─────── */
+/* Style, width and color win over every legacy outline rule; the offset
+   is not forced, so redesigned components use 2px and Sidebar items 1px.
+   One of the two !important blocks allowed in this file. */
+:focus-visible {
+    outline-style: solid !important;
+    outline-width: 2px !important;
+    outline-color: var(--cs-focus-ring) !important;
+    outline-offset: 2px;
+}
+
+/* ── Reduced motion: accessibility override (Req 18.6, 18.7) ── */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation: none !important;
+        transition-property: opacity !important;
+        transition-duration: var(--cs-duration-reduced) !important;
+        transition-delay: 0s !important;
+        scroll-behavior: auto !important;
+    }
+}

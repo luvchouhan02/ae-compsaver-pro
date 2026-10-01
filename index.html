@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CompSaver v2.0</title>
+    <link rel="stylesheet" href="css/tokens.css?v=200">
+    <link rel="stylesheet" href="css/settings.css?v=200">
+    <link rel="stylesheet" href="css/sidebar.css?v=200">
+    <link rel="stylesheet" href="css/components.css?v=200">
+    <link rel="stylesheet" href="css/command-palette.css?v=200">
+    <link rel="stylesheet" href="css/media-engine.css?v=200">
+    <link rel="stylesheet" href="css/style.css?v=200">
+    <link rel="stylesheet" href="css/toast.css?v=1">
+    <link rel="stylesheet" href="css/modals.css?v=1">
+</head>
+
+<body class="cs-app">
+
+    <!-- ========== HEADER ========== -->
+    <div class="header">
+        <div class="cs-hdr" id="cs-hdr">
+            <div class="cs-hdr__brand" id="top-mini-logo" title="CompSaver">
+                <span class="cs-hdr__dot" id="cs-hdr-dot" data-state="pending" role="img" aria-label="Checking After Effects"></span>
+                <span class="brand-typo" id="brand-typo"><span class="brand-title">COMPSAVER</span></span>
+                <svg class="flask-mini" width="22" height="26" viewBox="0 0 60 75" fill="none" style="display:none;"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <mask id="flaskMask-hdr">
+                            <path d="M25 10 L25 24 L11 50 C7 57 12 64 21 64 L39 64 C48 64 53 57 49 50 L35 24 L35 10 Z"
+                                fill="white" />
+                        </mask>
+                    </defs>
+                    <ellipse class="fglow" cx="30" cy="66" rx="22" ry="5" opacity="0.7" />
+                    <g mask="url(#flaskMask-hdr)">
+                        <rect class="flask-liquid" x="8" y="40" width="44" height="28" />
+                        <ellipse class="lwave" cx="30" cy="40" rx="22" ry="5" />
+                        <ellipse cx="28" cy="53" rx="9" ry="4" fill="rgba(255,255,255,0.18)" />
+                    </g>
+                </svg>
+            </div>
+            <div class="hdr-status">
+                <button type="button" class="cs-icon-btn" id="btn-hdr-purge" data-toolkit-action="cache"
+                    aria-label="Purge cache" title="Purge cache">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                </svg>
+                </button>
+                <button type="button" class="cs-icon-btn" id="btn-hdr-truedup" data-toolkit-action="truedup"
+                    aria-label="True duplicate selected layers" title="True duplicate">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                    <rect x="9" y="9" width="13" height="13" rx="2" />
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
+                </button>
+                <button type="button" class="cs-icon-btn" id="btn-hdr-notify" aria-label="Notifications"
+                    aria-expanded="false" aria-controls="cs-notify" title="Notifications">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+                </button>
+                <div class="cs-legacy-hooks" hidden>
+                    <div class="main-switcher" style="display:none;">
+                        <button class="main-nav-btn" id="btn-main-toolkit" type="button"></button>
+                        <button class="main-nav-btn active" id="btn-main-templates" type="button"></button>
+                        <button class="main-nav-btn" id="btn-header-browse" type="button"></button>
+                    </div>
+                    <div class="brand-by"><span id="template-count">0</span></div>
+                    <button class="icon-btn" id="btn-search-toggle" type="button" aria-label="Open command palette"></button>
+                    <button class="icon-btn" id="btn-settings-gear" type="button" aria-hidden="true"></button>
+                </div>
+            </div>
+            <button type="button" class="cs-comp-monitor" id="monitor-active-comp"
+                aria-label="Active composition: checking. Activate to refresh.">
+                <span class="cs-comp-monitor__name">Checking…</span><span class="cs-comp-monitor__meta"></span>
+            </button>
+            <div class="cs-notify" id="cs-notify" role="region" aria-label="Notifications" hidden>
+                <ol class="cs-notify__list" id="cs-notify-list"></ol>
+                <p class="cs-notify__empty" id="cs-notify-empty">No notifications yet</p>
+            </div>
+        </div>
+    </div>
+
+    <aside class="app-sidebar cs-sidebar" id="app-sidebar">
+        <nav class="cs-sidebar-nav" aria-label="Sections">
+        <button type="button" class="cs-sidebar-item" id="btn-sidebar-templates" data-sidebar-route="templates"
+            aria-label="Templates" title="Templates">
+            <svg class="cs-sidebar-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                <path d="M2 12l10 5 10-5" />
+                <path d="M2 17l10 5 10-5" />
+            </svg>
+            <span class="cs-sidebar-item__label">Templates</span>
+        </button>
+        <button type="button" class="cs-sidebar-item" id="btn-sidebar-kit" data-sidebar-route="tools"
+            aria-label="Tools" title="Tools">
+            <svg class="cs-sidebar-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.6 6.6a2 2 0 0 1-2.8-2.8l6.6-6.6a6 6 0 0 1 7.9-7.9l-4 3.6z" />
+            </svg>
+            <span class="cs-sidebar-item__label">Tools</span>
+        </button>
+        <button type="button" class="cs-sidebar-item" id="btn-sidebar-fx" data-sidebar-route="effects"
+            aria-label="Effects" title="Effects">
+            <svg class="cs-sidebar-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
+                <path d="M20 3v4" /><path d="M22 5h-4" />
+            </svg>
+            <span class="cs-sidebar-item__label">Effects</span>
+        </button>
+        <button type="button" class="cs-sidebar-item" id="btn-sidebar-type" data-sidebar-route="text"
+            aria-label="Text" title="Text">
+            <svg class="cs-sidebar-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M4 7V4h16v3" />
+                <path d="M9 20h6" />
+                <path d="M12 4v16" />
+            </svg>
+            <span class="cs-sidebar-item__label">Text</span>
+        </button>
+        <button type="button" class="cs-sidebar-item" id="btn-sidebar-flow" data-sidebar-route="easing"
+            aria-label="Flow" title="Flow">
+            <svg class="cs-sidebar-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M3 3v18h18" />
+                <path d="M3 18 Q9 18 12 12 T21 6" />
+            </svg>
+            <span class="cs-sidebar-item__label">Flow</span>
+        </button>
+        <button type="button" class="cs-sidebar-item" id="btn-sidebar-colors" data-sidebar-route="colorflow"
+            aria-label="Colors" title="Colors">
+            <svg class="cs-sidebar-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <circle cx="13.5" cy="6.5" r="1.5" /><circle cx="17.5" cy="10.5" r="1.5" /><circle cx="8.5" cy="7.5" r="1.5" /><circle cx="6.5" cy="12.5" r="1.5" />
+                <path d="M12 2a10 10 0 0 0 0 20c.9 0 1.6-.7 1.6-1.6 0-.4-.2-.8-.4-1.1-.3-.3-.4-.7-.4-1.1 0-.9.7-1.6 1.6-1.6H16a6 6 0 0 0 6-6C22 6 17.5 2 12 2z" />
+            </svg>
+            <span class="cs-sidebar-item__label">Colors</span>
+        </button>
+        <div class="cs-sidebar-divider" role="separator"></div>
+        <button type="button" class="cs-sidebar-item" id="btn-sidebar-settings" data-sidebar-route="settings"
+            aria-label="Settings" title="Settings">
+            <svg class="cs-sidebar-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+            </svg>
+            <span class="cs-sidebar-item__label">Settings</span>
+        </button>
+        <button type="button" class="cs-sidebar-item" id="btn-sidebar-palette" data-sidebar-command="palette"
+            aria-label="Commands" aria-haspopup="dialog" aria-keyshortcuts="Control+K Meta+K"
+            title="Command palette (Ctrl+K)">
+            <svg class="cs-sidebar-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <span class="cs-sidebar-item__label">Commands</span>
+        </button>
+        </nav>
+    </aside>
+
+    <main class="app-content cs-main">
+
+        <!-- ========== TOOLKIT MODULE ========== -->
+        <div id="toolkit-module" class="toolkit-module" style="display:none;">
+            <section class="cs-route" id="cs-route-tools" data-route="tools" data-view-mount="tools" hidden></section>
+            <section class="cs-route" id="cs-route-colorflow" data-route="colorflow" data-view-mount="colorflow" hidden></section>
+            <section class="cs-route" id="cs-route-effects" data-route="effects" data-view-mount="effects" hidden></section>
+            <section class="cs-route" id="cs-route-easing" data-route="easing" data-view-mount="easing" hidden></section>
+            <section class="cs-route" id="cs-route-text" data-route="text" data-view-mount="text" hidden></section>
+        </div>
+
+        <!-- ========== SETTINGS MODULE ========== -->
+        <section class="cs-route" id="cs-route-settings" data-route="settings" data-view-mount="settings" hidden></section>
+
+        <!-- ========== TEMPLATES MODULE ========== -->
+        <section class="cs-route" id="cs-route-templates" data-route="templates" data-view-mount="templates" hidden></section>
+
+        <div class="cs-overlay-root" id="cs-overlay-root" data-view-mount="overlays"></div>
+    </main>
+
+    <!-- ========== COMMAND PALETTE (Ctrl+K) ========== -->
+    <div id="cs-command-palette" class="cs-command-palette" role="dialog" aria-modal="true">
+        <div class="cs-command-palette__box">
+            <div class="cs-command-palette__input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input type="text" id="cs-cmd-input" class="cs-command-palette__input" role="combobox" aria-label="Search commands" aria-autocomplete="list" aria-expanded="false" aria-controls="cs-cmd-results" placeholder="Search commands" autocomplete="off" spellcheck="false">
+            </div>
+            <div id="cs-cmd-results" class="cs-command-palette__results" role="listbox" aria-label="Commands"></div>
+            <div class="cs-command-palette__hint">
+                <span>Navigate <kbd>↑</kbd><kbd>↓</kbd></span>
+                <span>Select <kbd>↵</kbd></span>
+                <span>Close <kbd>esc</kbd></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast cs-toast-surface" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- HIDDEN LEGACY HOOKS (JS references these ids) -->
+    <div class="cs-legacy-hooks" hidden>
+        <div id="sidebar-tk-switcher" class="sidebar-switcher" style="display:none;">
+            <div class="tk-section-switcher">
+                <button class="tk-section-btn active" id="btn-tk-tools" data-target="toolkit-tools-view"></button>
+                <button class="tk-section-btn" id="btn-tk-effects" data-target="toolkit-effects-view"></button>
+                <button class="tk-section-btn" id="btn-tk-graph" data-target="toolkit-graph-view"></button>
+                <button class="tk-section-btn" id="btn-tk-text-anim" data-target="toolkit-text-anim-view"></button>
+            </div>
+        </div>
+        <div id="sidebar-tpl-switcher" class="sidebar-switcher" style="display:none;"></div>
+    </div>
+
+    <script src="js/CSInterface.js?v=28"></script>
+    <script src="js/core/constants.js?v=28"></script>
+    <script src="js/core/featureFlags.js?v=2"></script>
+    <script src="js/core/observability.js?v=3"></script>
+    <script src="js/core/appLifecycle.js?v=1"></script>
+    <script src="js/core/scheduler.js?v=1"></script>
+    <script src="js/core/state.js?v=28"></script>
+    <script src="js/core/settings.js?v=31"></script>
+    <script src="js/core/bridge.js?v=28"></script>
+    <script src="js/core/bridgeRegistry.js?v=1"></script>
+    <script src="js/core/pathBuilders.js?v=1"></script>
+    <script src="js/core/toolBridge.js?v=1"></script>
+    <script src="js/core/aerenderRunner.js?v=1"></script>
+    <script src="js/core/thumbnailEngine.js?v=1"></script>
+    <script src="js/core/saveController.js?v=28"></script>
+    <script src="js/core/importEngine.js?v=28"></script>
+    <script src="js/core/analysisHelpers.js?v=28"></script>
+    <script src="js/core/utils.js?v=28"></script>
+    <script src="js/core/dom.js?v=28"></script>
+    <script src="js/core/node.js?v=28"></script>
+    <script src="js/core/persistence.js?v=32"></script>
+    <script src="js/ui/toast.js?v=28"></script>
+    <script src="js/ui/view-loader.js?v=1"></script>
+    <script src="js/ui/startup-gate.js?v=1"></script>
+    <script src="js/ui/shell-state.js?v=1"></script>
+    <script src="js/ui/tooltips.js?v=28"></script>
+    <script src="js/ui/paste.js?v=29"></script>
+    <script src="js/ui/focus-trap.js?v=28"></script>
+    <script src="js/ui/accent-picker.js?v=34"></script>
+    <script src="js/ui/modals.js?v=28"></script>
+    <script src="js/ui/header.js?v=28"></script>
+    <script src="js/ui/comp-monitor.js?v=28"></script>
+    <script src="js/ui/settings-panel.js?v=35"></script>
+    <script src="js/ui/accent.js?v=34"></script>
+    <script src="js/toolkit/colorflow.js?v=29"></script>
+    <script src="js/toolkit/flow.js?v=29"></script>
+    <script src="js/toolkit/effects.js?v=29"></script>
+    <script src="js/toolkit/toolkit.js?v=29"></script>
+    <script src="js/textanim/textanim.js?v=29"></script>
+    <script src="js/templates/templateCatalog.js?v=1"></script>
+    <script src="js/templates/virtualGrid.js?v=1"></script>
+    <script src="js/templates/templateCardView.js?v=1"></script>
+    <script src="js/templates/templateActions.js?v=1"></script>
+    <script src="js/templates/templates.js?v=42"></script>
+    <script src="js/core/keyedMediaCardHelper.js?v=1"></script>
+    <script src="js/core/fastMediaEngine.js?v=2"></script>
+    <script src="js/ui/command-palette.js?v=1"></script>
+    <script src="js/ui/toolkit-workbench.js?v=1"></script>
+    <script src="js/ui/shell-router.js?v=1"></script>
+    <script src="js/ui/focus-manager.js?v=1"></script>
+    <script src="js/ui/sidebar.js?v=1"></script>
+    <script src="js/main.js?v=33"></script>
+</body>
+
+</html>

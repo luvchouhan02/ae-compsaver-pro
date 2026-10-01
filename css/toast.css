@@ -1,0 +1,91 @@
+/* ════════════════════════════════════════════════════════════════
+   CompSaver — Obsidian toast surface (Req 3.9, 4.4, 14.1, 14.2, 18.6)
+   ────────────────────────────────────────────────────────────────
+   Only #toast, .toast and .cs-toast-surface* selectors. Loaded after
+   style.css, so these rules win ties with the legacy .toast rules in
+   base.css and templates.css, which stay in place. Tokens only.
+   ════════════════════════════════════════════════════════════════ */
+
+#toast.cs-toast-surface {
+    position: fixed;
+    left: 8px;
+    right: 8px;
+    bottom: 12px;
+    top: auto;
+    margin: 0 auto;
+    width: fit-content;
+    min-width: 0;
+    max-width: calc(100vw - 16px);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    border: 1px solid var(--cs-border-medium);
+    border-radius: var(--cs-radius-lg);
+    background: var(--cs-surface-glass);
+    backdrop-filter: var(--cs-glass-blur);
+    -webkit-backdrop-filter: var(--cs-glass-blur);
+    color: var(--cs-text-primary);
+    font-family: var(--cs-font-sans);
+    font-size: var(--cs-type-11);
+    font-weight: var(--cs-weight-medium);
+    line-height: 1.35;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+    text-align: left;
+    pointer-events: none;
+    z-index: var(--cs-z-toast);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 150ms ease, transform 150ms ease;
+}
+
+#toast.cs-toast-surface.show {
+    opacity: 1;
+    transform: none;
+}
+
+#toast.cs-toast-surface.cs-toast-surface--instant {
+    transition: none;
+}
+
+#toast.toast::before {
+    content: none;
+}
+
+.cs-toast-surface__icon {
+    display: inline-flex;
+    flex: 0 0 14px;
+    width: 14px;
+    height: 14px;
+    color: var(--cs-toast-info);
+}
+
+.cs-toast-surface__icon svg {
+    width: 14px;
+    height: 14px;
+}
+
+.cs-toast-surface__text {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+#toast.cs-toast-surface[data-toast-type="success"] { border-color: var(--cs-success-border); }
+#toast.cs-toast-surface[data-toast-type="info"] { border-color: var(--cs-toast-info-border); }
+#toast.cs-toast-surface[data-toast-type="warning"] { border-color: var(--cs-warning-border); }
+#toast.cs-toast-surface[data-toast-type="error"] { border-color: var(--cs-danger-border); }
+
+#toast.cs-toast-surface[data-toast-type="success"] .cs-toast-surface__icon { color: var(--cs-success); }
+#toast.cs-toast-surface[data-toast-type="info"] .cs-toast-surface__icon { color: var(--cs-toast-info); }
+#toast.cs-toast-surface[data-toast-type="warning"] .cs-toast-surface__icon { color: var(--cs-warning); }
+#toast.cs-toast-surface[data-toast-type="error"] .cs-toast-surface__icon { color: var(--cs-danger); }
+
+@media (prefers-reduced-motion: reduce) {
+    #toast.cs-toast-surface,
+    #toast.cs-toast-surface.show {
+        transform: none;
+        transition: opacity 150ms linear;
+    }
+}

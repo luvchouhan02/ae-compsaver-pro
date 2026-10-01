@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@anthropic/mcp-filesystem",
+        "--root",
+        "."
+      ],
+      "description": "Provides file system access for reading project files, templates, presets, and test fixtures within the CompSaver workspace."
+    },
+    "ae-script-runner": {
+      "command": "node",
+      "args": [
+        "bin/mcp-ae-bridge.js"
+      ],
+      "description": "Bridges MCP requests to After Effects ExtendScript execution. Allows the agent to inspect the AE project state, run toolkit actions, and query composition metadata without manual host calls.",
+      "env": {
+        "AE_CEP_PORT": "8089"
+      }
+    }
+  }
+}

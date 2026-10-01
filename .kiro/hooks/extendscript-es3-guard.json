@@ -1,0 +1,15 @@
+{
+  "name": "ExtendScript ES3 Guard",
+  "description": "When a JSX file is saved, verify it only uses ECMAScript 3 syntax compatible with After Effects ExtendScript.",
+  "version": "1.0.0",
+  "event": {
+    "type": "onFileSave",
+    "fileMatch": ["jsx/**/*.jsx"]
+  },
+  "actions": [
+    {
+      "type": "prompt",
+      "prompt": "The file {{filePath}} was just saved. This is an ExtendScript file that must use ECMAScript 3 ONLY. Check for any ES5+ syntax violations:\n- const or let (must use var)\n- Arrow functions (must use function expressions)\n- Template literals (must use string concatenation)\n- Classes (must use constructor functions)\n- Destructuring (must use individual assignments)\n- for...of loops (must use for or for-in)\n- Spread/rest operators\n- Default parameters\n- Getter/setter literals\n\nAlso verify:\n- Every function that modifies the project wraps changes in app.beginUndoGroup()/app.endUndoGroup()\n- app.endUndoGroup() is called on EVERY return path (including error paths)\n- No user strings are interpolated into eval() — they must go through decodeBridge()\n- Return values follow the convention: 'true' for silent success, 'OK:message' for success with message, any other string for error\n\nList any violations with line numbers."
+    }
+  ]
+}

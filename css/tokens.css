@@ -1,0 +1,234 @@
+/* ════════════════════════════════════════════════════════════════
+   CompSaver v2.0 — Design Tokens & Color Architecture
+   ────────────────────────────────────────────────────────────────
+   MNTools-Inspired Obsidian Palette · CEP-Safe · Dark-Only
+   No remote resources: the font stacks fall back to system fonts
+   when Inter / JetBrains Mono are not installed.
+   ════════════════════════════════════════════════════════════════ */
+:root {
+    color-scheme: dark;
+
+    /* ═══ Surface Elevations (Obsidian Palette) ═══ */
+   --cs-canvas:          #0b0b0c;
+   --cs-sidebar:         #101011;
+   --cs-surface-1:       #171719;
+   --cs-surface-2:       #202022;
+   --cs-surface-3:       #29292c;
+   --cs-surface-4:       #353539;
+   --cs-surface-glass:   rgba(23, 23, 25, 0.98);
+   --cs-surface-glass-card: rgba(32, 32, 34, 0.98);
+
+    /* Aliases referenced by existing rules */
+    --cs-bg-canvas:       var(--cs-canvas);
+    --cs-bg-inset:        var(--cs-canvas);
+    --cs-bg-surface:      var(--cs-surface-1);
+    --cs-bg-raised:       var(--cs-surface-2);
+    --cs-bg-overlay:      var(--cs-surface-3);
+
+    /* ═══ Borders & Dividing Lines ═══ */
+    --cs-border-subtle:   rgba(255, 255, 255, 0.06);
+    --cs-border-medium:   rgba(255, 255, 255, 0.12);
+    --cs-border-strong:   rgba(255, 255, 255, 0.22);
+    --cs-border-focus:    rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.60);
+    --cs-border-glass:    rgba(255, 255, 255, 0.08);
+
+    /* ═══ Typography Colors ═══ */
+   --cs-text-primary:    #ededee;
+   --cs-text-secondary:  #b0b0b6;
+   --cs-text-muted:      #96969e;
+   --cs-text-disabled:   #65656c;
+
+    /* ═══ Accent Hierarchy ═══
+       --cs-user-accent is never declared in a stylesheet; js/ui/accent.js
+       writes it (and the channel / hover / active tokens) inline on <html>. */
+    --cs-accent-default:  #3b82f6;
+    --cs-accent:          var(--cs-user-accent, var(--cs-accent-default));
+    --cs-accent-r:        59;       /* channels of --cs-accent-default; accent.js overrides them */
+    --cs-accent-g:        130;
+    --cs-accent-b:        246;
+    --cs-accent-hover:    #60a5fa;  /* static default; accent.js overrides it */
+    --cs-accent-active:   #2563eb;  /* static default; accent.js overrides it */
+    --cs-accent-subtle:   rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.14);
+    --cs-accent-glow:     rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.28);
+    --cs-accent-contrast: #ffffff;  /* static; accent.js does not write it; non-text marks only */
+    --cs-on-accent:       var(--cs-canvas);  /* text and icons on accent fills */
+
+    /* ═══ Semantic Colors ═══ */
+    --cs-success:         #22c55e;
+    --cs-success-subtle:  rgba(34, 197, 94, 0.12);
+    --cs-success-border:  rgba(34, 197, 94, 0.30);
+    --cs-warning:         #f59e0b;
+    --cs-warning-subtle:  rgba(245, 158, 11, 0.12);
+    --cs-warning-border:  rgba(245, 158, 11, 0.30);
+    --cs-danger:          #ef4444;
+    --cs-danger-subtle:   rgba(239, 68, 68, 0.12);
+    --cs-danger-border:   rgba(239, 68, 68, 0.30);
+    --cs-danger-bg:       var(--cs-danger-subtle);
+    --cs-info:            var(--cs-accent);
+    --cs-info-subtle:     var(--cs-accent-subtle);
+    --cs-info-border:     rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.30);
+
+    /* Info toasts keep their own color so the four toast types stay distinct
+       for every accent preset */
+    --cs-toast-info:        #38bdf8;
+    --cs-toast-info-border: rgba(56, 189, 248, 0.30);
+
+    /* ═══ Overlays, Glass & Placeholders ═══ */
+    --cs-glass-blur:              blur(12px);
+    --cs-scrim:                   rgba(0, 0, 0, 0.55);
+    --cs-scrim-strong:            rgba(0, 0, 0, 0.68);
+    --cs-shimmer:                 rgba(255, 255, 255, 0.08);
+    --cs-shimmer-dim:             rgba(255, 255, 255, 0.05);
+    --cs-scrollbar-thumb:         rgba(255, 255, 255, 0.08);
+    --cs-scrollbar-thumb-hover:   rgba(255, 255, 255, 0.14);
+
+    /* ═══ Flow & Curve Studio Tokens ═══ */
+   --cs-flow-canvas:     #09090a;
+    --cs-flow-grid:       rgba(255, 255, 255, 0.04);
+    --cs-flow-grid-bold:  rgba(255, 255, 255, 0.08);
+    --cs-flow-curve:      var(--cs-accent);
+    --cs-flow-curve-glow: rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.45);
+    --cs-flow-handle:     #ffffff;
+    --cs-flow-handle-bar: var(--cs-accent-hover);
+
+    /* ═══ MN DOCK Color Accents ═══ */
+    --cs-dock-precomp:    #ef4444;
+    --cs-dock-unprecomp:  #f97316;
+    --cs-dock-adj:        #eab308;
+    --cs-dock-adjustment: var(--cs-dock-adj);
+    --cs-dock-null:       #22c55e;
+    --cs-dock-solid:      #06b6d4;
+    --cs-dock-shape:      #a855f7;
+    --cs-dock-camera:     #60a5fa;
+    --cs-dock-text:       #a78bfa;
+
+    /* ═══ Focus Ring & Halos ═══ */
+    --cs-focus-ring:      var(--cs-accent);
+    --cs-focus-halo:      rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.25);
+
+    /* ═══ Font Stacks ═══ */
+    --cs-font-sans:       "Inter", "Segoe UI", -apple-system, sans-serif;
+    --cs-font-mono:       "JetBrains Mono", Consolas, monospace;
+
+    /* ═══ Typography Scale ═══ */
+    --cs-type-8:  8px;
+    --cs-type-9:  9px;
+    --cs-type-10: 10px;
+    --cs-type-11: 11px;
+    --cs-type-12: 12px;
+    --cs-type-13: 13px;
+    --cs-type-14: 14px;
+    --cs-type-16: 16px;
+    --cs-type-18: 18px;
+    --cs-type-20: 20px;
+
+    --cs-line-compact:  1.2;
+    --cs-line-control:  1.35;
+    --cs-line-reading:  1.5;
+
+    --cs-weight-regular:  400;
+    --cs-weight-medium:   500;
+    --cs-weight-semibold: 600;
+    --cs-weight-bold:     700;
+
+    /* ═══ Sizing & Radii ═══ */
+    --cs-radius-xs:   3px;
+    --cs-radius-sm:   5px;
+    --cs-radius-md:   8px;
+   --cs-radius-lg:   8px;
+   --cs-radius-xl:   8px;
+    --cs-radius-pill: 999px;
+
+    /* Role radii referenced by existing rules */
+    --cs-radius-small:   var(--cs-radius-xs);
+    --cs-radius-control: var(--cs-radius-sm);
+    --cs-radius-panel:   var(--cs-radius-md);
+
+    /* ═══ Control Heights (MNTools scale) ═══ */
+    --cs-h-btn:   34px;
+    --cs-h-ico:   28px;
+    --cs-h-field: 30px;
+    --cs-h-opt:   28px;
+
+    /* ═══ 4/8px Grid Spacing ═══ */
+    --cs-space-0:  0;
+    --cs-space-1:  4px;
+    --cs-space-2:  8px;
+    --cs-space-3:  12px;
+    --cs-space-4:  16px;
+    --cs-space-5:  20px;
+    --cs-space-6:  24px;
+    --cs-space-7:  32px;
+    --cs-space-8:  40px;
+    --cs-space-9:  48px;
+
+    --cs-gap-card: 6px;
+
+    /* ═══ Elevation & Shadows ═══ */
+    --cs-elevation-0:    0 0 0 1px var(--cs-border-subtle);
+    --cs-elevation-1:    0 2px 8px rgba(0, 0, 0, 0.30), 0 0 0 1px var(--cs-border-subtle);
+    --cs-elevation-2:    0 4px 16px rgba(0, 0, 0, 0.45), 0 0 0 1px var(--cs-border-subtle);
+    --cs-elevation-3:    0 8px 32px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--cs-border-subtle);
+    --cs-elevation-glow: 0 0 20px rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.20);
+
+    /* ═══ Motion & Transitions ═══ */
+    --cs-duration-instant:  80ms;
+    --cs-duration-fast:     120ms;
+    --cs-duration-normal:   200ms;
+    --cs-duration-slow:     320ms;
+    --cs-duration-overlay:  280ms;
+    --cs-duration-reduced:  0.01ms;
+
+    /* State durations referenced by existing rules */
+    --cs-duration-hover:    var(--cs-duration-instant);
+    --cs-duration-pressed:  var(--cs-duration-instant);
+    --cs-duration-state:    var(--cs-duration-fast);
+
+    /* Press-scale factor; 1 keeps today's rendering and is motion-safe */
+    --cs-motion-scale:      1;
+
+    --cs-ease-standard:  cubic-bezier(0.16, 1, 0.3, 1);
+    --cs-ease-out:       cubic-bezier(0.0, 0, 0.2, 1);
+    --cs-ease-in:        cubic-bezier(0.4, 0, 1, 1);
+    --cs-ease-bounce:    cubic-bezier(0.34, 1.56, 0.64, 1);
+    --cs-ease-spring:    cubic-bezier(0.22, 1.2, 0.36, 1);
+
+    /* ═══ State Opacities ═══ */
+    --cs-state-hover-opacity:    0.92;
+    --cs-state-active-opacity:   0.82;
+    --cs-state-disabled-opacity: 0.38;
+    --cs-cursor-disabled:        not-allowed;
+
+    /* ═══ Sidebar & Header Dimensions ═══ */
+   --cs-sidebar-width:        64px;
+    --cs-sidebar-width-narrow: var(--cs-sidebar-width);  /* Narrow_Mode keeps the Standard width */
+    --cs-rail-ico:             18px;
+    --cs-nav-ico-stroke:       1.8;
+    --cs-header-height:        42px;
+
+    /* ═══ Z-Index Scale ═══ */
+    --cs-z-base:       0;
+    --cs-z-sidebar:    10;
+    --cs-z-header:     20;
+    --cs-z-dropdown:   30;
+    --cs-z-overlay:    40;
+    --cs-z-modal:      50;
+    --cs-z-toast:      60;
+    --cs-z-tooltip:    70;
+    --cs-z-command:    80;
+
+    /* ═══ Legacy Compatibility Aliases ═══
+       Only the aliases no later stylesheet redeclares live here. Names that
+       css/base.css or css/header.css also declare are owned by those files
+       (they load later and win the cascade), so they are not repeated. */
+    --bg:          var(--cs-surface-1);
+    --bg-raised:   var(--cs-surface-2);
+    --bg-overlay:  var(--cs-surface-3);
+    --bg-inset:    var(--cs-canvas);
+    --tx-md:       var(--cs-text-secondary);
+    --tx-disabled: var(--cs-text-disabled);
+    --line-med:    var(--cs-border-medium);
+    --line-bold:   var(--cs-border-strong);
+    --success:     var(--cs-success);
+    --warning:     var(--cs-warning);
+}

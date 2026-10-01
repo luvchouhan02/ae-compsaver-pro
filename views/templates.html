@@ -1,0 +1,223 @@
+            <div id="templates-module">
+
+                <!-- Sectioned navigation header: section switcher + category controls grouped
+             into one region for clearer information hierarchy (Req 7, 14.1). -->
+                <div class="tpl-toolbar">
+
+                    <!-- Search row (relocated from the header into the Templates
+                         section). Ids preserved so all existing JS wiring
+                         (filterAndRender, Ctrl+F focus, clear) keeps working. -->
+                    <div class="tpl-search-row">
+                        <button id="btn-browse" class="icon-btn" title="Change Folder">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.8" stroke-linecap="round">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                            </svg>
+                        </button>
+                        <span class="tpl-search-ico" aria-hidden="true">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8" />
+                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                            </svg>
+                        </span>
+                        <input type="text" id="search-box" placeholder="Search templates &amp; assets"
+                            aria-label="Search templates and assets" autocomplete="off">
+                    </div>
+
+                    <div class="section-switcher">
+                        <button class="section-btn active" id="btn-section-comp" title="Compositions">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round">
+                                <rect x="2" y="3" width="20" height="14" rx="2" />
+                                <line x1="8" y1="21" x2="16" y2="21" />
+                                <line x1="12" y1="17" x2="12" y2="21" />
+                            </svg>
+                            <span class="switcher-label">COMP</span>
+                        </button>
+                        <button class="section-btn" id="btn-section-png" title="Icon">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3-3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z" />
+                            </svg>
+                            <span class="switcher-label">ICON</span>
+                        </button>
+                        <button class="section-btn" id="btn-section-overlay" title="Image">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                <circle cx="8.5" cy="8.5" r="1.5" />
+                                <polyline points="21 15 16 10 5 21" />
+                            </svg>
+                            <span class="switcher-label">IMG</span>
+                        </button>
+                        <button class="section-btn" id="btn-section-transition" title="Transitions">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                <path d="M2 12l10 5 10-5" />
+                                <path d="M2 17l10 5 10-5" />
+                            </svg>
+                            <span class="switcher-label">LAYR</span>
+                        </button>
+                        <button class="section-btn" id="btn-section-text" title="Text">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="4 7 4 4 20 4 20 7" />
+                                <line x1="9" y1="20" x2="15" y2="20" />
+                                <line x1="12" y1="4" x2="12" y2="20" />
+                            </svg>
+                            <span class="switcher-label">TEXT</span>
+                        </button>
+                        <button class="section-btn" id="btn-section-footage" title="Footage">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="23 7 16 12 23 17 23 7" />
+                                <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+                            </svg>
+                            <span class="switcher-label">FTGE</span>
+                        </button>
+                        <button class="section-btn" id="btn-section-effect" title="Effects">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                            </svg>
+                            <span class="switcher-label">FX</span>
+                        </button>
+                        <!-- Shared Section_Switcher Overflow_Menu (CEP-safe <details> disclosure).
+                             Hidden until the JS relocation helper moves an overflowing button here. -->
+                        <details class="switcher-overflow">
+                            <summary class="switcher-overflow__summary" title="More">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9" />
+                                </svg>
+                                <span class="switcher-label">MORE</span>
+                            </summary>
+                            <div class="switcher-overflow__body"></div>
+                        </details>
+                    </div>
+
+                    <div class="tabs-wrapper">
+                        <div id="category-tabs" class="tabs-area">
+                            <button class="cat-pill active" data-cat="All">All</button>
+                            <button class="cat-pill" data-cat="Favorites">&#9733;</button>
+                        </div>
+                        <button id="btn-more-cats" class="icon-btn" title="Categories">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.8" stroke-linecap="round">
+                                <line x1="8" y1="6" x2="21" y2="6" />
+                                <line x1="8" y1="12" x2="21" y2="12" />
+                                <line x1="8" y1="18" x2="21" y2="18" />
+                                <line x1="3" y1="6" x2="3.01" y2="6" />
+                                <line x1="3" y1="12" x2="3.01" y2="12" />
+                                <line x1="3" y1="18" x2="3.01" y2="18" />
+                            </svg>
+                        </button>
+                        <button id="btn-tmp-bulk-toggle" class="icon-btn icon-btn--danger" title="Bulk Delete"
+                            style="display: inline-flex; margin-left: 4px;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6" />
+                                <path
+                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                            </svg>
+                            <span id="tmp-delete-count" class="tmp-delete-count"
+                                style="display: none; margin-left: 2px;">(0)</span>
+                        </button>
+                        <button id="btn-refresh-templates" class="icon-btn" title="Refresh"
+                            style="display: inline-flex; margin-left: 2px;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10" />
+                                <polyline points="1 20 1 14 7 14" />
+                                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+                            </svg>
+                        </button>
+                        <button id="btn-import-file" class="icon-btn media-import-btn" title="Import File"
+                            style="display: none; margin-left: 4px;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="12" y1="18" x2="12" y2="12"></line>
+                                <line x1="9" y1="15" x2="15" y2="15"></line>
+                            </svg>
+                        </button>
+                        <button id="btn-import-folder" class="icon-btn media-import-btn" title="Import Folder"
+                            style="display: none; margin-left: 2px;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z">
+                                </path>
+                                <line x1="12" y1="11" x2="12" y2="17"></line>
+                                <line x1="9" y1="14" x2="15" y2="14"></line>
+                            </svg>
+                        </button>
+                        <div id="cat-panel" class="cat-panel">
+                            <div class="cat-panel-header">
+                                <span>Categories</span>
+                                <button id="btn-close-cats">&#10005;</button>
+                            </div>
+                            <div class="cat-panel-toggle-row">
+                                <label class="toggle-container">
+                                    <input type="checkbox" id="chk-show-all-cats">
+                                    <span class="toggle-label">Show All Inline</span>
+                                </label>
+                            </div>
+                            <div id="cat-panel-list" class="cat-panel-list">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.tpl-toolbar -->
+
+                <div class="ta-bulk-confirm" id="tmp-bulk-confirm">
+                    <span class="ta-bulk-warning">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                            <line x1="12" y1="9" x2="12" y2="13" />
+                            <line x1="12" y1="17" x2="12.01" y2="17" />
+                        </svg>
+                        Delete selected compositions and assets from disk?
+                    </span>
+                    <div class="ta-bulk-actions">
+                        <button type="button" class="ta-confirm-btn" id="btn-tmp-bulk-confirm">Confirm</button>
+                        <button type="button" class="ta-cancel-btn" id="btn-tmp-bulk-cancel">Cancel</button>
+                    </div>
+                </div>
+
+                <div id="section-comp" class="section-content">
+                    <div id="comp-list-container" class="grid-container"></div>
+                </div>
+                <div id="section-transition" class="section-content" style="display:none;">
+                    <div id="transition-list-container" class="grid-container"></div>
+                </div>
+                <div id="section-text" class="section-content" style="display:none;">
+                    <div id="text-list-container" class="grid-container"></div>
+                </div>
+                <div id="section-footage" class="section-content" style="display:none;">
+                    <div id="footage-list-container" class="grid-container"></div>
+                </div>
+                <div id="section-effect" class="section-content" style="display:none;">
+                    <div id="effect-list-container" class="grid-container"></div>
+                </div>
+                <div id="section-images" class="section-content" style="display:none;">
+                    <div id="icon-list-container" class="grid-container"></div>
+                </div>
+
+                <div class="footer-area">
+                    <button id="btn-save-main" class="btn-neon-outline">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round">
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                        <span id="save-btn-text">Save Template</span>
+                    </button>
+                </div>
+
+            </div>

@@ -1,0 +1,354 @@
+{
+  "pbtResults": {
+    "1. Write bug condition exploration test": {
+      "status": "passed",
+      "failingExample": "Jest expected-failure run: 9 failed, 1 skipped, 2 passed, 12 total. X1 size=4 (expected 3), ids=[\"a\",\"b\",\"c\",\"b-new\"], counts.all=4. X2 ids=[\"a\",\"b\",\"c\",\"b-new\",\"b-final\"], length/counts.all=5. X3 old-name hits=[\"b\"], new-name hits=[\"b-new\"]. X4 old id still resolves; ids=[\"a\",\"b\",\"c\"], counts.all=3 after remove. X5 catalog patch calls=0, marks=0, sourceChanged=false, new id unresolved, all shape probes false. X6 before.favorite=true equals mutated.favorite=true; incremental favorites=0 vs rebuilt=1. X8 selector-list length=0 with no exception. X9 dataset: TypeError reading 'folder'; classList: TypeError reading 'remove'; style: TypeError setting 'cssText'; textContent: TypeError getter-only under strict write and production badgeText=\"\". X7 remained skipped with required label. X10 and X11 passed.",
+      "lastRunTimestamp": 1787653263801
+    },
+    "2. Write preservation property tests (BEFORE implementing any fix)": {
+      "status": "passed",
+      "lastRunTimestamp": 1787656763208
+    }
+  },
+  "executionHistory": {
+    "1. Write bug condition exploration test": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652561749
+      },
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652592251
+      },
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787653320081
+      }
+    ],
+    "2. Write preservation property tests (BEFORE implementing any fix)": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652562164
+      },
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787653334495
+      },
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787656865951
+      }
+    ],
+    "3.1 Add comma-separated selector-list support": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652562453
+      },
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787656888827
+      },
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787657113631
+      }
+    ],
+    "3.2 Add `dataset`": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652562799
+      },
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787657131650
+      },
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787658082055
+      }
+    ],
+    "3.3 Add `classList`": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652562998
+      },
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787658092987
+      }
+    ],
+    "3.4 Add `style`": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652563298
+      }
+    ],
+    "3.5 Add the `textContent` **setter** — apply this LAST": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652563638
+      }
+    ],
+    "3.6 Unskip X7 and record its counterexample": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652563837
+      }
+    ],
+    "3.7 Write `tests/helpers/miniDom.contract.test.js`": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652564019
+      }
+    ],
+    "3.8 Write `tests/card-thumbnail-dom-patch.test.js`": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652564180
+      }
+    ],
+    "3.9 Confirm-only — item 11: `E3` stays red and keeps its label": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652564363
+      }
+    ],
+    "3.10 Verify BUG D — fix check and preservation": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652564547
+      }
+    ],
+    "4.1 Replace `removeUITemplate` in full": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652564732
+      }
+    ],
+    "4.2 Replace `patchUITemplate`'s head and loop, including `before.id`": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652564929
+      }
+    ],
+    "4.3 Add cases B1-B6 to `tests/media-card-lifecycle-preservation.property.test.js`": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652565192
+      }
+    ],
+    "4.4 Item 1 — rewrite `F4-S5-aliasing-rename`": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652565431
+      }
+    ],
+    "4.5 Item 2 — rewrite `F4-S5-aliasing-rename-edges`": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652565877
+      }
+    ],
+    "4.6 Item 3 — rewrite `F4-S4-aliasing-shared`": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652566065
+      }
+    ],
+    "4.7 Item 4 — correct `F2-pin`'s rationale and promote its observation to assertions": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652566235
+      }
+    ],
+    "4.8 Item 5 — collapse `F2-remove`'s `expectMirror`": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652566428
+      }
+    ],
+    "4.9 Item 6 — collapse `F2-patch`'s `expectMirror` and REMOVE the `mirrorSeen` guard": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652566601
+      }
+    ],
+    "4.10 Item 7 — update the `S_SITES` table entries for S4, S5, S6, S7": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652566764
+      }
+    ],
+    "4.11 Item 8 — rewrite the `describe` block comment": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652567004
+      }
+    ],
+    "4.12 Verify BUG B — fix check and preservation": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652567379
+      }
+    ],
+    "5.1 Add `priorIndexedId(t, previous, id)`": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652568023
+      }
+    ],
+    "5.2 Add `reindexRecord(t, oldId, newId)`": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652568320
+      }
+    ],
+    "5.3 Add the re-key branch to `patch`": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652568610
+      }
+    ],
+    "5.4 Add cases A1-A10 to `tests/template-catalog.test.js`": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652568899
+      }
+    ],
+    "5.5 Confirm-only — item 9: three cases in `tests/template-catalog.test.js` that must NOT be weakened": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652569239
+      }
+    ],
+    "5.6 Verify BUG A — fix check and preservation": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652569417
+      }
+    ],
+    "6.1 Add `sectionForCard(card, name, cat)`": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652569596
+      }
+    ],
+    "6.2 Change the derivation in `importCurrentCardToTimeline`": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652569774
+      }
+    ],
+    "6.3 Write `tests/import-section-derivation.property.test.js`": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652569952
+      }
+    ],
+    "6.4 Confirm-only — item 10: `tests/comp-pipeline-integration.test.js` FLOW 6 must NOT be weakened": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652570127
+      }
+    ],
+    "6.5 Verify BUG C — fix check and preservation": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652570303
+      }
+    ],
+    "7.1 Re-run the exploration suite": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652570478
+      }
+    ],
+    "7.2 Re-run the preservation suites": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652570639
+      }
+    ],
+    "7.3 (a) Run the design's per-suite verification command": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652570814
+      }
+    ],
+    "7.4 (b) Run the CEP compatibility scan": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652571097
+      }
+    ],
+    "7.5 (c) Re-measure the 15 miniDom-consuming suites": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652571484
+      }
+    ],
+    "7.6 (d) Hold the full-suite baseline": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652571766
+      }
+    ],
+    "8. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "3c2c3359-3b78-46c3-bf34-4e2699dd6e4e",
+        "chatSessionId": "sess_e96c72fd-22fa-4da7-bc37-2af4846500c7",
+        "timestamp": 1787652572069
+      }
+    ]
+  }
+}

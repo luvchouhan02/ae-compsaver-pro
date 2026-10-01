@@ -1,0 +1,873 @@
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE LAYER — Dock_Range constraint rules (180px–500px)
+   ───────────────────────────────────────────────────────────────
+   The panel docks anywhere from a 180px sliver to a 500px column.
+   THREE distinct treatments are split by the 320px and 400px
+   breakpoints (Req 19.2), each differing from its neighbour in at
+   least one of {control spacing, control size, secondary-label
+   visibility}:
+
+     • NARROW  (≤320px, down to the 180px floor)
+         Reduced spacing + control sizes; the .brand-sub secondary
+         label is hidden; every cluster is pinned to a single line
+         (flex-wrap: nowrap) so nothing wraps. (Req 19.3)
+     • MEDIUM  (321–399px)
+         Balanced spacing + mid-size controls; .brand-sub still
+         hidden — distinguished from NARROW by larger control sizes
+         and from WIDE by the hidden secondary label. (Req 19.2)
+     • WIDE    (≥400px, with an EXTRA-WIDE ≥460px step)
+         Clusters stretch to fill the row instead of clustering at
+         one edge; .brand-sub secondary label becomes visible;
+         control sizes grow so a ~500px dock isn't left empty.
+         (Req 19.4)
+
+   Card_Grid column count is NOT touched here: every grid uses the
+   `repeat(auto-fill, minmax(--grid-min-col, --grid-col-max))`
+   Card_Grid primitive, so its column count derives purely from the
+   rendered width — ≥1 at every width and non-decreasing as width
+   grows (Req 19.5). These media queries therefore never override a
+   grid's min-column, gap, or HORIZONTAL padding (the inputs to the
+   column count); they only adjust column-neutral spacing/sizes so
+   the column count stays a monotonic function of width. The
+   populated tracks stretch to fill via --grid-col-max: 1fr, giving
+   the Wide_Width fill-the-row behaviour for free. (Req 19.4, 19.5)
+
+   Breakpoint-sensitive properties animate via transitions declared
+   in the module CSS, so crossing a breakpoint reflows smoothly with
+   no overlap, clip, or horizontal scrollbar. (Req 19.1, 19.6)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════
+   SECTION_SWITCHER LABEL COLLAPSE — first line of overflow defense
+   (Req 9.7-9.8, 10.5-10.6, 14.9-14.10, 19.2)
+   ───────────────────────────────────────────────────────────────
+   Zero-JS, width-keyed collapse of the switcher label slot to icon-only
+   BEFORE anything can overflow, recovering rail extent. Two-tier across the
+   ≤320 / 321-399 / ≥400 Dock_Range bands: labels are hidden across the two
+   constrained bands (≤399px, icon-only) and revealed at Wide_Width (≥400px) —
+   the same width where the header secondary label flips on. This alone keeps
+   the small switchers (Header's 3 buttons) single-line; the Templates 7-button
+   switcher hands any residual overflow to the JS-measured Overflow_Menu.
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 399px) {
+
+    /* Icon-only mode: collapse the concise label beneath each switcher icon.
+       The Overflow_Menu "More" trigger drops its label to icon-only too. */
+    .main-nav-btn .switcher-label,
+    .section-btn .switcher-label,
+    .switcher-overflow__summary .switcher-label {
+        display: none;
+    }
+}
+
+/* ─── WIDE (≥400px): stretch clusters to fill the row, grow controls,
+   reveal the secondary label. (Req 19.2, 19.4) ─── */
+@media (min-width: 400px) {
+
+    /* Clusters span the available width instead of clustering at one edge. */
+    .tk-workbench-strip {
+        max-width: 100%;
+        align-self: stretch;
+    }
+
+    .tk-fast-access-row {
+        max-width: 100%;
+        align-self: flex-start;
+    }
+
+    .tk-anchor-widget {
+        width: 130px;
+        height: 130px;
+    }
+
+    /* Secondary-label visibility flips ON at Wide_Width (hidden ≤399px) —
+       the observable property distinguishing WIDE from MEDIUM. (Req 19.2) */
+    .brand-typo,
+    .brand-sub {
+        display: flex;
+    }
+
+    /* A touch more breathing room so controls spread across the available
+       width rather than bunching together. (Req 19.4) */
+    .tk-create-row,
+    .tk-fast-access-row,
+    .tk-modules-row {
+        gap: var(--space-3, 6px);
+    }
+}
+
+/* ─── EXTRA-WIDE (≥460px): grow the anchor pad and open spacing so a
+   ~500px dock uses its horizontal space instead of showing dead area.
+   (Req 19.4) ─── */
+@media (min-width: 460px) {
+    .tk-anchor-widget {
+        width: 150px;
+        height: 150px;
+    }
+
+    .tk-workbench-strip {
+        gap: var(--space-4, 8px);
+        padding: var(--space-4, 8px);
+    }
+
+    .header-inner {
+        gap: var(--space-4, 8px);
+        padding: var(--space-3, 6px) var(--space-4, 8px);
+    }
+}
+
+/* ─── MEDIUM (321–399px): balanced — hide the sub-label, mid-size pad.
+   Differs from NARROW by larger control sizes and from WIDE by the
+   hidden secondary label. (Req 19.2) ─── */
+@media (min-width: 321px) and (max-width: 399px) {
+    .brand-sub {
+        display: none;
+    }
+
+    .tk-anchor-widget {
+        width: 118px;
+        height: 118px;
+    }
+}
+
+/* ─── NARROW (≤320px): reduce spacing + control sizes; hide the secondary
+   label; keep every cluster on a single line (no wrapping). (Req 19.3) ─── */
+@media (max-width: 320px) {
+    body {
+        padding: var(--space-1, 2px);
+        gap: var(--space-1, 2px);
+    }
+
+    /* Trim only the VERTICAL grid padding here. Horizontal padding is left at
+       the module default so the Card_Grid's usable width — and therefore its
+       column count — stays a monotonic function of panel width. Shrinking
+       horizontal padding at narrow widths would yield MORE columns than the
+       next range up, violating the non-decreasing column rule. (Req 19.5) */
+    .grid-container {
+        padding: var(--space-1, 2px) var(--space-6, 16px) var(--space-1, 2px) var(--space-4, 8px);
+    }
+
+    .header-inner {
+        padding: var(--space-1, 2px) var(--space-2, 4px);
+        min-height: var(--toolbar-h, 30px);
+        gap: var(--space-2, 4px);
+        flex-wrap: nowrap;
+    }
+
+    .brand-sub {
+        display: none;
+    }
+
+    .tk-workbench-strip {
+        gap: var(--space-1, 2px);
+        padding: var(--space-1, 2px);
+    }
+
+    .tk-anchor-widget {
+        --ap-pad: var(--space-2, 4px);
+        width: 96px;
+        height: 96px;
+        min-width: 0;
+        min-height: 96px;
+        gap: 0;
+    }
+
+    .tk-ap-btn svg {
+        width: 60%;
+        height: 60%;
+    }
+
+    .tk-right-stack {
+        gap: 1px;
+    }
+
+    /* Pin every action cluster to a single line — at narrow widths controls
+       must scale down, never spill onto a new row. (Req 19.3) */
+    .tk-create-row,
+    .tk-fast-access-row,
+    .tk-align-strip,
+    .tk-modules-row,
+    .tk-resize-bar,
+    .tk-seq-row {
+        flex-wrap: nowrap;
+    }
+
+    .tk-create-row {
+        gap: 1px;
+    }
+
+    .tk-icon-btn {
+        height: var(--toolbar-h, 30px);
+        min-width: 26px;
+    }
+
+    .tk-icon-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .tk-align-strip {
+        padding: 1px;
+    }
+
+    .tk-align-btn svg {
+        width: 15px;
+        height: 15px;
+    }
+
+    .tk-fast-access-row {
+        gap: 1px;
+    }
+
+    .tk-cluster--timing {
+        padding: var(--space-1, 2px);
+    }
+
+    .tk-modules-row {
+        gap: var(--space-1, 2px);
+    }
+}
+
+/* ─── ULTRA-NARROW (≤220px): the tightest docks down to the 180px floor —
+   squeeze the anchor pad and icon buttons further so nothing overflows or
+   wraps. Still within the NARROW treatment band. (Req 19.1, 19.3) ─── */
+@media (max-width: 220px) {
+    .tk-anchor-widget {
+        width: 84px;
+        height: 84px;
+    }
+
+    .tk-icon-btn {
+        min-width: 22px;
+    }
+
+    .tk-icon-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CUSTOM TOOLTIPS
+   ═══════════════════════════════════════════════════════════════ */
+.kiro-tooltip,
+.custom-tooltip {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    /* Neutral deep-space glass tinted to the new palette — no residual violet. */
+    background: linear-gradient(180deg, rgba(18, 22, 34, 0.97), rgba(10, 11, 15, 0.98));
+    border: 1px solid var(--p-rule);
+    border-radius: var(--r-sm);
+    padding: 4px 8px;
+    font-size: 8.5px;
+    font-family: var(--font-mono);
+    color: var(--tx-hi);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    white-space: nowrap;
+    max-width: calc(100vw - 8px);
+    box-sizing: border-box;
+    pointer-events: none;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-md), 0 0 8px -1px var(--p-rule);
+    opacity: 0;
+    transform: translateY(2px);
+    /* Show/hide transition ≤150ms per Requirement 14.2 (motion token --dur-fast = 0.12s) */
+    transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.kiro-tooltip.visible,
+.custom-tooltip.show,
+.custom-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Narrow-width tooltip adjustments (Requirement 14.3):
+   At ≤320px, constrain width and allow wrapping (including breaking long
+   unbroken tokens) and trim padding/font so the tooltip never overflows
+   the viewport. */
+.kiro-tooltip.tooltip-narrow,
+.custom-tooltip.tooltip-narrow {
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: calc(100vw - 12px);
+    padding: 3px 6px;
+    font-size: 7.5px;
+    letter-spacing: 0.3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    /* !important: overrides .visible/.show state transform above */
+    .kiro-tooltip,
+    .custom-tooltip {
+        transition: opacity 0.1s linear;
+        transform: none !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PASTE DROP ZONE (legacy support)
+   ═══════════════════════════════════════════════════════════════ */
+#paste-drop-zone {
+    display: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PREMIUM PRESETS DIALOG MODALS
+   ═══════════════════════════════════════════════════════════════ */
+#tk-effects-rename-modal .modal-content,
+#tk-effects-delete-modal .modal-content {
+    /* ID+class specificity (0-1-1-0) already beats templates.css .modal-content (0-0-1-0) —
+       no !important needed */
+    background: #0a0b14;
+    border: 1px solid var(--p-rule);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 12px rgba(var(--primary-rgb), 0.25);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+}
+
+#tk-effects-rename-modal .modal-title,
+#tk-effects-delete-modal .modal-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--p-300);
+    border-bottom: 1px solid var(--line-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding-bottom: clamp(6px, 1.5vw, 10px);
+}
+
+#tk-effects-rename-modal input {
+    /* ID specificity (0-1-0-1) already beats templates.css .modal-field input (0-0-1-1) —
+       no !important needed */
+    background: #06080f;
+    border: 1px solid var(--line-mid);
+    color: #ffffff;
+    font-size: 11px;
+    font-family: var(--font-sans);
+    outline: none;
+    border-radius: var(--r-md);
+    padding: 7px 10px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+#tk-effects-rename-modal input:focus {
+    /* ID specificity beats templates.css .modal-field input:focus */
+    border-color: var(--primary);
+    /* Solid 2px primary ring for a focus indicator ≥3:1 (Req 22.1). */
+    box-shadow: 0 0 0 2px var(--primary), 0 0 8px rgba(var(--primary-rgb), 0.2);
+}
+
+#tk-effects-rename-modal button,
+#tk-effects-delete-modal button {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    height: 22px;
+    border: none;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#btn-tk-effects-rename-cancel,
+#btn-tk-effects-delete-cancel,
+#btn-ta-preset-rename-cancel {
+    /* ID specificity (0-1-0-0) beats templates.css .modal-buttons button (0-0-1-1) */
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--line-dim);
+    color: var(--tx-lo);
+}
+
+#btn-tk-effects-rename-cancel:hover,
+#btn-tk-effects-delete-cancel:hover,
+#btn-ta-preset-rename-cancel:hover {
+    /* ID + :hover (0-1-1-0) beats templates.css hover rules */
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    border-color: var(--line-mid);
+}
+
+#btn-tk-effects-rename-confirm,
+#btn-ta-preset-rename-confirm {
+    /* ID specificity (0-1-0-0) beats templates.css .modal-buttons button (0-0-1-1) */
+    background: var(--primary);
+    border: 1px solid var(--primary);
+    color: #ffffff;
+}
+
+#btn-tk-effects-rename-confirm:hover,
+#btn-ta-preset-rename-confirm:hover {
+    /* ID + :hover (0-1-1-0) beats templates.css hover rules */
+    background: var(--primary-hover);
+    box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.35);
+}
+
+#btn-tk-effects-delete-confirm {
+    /* ID specificity (0-1-0-0) beats templates.css .modal-buttons button (0-0-1-1) —
+       destructive action carries the danger treatment */
+    background: var(--danger);
+    border: 1px solid var(--danger);
+    color: #ffffff;
+}
+
+#btn-tk-effects-delete-confirm:hover {
+    /* ID + :hover (0-1-1-0) beats templates.css hover rules */
+    background: var(--danger);
+    filter: brightness(1.12);
+    box-shadow: 0 0 10px var(--danger-rule);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PRESETS POWER-USER SHORTCUT STATES
+   ═══════════════════════════════════════════════════════════════ */
+.tk-effect-card.is-selected,
+.fx-card.is-selected {
+    /* Compound selector (0-0-2-0) ties with effects.css .tk-effect-card:hover (0-0-2-0)
+       but responsive.css loads later in cascade — wins without !important */
+    border-color: var(--primary-hover);
+    background: #14203a;
+    box-shadow: 0 0 12px rgba(var(--primary-rgb), 0.35);
+}
+
+.inline-rename-input {
+    width: 100%;
+    background: #06080f;
+    border: 1px solid var(--primary);
+    color: #ffffff;
+    font-size: 8px;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    text-align: center;
+    outline: none;
+    border-radius: 3px;
+    padding: 1px 2px;
+    margin: 0;
+    box-sizing: border-box;
+    z-index: 10;
+}
+
+.inline-suggestions-wrap {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px;
+    margin-top: 3px;
+    width: 100%;
+    max-width: 100%;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    z-index: 10;
+    pointer-events: auto;
+    overflow: hidden;
+}
+
+.inline-sug-chip {
+    background: #121a2e;
+    border: 1px solid var(--line-mid);
+    color: var(--p-300);
+    font-family: var(--font-mono);
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    border-radius: 3px;
+    padding: 1px 4px;
+    cursor: pointer;
+    transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease, transform 0.12s ease;
+    height: 12px;
+    line-height: 10px;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inline-sug-chip:hover {
+    background: var(--primary);
+    border-color: var(--primary-hover);
+    color: #ffffff;
+}
+
+.inline-sug-chip:active {
+    transform: scale(0.93);
+}
+
+/* ─── Presets Rename Pop-up suggestions ─── */
+.modal-suggestions-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    margin: 8px 0 12px 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.modal-sug-chip {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--line-mid);
+    color: var(--p-300);
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    padding: 3px 6px;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-sug-chip:hover {
+    background: var(--primary);
+    border-color: var(--primary-hover);
+    color: #ffffff;
+    box-shadow: 0 0 8px rgba(var(--primary-rgb), 0.3);
+}
+
+.modal-sug-chip:active {
+    transform: scale(0.93);
+}
+
+/* ─── Compact Horizontal Category Navigation Bar ─── */
+.tk-category-bar-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 6px;
+    background: rgba(14, 14, 28, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    height: 26px;
+    flex: 0 0 auto;
+}
+
+.tk-category-left {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.category-tab {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: var(--tx-lo);
+    font-size: var(--f-micro);
+    font-weight: 600;
+    padding: 2px 6px;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    box-sizing: border-box;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.category-tab:hover {
+    color: var(--tx-hi);
+    background: var(--surface-1);
+}
+
+.category-tab.active {
+    color: var(--p-200);
+    background: var(--p-tint);
+    border-color: var(--p-rule);
+}
+
+.tk-category-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.tk-menu-toggle-btn {
+    background: var(--surface-1);
+    border: 1px solid var(--line-dim);
+    border-radius: 4px;
+    color: var(--tx-lo);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    height: 18px;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+    gap: 3px;
+}
+
+.tk-menu-toggle-btn svg {
+    width: 8px;
+    height: 8px;
+}
+
+.tk-menu-toggle-btn:hover {
+    border-color: var(--p-rule);
+    color: var(--p-200);
+    background: var(--p-bg);
+}
+
+.tk-category-badge {
+    background: var(--primary-focus);
+    color: #fff;
+    font-size: 7px;
+    font-weight: 700;
+    border-radius: var(--r-md);
+    padding: 0.5px 3.5px;
+    display: inline-block;
+    line-height: 1;
+}
+
+/* ─── Floating Dropdown Menu ─── */
+.tk-dropdown-menu {
+    position: absolute;
+    top: 22px;
+    right: 0;
+    background: rgba(13, 11, 24, 0.99);
+    border: 1px solid var(--p-rule);
+    border-radius: var(--r-md);
+    width: 130px;
+    max-width: calc(100vw - 16px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(var(--primary-rgb), 0.08);
+    z-index: 9999;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-sizing: border-box;
+}
+
+.tk-dropdown-menu.open {
+    display: flex;
+}
+
+.tk-dropdown-header {
+    background: var(--p-bg);
+    color: var(--p-300);
+    font-size: var(--f-nano);
+    font-weight: 700;
+    padding: 4px 8px;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--line-dim);
+}
+
+.tk-dropdown-list {
+    max-height: 150px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.category-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 8px;
+    font-size: var(--f-micro);
+    color: var(--tx-mid);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+    border-bottom: 1px solid var(--line-sub);
+}
+
+.category-row:hover {
+    background: var(--p-bg);
+    color: var(--p-200);
+}
+
+.category-row.active {
+    color: var(--p-200);
+    background: var(--p-tint);
+    font-weight: 600;
+}
+
+.category-row .cat-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.category-row .cat-count {
+    color: var(--tx-lo);
+    font-size: var(--f-nano);
+    font-weight: 600;
+}
+
+/* ─── Bulk Delete Mode — armed states on the toggle button ─── */
+#btn-tk-bulk-delete-toggle.active {
+    color: var(--danger);
+    border-color: var(--danger-rule);
+    background: var(--danger-bg);
+}
+
+#btn-tk-bulk-delete-toggle.has-selection {
+    color: #fff;
+    border-color: var(--danger);
+    background: var(--danger);
+    box-shadow: 0 0 10px rgba(255, 42, 95, 0.45);
+}
+
+/* Grid signals the destructive mode: danger frame + danger card hover */
+.tk-effects-grid.bulk-mode {
+    /* Overrides effects.css .tk-effects-grid border/box-shadow (no !important needed —
+       .bulk-mode compound selector has higher specificity than bare class) */
+    border-color: var(--danger-rule);
+    box-shadow: inset 0 0 18px rgba(255, 42, 95, 0.06);
+}
+
+.tk-effects-grid.bulk-mode .tk-effect-card:hover {
+    border-color: var(--danger-rule);
+    background: var(--danger-bg);
+    box-shadow: var(--shadow-sm);
+    transform: none;
+}
+
+/* ─── Bulk Preset Deletion Selected indicator glow ─── */
+.tk-effect-card.selected-for-delete {
+    /* Compound selector (0-0-2-0) ties with effects.css .tk-effect-card:hover (0-0-2-0)
+       but responsive.css loads later in cascade — wins without !important */
+    border-color: var(--danger);
+    background: var(--danger-bg);
+    box-shadow: 0 0 12px rgba(255, 42, 95, 0.35);
+}
+
+.tk-effect-card.selected-for-delete::before {
+    content: '✓';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 11px;
+    height: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--danger);
+    color: #fff;
+    font-size: 7px;
+    font-weight: 700;
+    line-height: 1;
+    z-index: 7;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* ─── Inline Micro-Glassmorphic Delete Confirmation Wrap ─── */
+.tk-bulk-delete-confirm-wrap {
+    display: none;
+    width: 100%;
+    min-width: 0;
+    background: rgba(14, 11, 22, 0.95);
+    border-bottom: 1px solid rgba(255, 42, 95, 0.25);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 8px rgba(var(--primary-rgb), 0.15);
+    padding: 6px 8px;
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    overflow: hidden;
+}
+
+.tk-delete-confirm-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-width: 0;
+    gap: 8px;
+}
+
+.tk-delete-warning-text {
+    color: var(--danger);
+    font-size: 8.5px;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.tk-delete-confirm-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.tk-confirm-btn,
+.tk-cancel-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: var(--f-nano);
+    font-family: var(--font-sans);
+    font-weight: 700;
+    padding: 3px 8px;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.tk-confirm-btn {
+    color: #ffffff;
+    background: rgba(255, 42, 95, 0.2);
+    border-color: var(--danger-rule);
+}
+
+.tk-confirm-btn:hover {
+    background: var(--danger);
+    border-color: rgba(255, 42, 95, 0.7);
+    box-shadow: 0 0 10px rgba(255, 42, 95, 0.45);
+}
+
+.tk-cancel-btn {
+    color: var(--tx-mid);
+    background: rgba(255, 255, 255, 0.02);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.tk-cancel-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--primary-focus);
+    box-shadow: 0 0 8px rgba(var(--primary-rgb), 0.3);
+}
+
+.tk-confirm-btn:active,
+.tk-cancel-btn:active {
+    transform: scale(0.94);
+    font-weight: 600;
+}

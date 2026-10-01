@@ -1,0 +1,113 @@
+                <div class="tk-view" id="toolkit-effects-view">
+                    <details class="cs-oneframers" id="cs-oneframers">
+                        <summary>One-Framers <span id="cs-oneframer-count">106</span></summary>
+                        <input id="cs-oneframer-search" type="search" aria-label="Search One-Framers" placeholder="Search One-Framers" autocomplete="off">
+                        <div class="cs-oneframer-grid" id="cs-oneframer-grid" aria-label="One-Framer presets">Loading recipes...</div>
+                    </details>
+                    <div class="tk-effects-save-wrap">
+                        <button class="tk-effects-save-btn" id="btn-tk-effect-save" data-toolkit-action="effect-save"
+                            title="Save Preset">
+                            <svg class="tk-save-plus" width="11" height="11" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                            <span>Save Selected Effect</span>
+                        </button>
+                        <button type="button" class="tk-effects-refresh-btn" id="btn-tk-effects-refresh" aria-label="Refresh"
+                            data-tooltip="Refresh">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                            </svg>
+                        </button>
+                        <button type="button" class="tk-effects-history-btn" id="btn-tk-bulk-import" aria-label="Import Presets"
+                            data-tooltip="Import Presets"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                                <line x1="12" y1="18" x2="12" y2="12" />
+                                <line x1="9" y1="15" x2="15" y2="15" />
+                            </svg></button>
+                        <button type="button" class="tk-effects-history-btn" id="btn-tk-bulk-delete-toggle"
+                            data-tooltip="Bulk Delete"
+                            style="width: auto !important; padding: 0 6px !important; gap: 2.5px !important;">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6" />
+                                <path
+                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                            </svg>
+                            <span id="tk-delete-count"
+                                style="display: none; font-size: 8px; font-weight: 700; line-height: 1;">(0)</span>
+                        </button>
+                    </div>
+
+                    <!-- Compact Horizontal Category Navigation Bar -->
+                    <div class="tk-category-bar-wrap">
+                        <div class="tk-category-left">
+                            <button type="button" class="category-tab active" id="btn-tk-cat-all"
+                                data-category="ALL">All</button>
+                            <button type="button" class="category-tab" id="btn-tk-cat-fav" data-category="FAVORITES">★
+                                Fav</button>
+                        </div>
+                        <div class="tk-category-right">
+                            <button type="button" class="tk-menu-toggle-btn" id="tk-menu-toggle-btn"
+                                data-tooltip="Categories">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                                </svg>
+                                <span class="tk-category-badge" id="tk-category-badge">+0</span>
+                            </button>
+                            <!-- Floating absolute dropdown menu -->
+                            <div class="tk-dropdown-menu" id="tk-dropdown-menu">
+                                <div class="tk-dropdown-header">CATEGORIES</div>
+                                <div class="tk-dropdown-list" id="tk-dropdown-list">
+                                    <!-- Dynamic subfolder rows will go here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inline Micro-Glassmorphic Delete Confirmation Overlay -->
+                    <div class="tk-bulk-delete-confirm-wrap" id="tk-bulk-delete-confirm-wrap">
+                        <div class="tk-delete-confirm-inner">
+                            <span class="tk-delete-warning-text">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                    style="margin-right: 4px; flex-shrink: 0;">
+                                    <path
+                                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                                    </path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                                Permanently delete selected presets from disk?
+                            </span>
+                            <div class="tk-delete-confirm-actions">
+                                <button type="button" class="tk-confirm-btn"
+                                    id="btn-tk-bulk-delete-confirm">Confirm</button>
+                                <button type="button" class="tk-cancel-btn"
+                                    id="btn-tk-bulk-delete-cancel">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tk-effects-grid-wrap">
+                        <div class="tk-effects-grid" id="tk-effects-grid">
+                            <div class="tk-empty-state cs-empty-state">
+                                <span class="cs-empty-state__icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M12 3 3 8l9 5 9-5-9-5Z" />
+                                        <path d="M3 13l9 5 9-5" />
+                                    </svg>
+                                </span>
+                                <span class="cs-empty-state__title">No Presets Saved</span>
+                                <small class="cs-empty-state__text">Select an effect in AE and click Save</small>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- /#toolkit-effects-view -->

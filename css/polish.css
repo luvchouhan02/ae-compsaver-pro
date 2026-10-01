@@ -1,0 +1,496 @@
+/* ═══════════════════════════════════════════════════════════════
+   POLISH LAYER — MN-Tools-inspired VISIBLE refinement
+   ---------------------------------------------------------------
+   Presentation-only. Loaded LAST in style.css so it wins the
+   cascade. It changes NO markup, NO JavaScript, and NO selector
+   the Class_Contract depends on — it only restyles existing
+   elements. To revert: delete this file and its @import line in
+   style.css.
+
+   Signature moves borrowed from MN Tools:
+     1. Toolkit action icons rendered as tinted rounded tiles.
+     2. Gradient + glow on active/selected controls.
+     3. Card hover lift with an accent border-glow.
+     4. Slightly richer primary-action feedback.
+   All values reuse existing LAB.PRO tokens (no new tokens).
+   CEP / Chromium 88 safe (no :has()/@container/@layer/color-mix()).
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1. Toolkit action icons → tinted rounded tiles ──────────────
+   The create/precomp row (.tk-icon-btn) and the align strip
+   (.tk-align-btn) currently render as flat bordered buttons. MN's
+   signature look seats each icon in a soft accent-tinted rounded
+   tile. A subtle resting fill + rounder corners make the whole
+   toolkit read as a premium control surface. */
+.tk-icon-btn,
+.tk-align-btn {
+    background: var(--cs-surface-2);
+    border-color: var(--cs-border-subtle);
+    border-radius: var(--cs-radius-sm);
+    transition:
+        transform 0.15s var(--ease-out, ease),
+        background 0.15s var(--ease-out, ease),
+        box-shadow 0.15s var(--ease-out, ease),
+        border-color 0.15s var(--ease-out, ease);
+}
+
+.tk-icon-btn svg,
+.tk-align-btn svg {
+    transition: transform 0.15s var(--ease-out, ease),
+        filter 0.15s var(--ease-out, ease);
+}
+
+.tk-icon-btn:hover:not(.active),
+.tk-align-btn:hover {
+    background: var(--cs-surface-3);
+    border-color: var(--cs-accent);
+    transform: none;
+    box-shadow: none;
+}
+
+.tk-icon-btn:hover:not(.active) svg,
+.tk-align-btn:hover svg {
+    transform: none;
+    filter: none;
+}
+
+/* Keep the semantic variants readable over the new tinted base. */
+.tk-icon-btn--danger:hover {
+    background: var(--danger-bg, rgba(255, 42, 95, 0.12));
+    border-color: var(--danger-rule, rgba(255, 42, 95, 0.3));
+    box-shadow: none;
+}
+
+/* ── 2. Gradient + glow on active / selected controls ────────────
+   MN uses a 135deg primary→primary-hover gradient plus a soft glow
+   to make the active state unmistakable. Applied to the toolkit
+   icon buttons, the anchor cell, and the three primary switchers. */
+.tk-icon-btn.active,
+.tk-ap-btn.active {
+    background: var(--cs-accent-subtle);
+    border-color: var(--cs-accent);
+    color: var(--cs-text-primary);
+    box-shadow: none;
+}
+
+.tk-ap-btn.active .ap-node {
+    fill: #ffffff;
+    opacity: 1;
+}
+
+.tk-icon-btn.active:hover {
+    filter: none;
+    box-shadow: none;
+}
+
+/* Sidebar section switchers + header module switcher: gradient +
+   glow active pill so the current view reads instantly. */
+.tk-section-btn.active,
+.main-nav-btn.active {
+    background: var(--cs-accent-subtle);
+    box-shadow: inset 0 0 0 1px var(--cs-accent);
+    color: var(--cs-text-primary);
+}
+
+/* Preserve the sidebar's left accent bar on top of the gradient. */
+.sidebar-switcher .tk-section-btn.active,
+.sidebar-switcher .section-btn.active {
+    box-shadow: inset 2px 0 0 var(--cs-accent) !important;
+}
+
+/* ── 3. Card hover — lift with accent border-glow ────────────────
+   Existing cards already lift + recolor the border on hover; add a
+   soft violet glow so they feel alive (MN card hover). */
+.icon-card:hover {
+    box-shadow: 0 0 0 1px var(--cs-accent);
+}
+
+/* Make the built-in card gradient sheen a touch more present. */
+.card::before,
+.icon-card::before {
+    transition: opacity 0.15s var(--ease-out, ease);
+}
+
+/* ── 4. Primary / CTA buttons — gradient + glow ──────────────────
+   The footer action buttons and any .btn-primary read richer with
+   a gradient fill and a restrained glow on hover. */
+.btn-primary,
+.btn-import,
+.footer-btn.primary {
+    background: var(--cs-accent) !important;
+    border-color: transparent !important;
+    color: var(--cs-on-accent) !important;
+    transition:
+        filter 0.15s var(--ease-out, ease),
+        box-shadow 0.15s var(--ease-out, ease),
+        transform 0.15s var(--ease-out, ease);
+}
+
+.btn-primary:hover,
+.btn-import:hover,
+.footer-btn.primary:hover {
+    filter: brightness(1.08);
+    box-shadow: none;
+    transform: none;
+}
+
+/* ── Reduced motion: keep the reveal instant, drop the lifts ─────*/
+@media (prefers-reduced-motion: reduce) {
+
+    .tk-icon-btn,
+    .tk-align-btn,
+    .tk-icon-btn svg,
+    .tk-align-btn svg,
+    .card,
+    .icon-card,
+    .btn-primary,
+    .btn-import,
+    .footer-btn.primary {
+        transition: none !important;
+    }
+
+    .tk-icon-btn:hover:not(.active),
+    .tk-align-btn:hover,
+    .btn-primary:hover,
+    .btn-import:hover,
+    .footer-btn.primary:hover {
+        transform: none !important;
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   COMPONENT LOOK — MN-Tools exact styling values (violet-mapped)
+   Segmented controls, toggles and cards adopt MN's precise gradient
+   + shadow + sizing feel. Still presentation-only, own tokens.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Segmented controls: MN's active = 135deg gradient + soft shadow.
+   MN: background:linear-gradient(135deg,primary,primary-2);
+       color:primary-fg; box-shadow:0 2px 8px hsl(primary/.35).
+   Applied to every CompSaver segmented instance: ColorFlow F/L
+   (.flow-target-btn), the shared .cs-segment pattern, and the
+   Core/User/Recent flow tabs. */
+.flow-target-btn.active,
+.cs-segment.active,
+.tk-flow-tabs-mini .active {
+    background: var(--cs-accent-subtle) !important;
+    color: var(--cs-text-primary) !important;
+    border-color: var(--cs-accent) !important;
+    box-shadow: inset 0 0 0 1px var(--cs-accent) !important;
+}
+
+/* The segmented GROUP gets MN's inset track look: a recessed rail with
+   a hairline border and small inner padding so the active pill floats. */
+.cs-segmented,
+.tk-flow-tabs-mini {
+    background: var(--surface-inset, #0b0912);
+    border: 1px solid var(--hairline, rgba(167, 139, 250, 0.08));
+    border-radius: var(--r-md, 10px);
+    padding: 3px;
+    gap: 4px;
+}
+
+/* ── Toggle switch: MN's checked track glows in the accent.
+   MN: checked track = solid primary + primary border; thumb slides.
+   CompSaver's .settings-toggle-track already flips to primary — add
+   the subtle accent glow MN uses so ON reads instantly. */
+.settings-toggle input:checked~.settings-toggle-track {
+    background: var(--cs-accent);
+    border-color: var(--cs-accent);
+    box-shadow: none;
+}
+
+/* ── Factor / value pill buttons (steppers, quick-value chips): MN's
+   active pill uses the same gradient + glow. Scoped to the toolkit
+   stepper +/- controls' active/selected state if present. */
+.tk-seq-btn.active,
+.cs-value-chip.active {
+    background: var(--cs-accent-subtle);
+    color: var(--cs-text-primary);
+    border-color: var(--cs-accent);
+    box-shadow: none;
+}
+
+/* ── Cards: MN seats a rounded tinted icon tile in each card head.
+   CompSaver's template/icon cards are thumbnail tiles (no icon head),
+   so we keep their existing thumbnail layout and only carry the MN
+   hover feel (lift + accent glow, already added above). No change
+   needed here beyond the hover glow. */
+
+
+/* ═══════════════════════════════════════════════════════════════
+   HEADER REBALANCE + RELOCATED TEMPLATES SEARCH
+   Search bar moved out of the header into the Templates section.
+   The header now holds logo + module switcher + status; the switcher
+   expands to fill the freed space so the top bar reads full, not empty.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Distribute the remaining header sections across the full width. */
+.header .header-inner {
+    justify-content: space-between !important;
+    gap: var(--space-3, 8px);
+}
+
+/* Logo and status keep their intrinsic size at the two ends. */
+.header .header-inner .logo-wrap,
+.header .header-inner .hdr-status {
+    flex: 0 0 auto;
+}
+
+/* Module switcher becomes a clean segmented tab bar that fills the freed
+   space. Each button shows icon + label side by side (there's room now that
+   search moved out), so the buttons read as intentional tabs — not big empty
+   icon boxes. Capped so it stays balanced between the logo and status. */
+.header .header-inner .main-switcher {
+    flex: 1 1 auto !important;
+    justify-content: center;
+    gap: var(--space-2, 6px);
+    margin: 0 var(--space-3, 8px);
+    max-width: 300px;
+}
+
+.header .header-inner .main-nav-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    height: 32px;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2, 6px);
+    padding: 0 var(--space-2, 6px);
+    border-radius: var(--r-md, 10px);
+}
+
+.header .header-inner .main-nav-btn svg {
+    flex: 0 0 auto;
+}
+
+.header .header-inner .main-nav-btn .switcher-label {
+    display: inline-block !important;
+    font-family: var(--font-sans);
+    font-size: var(--f-xs, 11px);
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    text-transform: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+/* Narrow docks: drop the labels so the three icons still fit on one line. */
+@media (max-width: 360px) {
+
+    .header .header-inner .main-nav-btn .switcher-label {
+        display: none !important;
+    }
+
+    .header .header-inner .main-switcher {
+        max-width: none;
+    }
+}
+
+/* ── Relocated search row inside the Templates toolbar ─────────── */
+.tpl-search-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2, 6px);
+    padding: var(--space-2, 6px) 0 var(--space-3, 8px);
+}
+
+.tpl-search-row .tpl-search-ico {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    color: var(--tx-lo, rgba(245, 243, 251, 0.44));
+    margin-left: 2px;
+}
+
+/* The input fills the row (settings.css's .search-row rule no longer
+   matches here, so width/flex are set explicitly). */
+.tpl-search-row #search-box {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto;
+    height: 30px;
+    padding: 0 var(--space-3, 10px);
+    background: var(--surface-inset, #0b0912);
+    border: 1px solid var(--hairline-strong, rgba(167, 139, 250, 0.15));
+    border-radius: var(--r-md, 10px);
+    color: var(--tx-hi, #f5f3fb);
+    font: inherit;
+    font-size: var(--f-sm, 12px);
+    outline: none;
+    opacity: 1;
+    pointer-events: auto;
+    transition: border-color 0.15s var(--ease-out, ease), box-shadow 0.15s var(--ease-out, ease), background 0.15s var(--ease-out, ease);
+}
+
+.tpl-search-row #search-box:focus {
+    border-color: var(--p-rule, rgba(139, 92, 246, 0.4));
+    background: var(--surface, rgba(172, 135, 255, 0.075));
+    box-shadow: 0 0 0 2px rgba(var(--primary-rgb, 139, 92, 246), 0.18);
+}
+
+.tpl-search-row #btn-browse {
+    flex: 0 0 auto;
+}
+
+
+/* ── Header switcher refinement ──────────────────────────────────
+   Toolkit + Templates are the two labeled tabs; Settings stays a
+   compact ICON-ONLY button at the end (no text). The switcher uses
+   the full middle width so the two labels never overlap. */
+.header .header-inner .main-switcher {
+    max-width: none;
+}
+
+.header .header-inner #btn-settings-gear {
+    flex: 0 0 auto;
+    width: 34px;
+    padding: 0;
+}
+
+.header .header-inner #btn-settings-gear .switcher-label {
+    display: none !important;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   HEADER — FULLY RESPONSIVE (no overlap at ANY CEP width)
+   Authoritative final rules (override the earlier header blocks above,
+   later-in-file wins). Layout:
+     [ logo (shrinks) | Toolkit + Templates tabs (flex, shrink+ellipsis)
+       | Settings icon (fixed, right) ]
+   min-width:0 on every flex child + overflow:hidden on containers make
+   items SHRINK/CLIP instead of overlapping; labels drop on narrow docks.
+   ═══════════════════════════════════════════════════════════════ */
+.header .header-inner {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center;
+    gap: var(--space-2, 6px);
+    min-width: 0;
+    overflow: hidden;
+}
+
+/* Logo may shrink and never forces overflow. */
+.header .header-inner .logo-wrap {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+}
+
+/* Switcher takes the middle — fully shrinkable and clipped. */
+.header .header-inner .main-switcher {
+    flex: 1 1 auto !important;
+    min-width: 0;
+    max-width: none;
+    overflow: hidden;
+    justify-content: flex-start;
+    gap: var(--space-2, 6px);
+    margin: 0 var(--space-2, 6px);
+}
+
+/* The two module tabs share the width, shrink, and ellipsize their labels. */
+.header .header-inner #btn-main-toolkit,
+.header .header-inner #btn-main-templates {
+    flex: 1 1 0;
+    min-width: 0;
+    height: 32px;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2, 6px);
+    padding: 0 var(--space-2, 6px);
+    border-radius: var(--r-md, 10px);
+    overflow: hidden;
+}
+
+.header .header-inner #btn-main-toolkit .switcher-label,
+.header .header-inner #btn-main-templates .switcher-label {
+    display: inline-block !important;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--font-sans);
+    font-size: var(--f-xs, 11px);
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    text-transform: none;
+}
+
+/* Settings: compact ICON-ONLY, fixed at the far right, never shrinks. */
+.header .header-inner #btn-settings-gear {
+    flex: 0 0 auto !important;
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    padding: 0;
+    margin-left: var(--space-1, 2px);
+}
+
+.header .header-inner #btn-settings-gear .switcher-label {
+    display: none !important;
+}
+
+/* Status region stays compact at the far edge and never forces overflow. */
+.header .header-inner .hdr-status {
+    flex: 0 0 auto;
+    min-width: 0;
+    overflow: hidden;
+}
+
+/* Narrow docks (< 340px): drop the tab labels so the icons alone fit. */
+@media (max-width: 340px) {
+
+    .header .header-inner #btn-main-toolkit .switcher-label,
+    .header .header-inner #btn-main-templates .switcher-label {
+        display: none !important;
+    }
+}
+
+/* ── Optimistic card: thumbnail render failure indicator ──────────────────
+   Feature: save-import-performance-redesign (Task 5.4 / Req 3.4). A card whose
+   background thumbnail render exhausted its retries keeps its placeholder
+   artwork and gains a visible failure badge (injected inline by markCardFailed
+   in templates.js). These rules add a subtle failed-state affordance without
+   hiding the card, which remains selectable and openable. */
+.card.thumb-failed .thumb-box,
+.icon-card.thumb-failed .icon-thumb {
+    position: relative;
+    box-shadow: inset 0 0 0 1px rgba(248, 113, 113, 0.5);
+}
+
+.thumb-fail-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    z-index: 3;
+    pointer-events: none;
+}
+
+/* ── 5. Glassmorphism on Floating UI Elements ──────────────────
+   MN-inspired frosted glass appearance for context menus and dropdowns.
+   Instead of flat backgrounds, these use a semi-transparent tint
+   with a backdrop filter, creating a premium depth effect over cards. */
+.icon-more-popup,
+.tk-dropdown-menu,
+.cat-popup,
+.cs-modal-content {
+    background: var(--cs-surface-1) !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid var(--cs-border-medium);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0,0,0,0.4);
+}
+
+/* Enhance dropdown/popup items to react better on the glass background */
+.icon-more-popup button:hover,
+.tk-dropdown-menu .category-row:hover,
+.cat-popup .cat-list-item:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+}

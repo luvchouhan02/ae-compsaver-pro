@@ -1,0 +1,319 @@
+/* ════════════════════════════════════════════════════════════════
+   CompSaver v2.0 — Header & Status Bar
+   ────────────────────────────────────────────────────────────────
+   MNTools-style branding + status + utility header
+   ════════════════════════════════════════════════════════════════ */
+
+:root {
+    --logo-flask: #7c3aed;
+    --logo-glow: #b87af0;
+    --logo-glow-soft: rgba(184, 122, 240, 0.38);
+}
+
+/* ── Header Shell ───────────────────────────────────────────── */
+.header {
+    display: flex;
+    align-items: center;
+    height: var(--cs-header-height);
+    padding: 0 var(--cs-space-3);
+    background: var(--cs-canvas);
+    border-bottom: 1px solid var(--cs-border-subtle);
+    gap: var(--cs-space-3);
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: var(--cs-space-3);
+    min-width: 0;
+}
+
+/* ── Logo / Branding ────────────────────────────────────────── */
+.logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: var(--cs-space-2);
+    cursor: default;
+    flex-shrink: 0;
+}
+
+.cs-logo-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--cs-accent);
+    box-shadow: 0 0 8px rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.5);
+    animation: cs-logo-pulse 3s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+@keyframes cs-logo-pulse {
+    0%, 100% {
+        box-shadow: 0 0 6px rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.4);
+        opacity: 1;
+    }
+    50% {
+        box-shadow: 0 0 14px rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.7);
+        opacity: 0.85;
+    }
+}
+
+.brand-typo {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.brand-title {
+    font-size: var(--cs-type-11);
+    font-weight: var(--cs-weight-bold);
+    color: var(--tx-hi);
+    letter-spacing: 1.5px;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.brand-sub {
+    font-size: 7px;
+    font-weight: var(--cs-weight-medium);
+    color: var(--cs-text-secondary);
+    letter-spacing: 2px;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+/* Legacy flask SVG rules preserved for contract compliance */
+.flask-mini {
+    display: none;
+    filter: drop-shadow(0 0 6px var(--logo-glow-soft));
+}
+.flask-liquid { fill: var(--logo-flask); }
+.lwave { fill: var(--logo-glow); }
+.fglow { fill: var(--logo-glow); }
+
+/* ── Status Section ─────────────────────────────────────────── */
+.hdr-status {
+    display: flex;
+    align-items: center;
+    gap: var(--cs-space-2);
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+/* ── Connection Status Pill ─────────────────────────────────── */
+.cs-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px 3px 7px;
+    border-radius: var(--cs-radius-pill);
+    background: var(--cs-success-subtle);
+    font-size: 8px;
+    font-weight: var(--cs-weight-semibold);
+    color: var(--cs-success);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.cs-status-pill__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--cs-success);
+    animation: cs-status-pulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+.cs-status-pill--busy {
+    background: var(--cs-warning-subtle);
+    color: var(--cs-warning);
+}
+
+.cs-status-pill--busy .cs-status-pill__dot {
+    background: var(--cs-warning);
+    animation-name: cs-status-pulse-warn;
+}
+
+.cs-status-pill--disconnected {
+    background: var(--cs-danger-subtle);
+    color: var(--cs-danger);
+}
+
+.cs-status-pill--disconnected .cs-status-pill__dot {
+    background: var(--cs-danger);
+    animation: none;
+}
+
+@keyframes cs-status-pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+    50% { opacity: 0.7; box-shadow: 0 0 0 3px rgba(34, 197, 94, 0); }
+}
+
+@keyframes cs-status-pulse-warn {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ── Active Comp Monitor ────────────────────────────────────── */
+.header-comp-monitor {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: var(--cs-radius-sm);
+    background: var(--cs-surface-1);
+    border: 1px solid var(--cs-border-subtle);
+    font-size: 8.5px;
+    font-weight: var(--cs-weight-medium);
+    color: var(--cs-text-secondary);
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-shrink: 1;
+    min-width: 0;
+}
+
+.header-comp-monitor:empty {
+    display: none;
+}
+
+/* ── Template Count Badge ───────────────────────────────────── */
+.brand-by {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: var(--cs-radius-pill);
+    background: var(--cs-accent-subtle);
+    color: var(--cs-accent);
+    font-size: 8px;
+    font-weight: var(--cs-weight-bold);
+    flex-shrink: 0;
+}
+
+/* ── Header Icon Buttons ────────────────────────────────────── */
+.icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: var(--cs-radius-md);
+    background: transparent;
+    color: var(--cs-text-muted);
+    cursor: pointer;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        color var(--cs-duration-fast) var(--cs-ease-standard);
+    outline: none;
+    flex-shrink: 0;
+}
+
+.icon-btn:hover {
+    background: var(--cs-surface-2);
+    color: var(--cs-text-primary);
+}
+
+.icon-btn:active {
+    background: var(--cs-surface-3);
+    transform: scale(0.94);
+}
+
+.icon-btn svg {
+    width: 14px;
+    height: 14px;
+    stroke-width: 1.8;
+}
+
+.icon-btn--danger:hover {
+    background: var(--cs-danger-subtle);
+    color: var(--cs-danger);
+}
+
+/* ── Legacy main-nav-btn → hidden ───────────────────────────── */
+.main-switcher {
+    display: none;
+}
+
+.main-nav-btn {
+    display: none;
+}
+
+/* ── Search Row (Templates module) ──────────────────────────── */
+.search-row {
+    display: none;
+}
+
+/* ── Mode states (attached to document.body) ────────────────── */
+body.mode-toolkit .toolkit-module {
+    display: flex !important;
+}
+
+body.mode-templates #templates-module {
+    display: flex !important;
+}
+
+body.mode-settings #settings-module {
+    display: flex !important;
+}
+
+.search-expanded {
+    display: flex;
+}
+
+.header-inner.search-expanded {
+    gap: var(--cs-space-2);
+}
+
+/* ── Status badges ─────────────────────────────────────────── */
+.hdr-gpu-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 7px;
+    border-radius: var(--cs-radius-pill);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--cs-border-subtle);
+    color: var(--cs-text-secondary);
+    font-size: 8.5px;
+    font-family: var(--cs-font-mono);
+    letter-spacing: 0.2px;
+}
+
+.hdr-gpu-badge__dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--cs-success);
+}
+
+.hdr-bell-wrap {
+    position: relative;
+    display: inline-flex;
+}
+
+.hdr-bell-dot {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--cs-accent);
+    box-shadow: 0 0 6px var(--cs-accent);
+}
+
+/* Redundant header settings gear hidden — settings is accessed via left sidebar SET item */
+#btn-settings-gear {
+    display: none !important;
+}

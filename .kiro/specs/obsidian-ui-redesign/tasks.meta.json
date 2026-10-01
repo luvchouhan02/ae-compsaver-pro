@@ -1,0 +1,898 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Record the Test_Baseline and write the comparison script": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501371107
+      },
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501404197
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790505147810
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790507464582
+      }
+    ],
+    "1.2 Capture the pre-redesign dispatcher fixture": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501371315
+      },
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501404605
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790505140514
+      }
+    ],
+    "1.4 Add the Composed_Markup helper to `tests/helpers/static-analysis.js`": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501371498
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790507480626
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508460319
+      }
+    ],
+    "1.6 Switch the 12 markup-reading tests and the baseline generator to the Composed_Markup": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501371650
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508473727
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508600114
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790509104351
+      }
+    ],
+    "2.1 Align `css/tokens.css` with the master token block": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501371845
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508473863
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790509125362
+      },
+      {
+        "executionId": "615d751b-533f-43e1-abef-df8e459f857a",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790514478645
+      }
+    ],
+    "2.2 Derive the Obsidian accent tokens in `js/ui/accent.js`": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501371983
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508474005
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790509125664
+      },
+      {
+        "executionId": "615d751b-533f-43e1-abef-df8e459f857a",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790513374412
+      }
+    ],
+    "2.4 Load each linked stylesheet once": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501372127
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508474170
+      },
+      {
+        "executionId": "615d751b-533f-43e1-abef-df8e459f857a",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790514496928
+      },
+      {
+        "executionId": "615d751b-533f-43e1-abef-df8e459f857a",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790515051255
+      }
+    ],
+    "2.5 Move the redesigned stylesheets to tokens only and apply the shared control scale": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501372261
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508474312
+      },
+      {
+        "executionId": "615d751b-533f-43e1-abef-df8e459f857a",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790515052145
+      },
+      {
+        "executionId": "615d751b-533f-43e1-abef-df8e459f857a",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790516849096
+      }
+    ],
+    "3. Checkpoint: Milestone 1 complete": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501372449
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508474469
+      },
+      {
+        "executionId": "615d751b-533f-43e1-abef-df8e459f857a",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790516860629
+      }
+    ],
+    "4.1 Create `js/ui/startup-gate.js`": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501372600
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508474610
+      }
+    ],
+    "4.3 Create `js/ui/shell-router.js`": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501372753
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508474751
+      }
+    ],
+    "4.4 Create `js/ui/sidebar.js`": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501372902
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508474913
+      }
+    ],
+    "4.7 Create `js/ui/focus-manager.js`": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501373024
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508475065
+      }
+    ],
+    "5.1 Create `js/ui/view-loader.js`": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501373153
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508475207
+      }
+    ],
+    "5.3 Move the route markup into `views/*.html` and reduce `index.html` to the Shell": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501373270
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508475349
+      }
+    ],
+    "5.4 Rewrite `css/sidebar.css` and add the Shell grid and mount rules": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501373378
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508475497
+      }
+    ],
+    "5.5 Wire the startup sequence and the new modules": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501373485
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508475640
+      }
+    ],
+    "6.1 Add the `csActiveCompInfo` Host query": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501373580
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508475781
+      }
+    ],
+    "6.3 Rebuild the Header markup and styles": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501373680
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508475909
+      }
+    ],
+    "6.4 Rebuild `js/ui/comp-monitor.js`": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501373772
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508476071
+      }
+    ],
+    "7.1 Wire the focus manager and the accessibility overrides": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501373871
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508476210
+      }
+    ],
+    "7.2 Implement the responsive modes and the Workbench column bands": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501373970
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508476352
+      }
+    ],
+    "7.4 Raise the CEP runtime minimum": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501374094
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508476537
+      }
+    ],
+    "8. Checkpoint: Milestone 2 complete": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501374192
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508476781
+      }
+    ],
+    "9.1 Rebuild `js/ui/toast.js`": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501374293
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508476943
+      }
+    ],
+    "9.5 Add `css/toast.css` and `css/modals.css`": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501374399
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508477080
+      }
+    ],
+    "9.6 Add the Header notifications list": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501374490
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508477236
+      }
+    ],
+    "9.8 Implement the feedback policy and Quiet rapid tools in `js/toolkit/toolkit.js`": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501374649
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508477380
+      }
+    ],
+    "10. Checkpoint: Milestone 3 complete": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501374742
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508477501
+      }
+    ],
+    "11.1 Create `js/ui/toolkit-workbench.js`": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501374850
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508477657
+      }
+    ],
+    "11.3 Expose the text presets from `js/textanim/textanim.js`": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501374990
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508477796
+      }
+    ],
+    "11.4 Add `TOOL_INDEX`, `runTool` and the Text Preset Browser renderer": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501375131
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508477946
+      }
+    ],
+    "12.1 Extend `runToolkitAction` for the Workbench": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501375236
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508478103
+      }
+    ],
+    "12.2 Build the Workbench markup in `views/tools.html` and the `.cs-wb-*` styles": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501375326
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508478227
+      }
+    ],
+    "12.3 Move `sequence`, `resize` and `bounce` onto mode composers": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501375412
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508478351
+      }
+    ],
+    "12.4 Wire the Workbench into the Shell": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501375508
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508478495
+      }
+    ],
+    "13. Checkpoint: Milestone 4 complete": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501375591
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508478617
+      }
+    ],
+    "14.1 Add the shared Host helpers to `jsx/workbench.jsx`": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501375689
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508478756
+      }
+    ],
+    "14.3 Add align to Selection": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501375772
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508478884
+      }
+    ],
+    "14.4 Add Mirror Flip": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501375868
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508479015
+      }
+    ],
+    "14.6 Add Batch Blend Mode": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501375973
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508479149
+      }
+    ],
+    "15.1 Add Instant Speed Ramp": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501376056
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508479311
+      }
+    ],
+    "15.3 Add Reverse Video": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501376138
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508479502
+      }
+    ],
+    "15.5 Add Split at Playhead": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501376232
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508479728
+      }
+    ],
+    "15.7 Add Compact Time Remap": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501376348
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508479880
+      }
+    ],
+    "16.1 Add Responsive Text Box": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501376438
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508480057
+      }
+    ],
+    "16.2 Add the pure split function": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501376575
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508485453
+      }
+    ],
+    "16.4 Add Text Splitter": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501376679
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508485954
+      }
+    ],
+    "16.6 Add Find & Replace": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501376768
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508486455
+      }
+    ],
+    "17.1 Author the Instagram Reel guide asset": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501376843
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508486664
+      }
+    ],
+    "17.2 Add the Instagram Reel Safe Zone": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501376940
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508486797
+      }
+    ],
+    "17.4 Add the Aspect Ratio Switcher": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501377032
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508486934
+      }
+    ],
+    "18. Checkpoint: Milestone 5 complete": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501377174
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508487083
+      }
+    ],
+    "19.1 Create `js/toolkit/oneframers-recipes.js`": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501377307
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508487213
+      }
+    ],
+    "19.4 Create `jsx/oneframers.jsx` with `csFxApplyRecipe`": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501377422
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508487358
+      }
+    ],
+    "20.1 Create `js/toolkit/fx-browser.js`": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501377523
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508487517
+      }
+    ],
+    "20.3 Add the FX_Browser markup and styles": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501377619
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508487634
+      }
+    ],
+    "20.4 Wire the FX_Browser and the `fx-recipe` action": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501377779
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508487763
+      }
+    ],
+    "21. Checkpoint: Milestone 6 complete": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501377872
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508487874
+      }
+    ],
+    "22.1 Add the pure palette filter to `js/ui/command-palette.js`": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501377967
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508487998
+      }
+    ],
+    "22.5 Build the palette index": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501378072
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508488143
+      }
+    ],
+    "22.7 Rebuild the palette overlay behavior and styles": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501378308
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508488285
+      }
+    ],
+    "22.8 Wire the palette index": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501378460
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508488417
+      }
+    ],
+    "23. Checkpoint: Milestone 7 complete": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501378559
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508488562
+      }
+    ],
+    "24.1 Write the visual-parity mapping document": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501378661
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508488695
+      }
+    ],
+    "24.2 Write the parity mapping check script": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501378770
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508488810
+      }
+    ],
+    "26. Final checkpoint": [
+      {
+        "executionId": "21ffd994-5beb-46c9-b103-b5eb6b26d3f0",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790501378932
+      },
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790508488928
+      }
+    ],
+    "1. Test harness and Test_Baseline guards (before Milestone 1)": [
+      {
+        "executionId": "d5e84b3c-35ea-4095-a775-a5cc6e6a04f8",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790509104600
+      }
+    ],
+    "2. Milestone 1: Design_Tokens, accent derivation and the tokens-only CSS framework": [
+      {
+        "executionId": "615d751b-533f-43e1-abef-df8e459f857a",
+        "chatSessionId": "sess_3fe58036-27dd-4f0e-a297-1424a5b60518",
+        "timestamp": 1790516849269
+      }
+    ]
+  }
+}

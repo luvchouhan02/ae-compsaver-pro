@@ -1,0 +1,708 @@
+.cs-oneframers { border-bottom: 1px solid var(--cs-border-medium); padding: 10px 0; margin-bottom: 10px; }
+.cs-oneframers summary { cursor: pointer; font-size: 12px; font-weight: 600; color: var(--cs-text-primary); padding: 6px; }
+.cs-oneframers summary span { float: right; font: 10px var(--cs-font-mono); color: var(--cs-text-secondary); }
+.cs-oneframers input { width: 100%; min-width: 0; min-height: 30px; margin: 8px 0; padding: 6px 8px; color: var(--cs-text-primary); background: var(--cs-canvas); border: 1px solid var(--cs-border-medium); border-radius: var(--cs-radius-sm); }
+.cs-oneframer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 6px; max-height: 280px; overflow-y: auto; color: var(--cs-text-secondary); font-size: 11px; }
+.cs-oneframer { display: flex; align-items: center; gap: 8px; min-width: 0; min-height: 38px; padding: 6px 8px; text-align: left; color: var(--cs-text-primary); background: var(--cs-surface-2); border: 1px solid var(--cs-border-subtle); border-radius: var(--cs-radius-sm); font: 11px var(--cs-font-sans); cursor: pointer; }
+.cs-oneframer:hover { background: var(--cs-surface-3); }
+.cs-oneframer:focus-visible, .cs-oneframers input:focus-visible, .cs-oneframers summary:focus-visible { outline: 2px solid var(--cs-accent); outline-offset: -2px; }
+.cs-oneframer span:last-child { min-width: 0; overflow-wrap: anywhere; }
+.cs-oneframer-swatch { width: 8px; height: 20px; flex: 0 0 8px; border-radius: 2px; }
+/* ═══════════════════════════════════════════════════════════════
+   EFFECTS VIEW (Tab 2 of 3) — LAB.PRO Panel Layout Redesign
+   ─ Save button sits ABOVE the effects grid (Req 11.1); cards lay out
+     on the shared Card_Grid pattern (Req 11.2); FFX badge + favorite
+     star hold fixed in-card positions (Req 11.3); per-card hover runs on
+     Motion_System tokens (Req 11.4); bulk-delete applies the destructive
+     grid + selected-card treatment (Req 11.5); the empty state renders
+     inside the grid region with the save button still visible (Req 11.6).
+
+   Layout is driven by the Spacing_Scale / structure / grid tokens from
+   base.css, every usage via the two-arg var(--token, fallback) form so an
+   undefined token still resolves (Req 4.8). All ids / .class / data-*
+   selectors the JS depends on (#tk-effects-grid, .tk-effect-card / .fx-card,
+   .fav-star, .ffx-icon, .effect-name, .action-btn / .rename-btn / .delete-btn,
+   .is-selected, .is-fav, .bulk-mode, .has-selection, .selected-for-delete,
+   .tk-empty-state) are preserved exactly.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Effects view fills available vertical space inside the toolkit view.
+   flex:1 1 0 + min-height:0 allow proper shrinking; internal children
+   (.tk-effects-grid-wrap) use the same pattern to scroll. */
+#toolkit-effects-view {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    width: 100%;
+    min-height: 0;
+    overflow: hidden;
+    background: var(--cs-canvas);
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    gap: 0;
+    box-sizing: border-box;
+    box-shadow: none;
+}
+
+/* ─── Save Button Strip (ABOVE the grid — Req 11.1) ───
+   A compact toolbar region: the primary Save action leads (Req 7.2),
+   trailing utility buttons follow. Spacing comes from the Spacing_Scale. */
+.tk-effects-save-wrap {
+    padding: var(--space-3, 6px) var(--space-3, 6px) 0;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2, 4px);
+}
+
+/* ─── Refresh / Utility Buttons — secondary, low-profile ─── */
+.tk-effects-refresh-btn,
+.tk-effects-history-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    flex: 0 0 auto;
+    padding: 0;
+    background: var(--surface-1);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-xs, 4px);
+    color: var(--ink-muted);
+    cursor: pointer;
+    transition:
+        background var(--dur-base, 0.18s) var(--ease-out),
+        border-color var(--dur-base, 0.18s) var(--ease-out),
+        color var(--dur-base, 0.18s) var(--ease-out),
+        box-shadow var(--dur-base, 0.18s) var(--ease-out);
+    user-select: none;
+    box-sizing: border-box;
+}
+
+.tk-effects-refresh-btn svg,
+.tk-effects-history-btn svg {
+    width: 14px;
+    height: 14px;
+    stroke-width: 1.8;
+}
+
+.tk-effects-refresh-btn:hover,
+.tk-effects-history-btn:hover {
+    border-color: var(--hairline-strong);
+    color: var(--ink);
+    background: var(--surface-2);
+    box-shadow: none;
+}
+
+.tk-effects-refresh-btn:active,
+.tk-effects-history-btn:active {
+    transform: scale(0.92);
+}
+
+/* Disabled state for history/utility buttons (JS disables during async ops) */
+.tk-effects-history-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+    filter: grayscale(0.4);
+}
+
+.tk-effects-refresh-btn.spinning svg {
+    animation: spin 0.8s linear infinite;
+}
+
+/* ─── Save Button — primary accent pill, leads the strip (Req 7.2) ─── */
+.tk-effects-save-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2, 5px);
+    flex: 1;
+    min-width: 0;
+    min-height: 30px;
+    padding: 0 var(--space-5, 10px);
+    background: var(--p-bg);
+    border: 1px solid var(--p-rule);
+    border-radius: var(--r-sm);
+    color: var(--p-200);
+    font-family: var(--cs-font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0;
+    cursor: pointer;
+    transition:
+        background var(--dur-base, 0.18s) var(--ease-out),
+        border-color var(--dur-base, 0.18s) var(--ease-out),
+        color var(--dur-base, 0.18s) var(--ease-out),
+        box-shadow var(--dur-base, 0.18s) var(--ease-out),
+        transform var(--dur-fast, 0.1s) var(--ease-out);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.tk-effects-save-btn svg {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+}
+
+.tk-effects-save-btn:hover {
+    border-color: var(--primary);
+    color: var(--cs-on-accent);
+    background: var(--cs-accent);
+    box-shadow: none;
+}
+
+.tk-effects-save-btn:active {
+    transform: none;
+    background: var(--p-700);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.tk-effects-save-btn:focus-visible {
+    outline: 2px solid var(--primary-focus);
+    outline-offset: -1px;
+}
+
+/* [REMOVED] .tk-effects-controls, .tk-effects-search-wrap, #tk-effects-search,
+   .tk-effects-filter-tabs, .tk-filter-tab — zero DOM matches, no JS references */
+
+/* ─── Effects Grid Region (BELOW the save strip — Req 11.1) ─── */
+.tk-effects-grid-wrap {
+    padding: var(--space-2, 4px) var(--space-3, 6px) var(--space-3, 6px);
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARD_GRID — shared pattern (Req 11.2)
+   Columns derive from width via repeat(auto-fill, minmax(...)) so the
+   count is ≥1 and non-decreasing as the panel widens. --grid-min-col is
+   scoped locally to a compact value here because effect tiles are smaller
+   than template cards, while the auto-fill/minmax FORMULA stays identical
+   to the Card_Grid primitive in base.css. grid-auto-rows pins a uniform
+   row height so every card shares identical dimensions.
+
+   !important: overrides JS-injected inline styles on grid layout
+   properties. Border/box-shadow/background do NOT need !important — no
+   inline JS sets them, and no higher-specificity rule targets this element.
+   ═══════════════════════════════════════════════════════════════ */
+.tk-effects-grid,
+.fx-grid {
+    --grid-min-col: 64px;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(var(--grid-min-col, 64px), var(--grid-col-max, 1fr))) !important;
+    grid-auto-flow: row dense !important;
+    grid-auto-rows: 72px !important;
+    justify-content: start !important;
+    align-content: start !important;
+    gap: var(--grid-gap, 6px) !important;
+    flex: 1 1 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    align-self: stretch !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding: var(--space-4, 8px) !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-md);
+    box-shadow: none;
+    position: relative !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: var(--surface-3) var(--canvas) !important;
+}
+
+/* ── Styled scrollbar ── */
+.tk-effects-grid::-webkit-scrollbar {
+    width: 3px;
+}
+
+.tk-effects-grid::-webkit-scrollbar-track {
+    background: var(--canvas);
+    border-radius: 3px;
+}
+
+.tk-effects-grid::-webkit-scrollbar-thumb {
+    background: var(--surface-3);
+    border-radius: 3px;
+}
+
+.tk-effects-grid::-webkit-scrollbar-thumb:hover {
+    background: var(--hairline-strong);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   EFFECT CARD — uniform compact tile (Req 11.2)
+   Structural slots follow the Card pattern: the in-flow body (FFX badge +
+   name) is centered; the favorite star and corner action buttons hold
+   fixed absolute in-card positions (Req 11.3).
+   ═══════════════════════════════════════════════════════════════ */
+.tk-effect-card,
+.fx-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 100%;
+    min-width: 60px;
+    max-width: 100%;
+    min-height: 68px;
+    /* Card_Grid tile surface (Req 4.9): opaque --surface-card base under the
+       subtle --card-grad sheen, --hairline border, --elev-1 lift. Two-arg
+       var() degrades to a defined opaque dark surface if a token is absent. */
+    background: var(--card-grad), var(--surface-card, #17122a);
+    border: 1px solid var(--hairline, rgba(167, 139, 250, 0.08));
+    border-radius: var(--r-md);
+    color: var(--ink-muted);
+    cursor: pointer;
+    padding: 6px 4px;
+    transition:
+        background var(--dur-base, 0.18s) var(--ease-out),
+        border-color var(--dur-base, 0.18s) var(--ease-out),
+        color var(--dur-base, 0.18s) var(--ease-out),
+        box-shadow var(--dur-base, 0.18s) var(--ease-out),
+        transform var(--dur-fast, 0.12s) var(--ease-out);
+    box-shadow: var(--elev-1, 0 1px 2px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(40, 20, 90, 0.22));
+    overflow: hidden;
+    box-sizing: border-box;
+    user-select: none;
+    z-index: 4;
+}
+
+/* Subtle top sheen for depth */
+.tk-effect-card::after,
+.fx-card::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 50%;
+    background: linear-gradient(180deg, var(--p-bg), transparent);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--dur-base, 0.18s) var(--ease-out);
+}
+
+/* Per-card hover (Req 11.4) — Motion_System tokens drive the lift + glow.
+   The border + background change use only color tokens (always resolvable)
+   and are declared independently of the motion tokens, so a missing
+   --hover-lift / --glow-violet-soft never leaves a card without a visible
+   hover state. The transform + glow are the token-driven enhancement on top. */
+.tk-effect-card:hover,
+.fx-card:hover {
+    border-color: var(--p-rule);
+    background: var(--card-grad), var(--surface-2);
+    color: var(--ink);
+    box-shadow: var(--shadow-md), var(--glow-violet-soft);
+    transform: translateY(var(--hover-lift, -2px));
+}
+
+.tk-effect-card:hover::after,
+.fx-card:hover::after {
+    opacity: 1;
+}
+
+.tk-effect-card:active,
+.fx-card:active {
+    background: var(--surface-3);
+    transform: translateY(0) scale(0.97);
+    transition-duration: 0.05s;
+}
+
+.tk-effect-card:focus-visible,
+.fx-card:focus-visible {
+    outline: 2px solid var(--primary-focus);
+    outline-offset: -1px;
+}
+
+/* ─── Selected card (rename / delete target — JS toggles .is-selected) ─── */
+.tk-effect-card.is-selected,
+.fx-card.is-selected {
+    border-color: var(--primary);
+    background: var(--card-grad), var(--surface-2);
+    color: var(--ink);
+    box-shadow: var(--focus-ring), var(--glow-violet-soft);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BULK-DELETE (DESTRUCTIVE) MODE — Req 11.5
+   JS toggles .bulk-mode / .has-selection on the grid and
+   .selected-for-delete on individual cards. The grid takes on a danger
+   hairline; selected cards take the full danger treatment, visually
+   distinct from unselected cards.
+   ═══════════════════════════════════════════════════════════════ */
+.tk-effects-grid.bulk-mode,
+.fx-grid.bulk-mode,
+.tk-effects-grid.has-selection,
+.fx-grid.has-selection {
+    border-color: var(--danger-rule);
+    box-shadow: inset 0 0 0 1px var(--danger-rule);
+}
+
+.tk-effect-card.selected-for-delete,
+.fx-card.selected-for-delete {
+    border-color: var(--danger);
+    background: linear-gradient(158deg, var(--danger-bg), transparent), var(--surface-1);
+    color: var(--danger);
+    box-shadow: 0 0 0 1px var(--danger-rule), 0 0 12px var(--danger-bg);
+}
+
+.tk-effect-card.selected-for-delete:hover,
+.fx-card.selected-for-delete:hover {
+    border-color: var(--danger);
+    background: linear-gradient(158deg, var(--danger-bg), transparent), var(--surface-2);
+    box-shadow: 0 0 0 1px var(--danger), 0 0 14px var(--danger-bg);
+    transform: translateY(var(--hover-lift, -2px));
+}
+
+.tk-effect-card.selected-for-delete .effect-name,
+.fx-card.selected-for-delete .effect-name,
+.tk-effect-card.selected-for-delete:hover .effect-name,
+.fx-card.selected-for-delete:hover .effect-name {
+    color: var(--danger);
+}
+
+.tk-effect-card.is-fav,
+.fx-card.is-fav {
+    border-color: var(--gold-rule);
+}
+
+.tk-effect-card.is-fav:hover,
+.fx-card.is-fav:hover {
+    border-color: var(--gold);
+    background: var(--surface-2);
+}
+
+/* ─── FFX Badge — fixed in-card position (Req 11.3), small accent so the
+   NAME stays the hero; rendered in-flow, centered above the name in every
+   card so its relative position is identical across the grid. ─── */
+.tk-effect-card .ffx-icon,
+.fx-card .ffx-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    height: 11px;
+    padding: 0 var(--space-2, 4px);
+    background: var(--surface-3);
+    border: none;
+    border-radius: var(--r-xs);
+    color: var(--p-300);
+    font-family: var(--font-mono);
+    font-size: 6.5px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    line-height: 1;
+    white-space: nowrap;
+    box-shadow: none;
+    transition: background 0.1s, color 0.1s;
+    pointer-events: none;
+    position: relative;
+    z-index: 1;
+    opacity: 0.7;
+}
+
+.tk-effect-card .ffx-icon svg,
+.fx-card .ffx-icon svg {
+    display: none;
+}
+
+.tk-effect-card:hover .ffx-icon,
+.fx-card:hover .ffx-icon {
+    background: var(--primary);
+    color: var(--ink);
+}
+
+.tk-effect-card.is-fav .ffx-icon,
+.fx-card.is-fav .ffx-icon {
+    background: var(--gold-bg);
+    color: var(--gold);
+}
+
+/* ─── Effect Name — the visual HERO of every card ─── */
+.tk-effect-card .effect-name,
+.fx-card .effect-name {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    width: 100%;
+    max-width: 100%;
+    max-height: 28px;
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: -0.1px;
+    color: var(--tx-hi);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    line-height: 1.22;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+    pointer-events: none;
+    transition: color 0.14s;
+    position: relative;
+    z-index: 1;
+    padding: 0 2px;
+}
+
+.tk-effect-card:hover .effect-name,
+.fx-card:hover .effect-name {
+    color: #fff;
+}
+
+/* ─── Favorite Star — fixed in-card position, top-right corner (Req 11.3) ─── */
+.tk-effect-card .fav-star,
+.fx-card .fav-star {
+    position: absolute;
+    top: var(--space-1, 2px);
+    right: var(--space-1, 2px);
+    width: 12px;
+    height: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+    border: none;
+    color: var(--ink-tertiary);
+    opacity: 0;
+    cursor: pointer;
+    z-index: 6;
+    transition: opacity 0.15s, color 0.15s, transform 0.12s;
+}
+
+.tk-effect-card .fav-star svg,
+.fx-card .fav-star svg {
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+}
+
+.tk-effect-card:hover .fav-star,
+.fx-card:hover .fav-star {
+    opacity: 0.5;
+}
+
+.tk-effect-card .fav-star:hover,
+.fx-card .fav-star:hover {
+    /* !important: overrides .tk-effect-card:hover .fav-star opacity */
+    opacity: 1 !important;
+    color: var(--gold);
+    transform: scale(1.25);
+}
+
+.tk-effect-card .fav-star.active,
+.tk-effect-card.is-fav .fav-star,
+.fx-card .fav-star.active,
+.fx-card.is-fav .fav-star {
+    opacity: 1;
+    color: var(--gold);
+}
+
+.tk-effect-card .fav-star.active svg,
+.tk-effect-card.is-fav .fav-star svg,
+.fx-card .fav-star.active svg,
+.fx-card.is-fav .fav-star svg {
+    fill: var(--gold);
+    stroke: var(--gold);
+}
+
+/* ─── Corner Action Buttons — fixed in-card positions, revealed on hover ─── */
+.tk-effect-card .action-btn,
+.fx-card .action-btn {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--ink-tertiary);
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 6;
+    transition: opacity 0.15s, color 0.15s, transform 0.12s;
+    padding: 0;
+}
+
+.tk-effect-card .action-btn svg,
+.fx-card .action-btn svg {
+    width: 8px;
+    height: 8px;
+    stroke-width: 2;
+}
+
+.tk-effect-card:hover .action-btn,
+.fx-card:hover .action-btn {
+    opacity: 0.85;
+    /* Vibrant, high contrast on card hover */
+    pointer-events: auto;
+}
+
+.tk-effect-card:hover .rename-btn,
+.fx-card:hover .rename-btn {
+    color: var(--primary-hover);
+    /* High-intensity purple tint on card hover */
+}
+
+.tk-effect-card:hover .delete-btn,
+.fx-card:hover .delete-btn {
+    color: var(--danger);
+    /* High-intensity danger tint on card hover */
+}
+
+.tk-effect-card .delete-btn,
+.fx-card .delete-btn {
+    top: var(--space-1, 2px);
+    left: var(--space-1, 2px);
+}
+
+.tk-effect-card .rename-btn,
+.fx-card .rename-btn {
+    bottom: var(--space-1, 2px);
+    right: var(--space-1, 2px);
+}
+
+.tk-effect-card .action-btn:hover,
+.fx-card .action-btn:hover {
+    /* !important: overrides .card:hover .action-btn opacity for individual button hover */
+    opacity: 1 !important;
+    color: var(--ink) !important;
+    transform: scale(1.25);
+}
+
+.tk-effect-card .action-btn:active,
+.fx-card .action-btn:active {
+    transform: scale(0.88);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARD-HOVER-CONTROLS REALIZATION (base.css §2.4 — Req 11.7, 11.8, 21.2, 22.2, 22.4)
+   The effect card's existing per-card controls — the favorite star (.fav-star)
+   and the rename/delete action buttons (.action-btn) — ARE the hover-revealed
+   control cluster: they hold fixed in-card corner positions identical across
+   every card of the grid, are hidden + non-interactive at rest, and are
+   revealed together on card :hover (rules above). This block completes the
+   cluster contract with NO JavaScript and WITHOUT touching a single existing
+   binding or class:
+     • :focus-within reveal so tabbing to a control shows the cluster (Req 22.2);
+       favorited cards keep their persistent star (guarded by :not(.is-fav)).
+     • instant reveal under Reduced_Motion (Req 22.4).
+   The persistent favorite badge is that same favorite star kept visible by the
+   existing .is-fav / .fav-star.active class while the card is not hovered (see
+   the "Favorite Star" rules above, Req 11.8). No new wrapper, no new class. */
+.tk-effect-card:not(.is-fav):focus-within .fav-star,
+.fx-card:not(.is-fav):focus-within .fav-star {
+    opacity: 0.5;
+}
+
+.tk-effect-card:focus-within .action-btn,
+.fx-card:focus-within .action-btn {
+    opacity: 0.85;
+    pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .tk-effect-card .fav-star,
+    .fx-card .fav-star,
+    .tk-effect-card .action-btn,
+    .fx-card .action-btn {
+        /* !important: accessibility override — reveal must be instant (no tween) */
+        transition: none !important;
+    }
+}
+
+/* ─── Empty State — rendered INSIDE the grid region (Req 11.6).
+   Spans every column so it reads as the grid's content; the save strip
+   above stays visible because it lives in a separate wrap.
+   Adopts the shared .cs-empty-state pattern (base.css §2.2, Req 7.5–7.6):
+   the JS/HTML instance carries `tk-empty-state cs-empty-state` and its
+   children carry the ordered slot classes
+   (.cs-empty-state__icon → __title → __text). The `.tk-empty-state span`
+   /`small` rules below still match the same title/text elements, so the
+   module's mono/uppercase appearance is preserved unchanged. ─── */
+.tk-empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3, 6px);
+    width: 100%;
+    min-height: 100px;
+    padding: var(--space-7, 24px) var(--space-6, 16px);
+    background: transparent;
+    border: none;
+    pointer-events: none;
+    user-select: none;
+    text-align: center;
+    position: relative;
+    z-index: 4;
+}
+
+/* Icon slot — single-stroke glyph (stroke width comes from base.css). */
+.tk-empty-state .cs-empty-state__icon {
+    color: var(--tx-lo);
+    opacity: 0.7;
+    margin-bottom: var(--space-1, 2px);
+}
+
+.tk-empty-state .cs-empty-state__icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.tk-empty-state span {
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--tx-lo);
+}
+
+.tk-empty-state small {
+    font-family: var(--font-sans);
+    font-size: var(--f-nano);
+    font-weight: 400;
+    letter-spacing: 0.2px;
+    color: var(--tx-mute);
+    line-height: 1.4;
+    max-width: 180px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARD PATTERN CONFORMANCE (base.css .cs-card — Req 6.6, 6.7, 8.4)
+   The effect card (.tk-effect-card / .fx-card) is an instance of the frozen
+   Card pattern: its in-flow stack reads container → icon-slot(.ffx-icon) →
+   title(.effect-name), while the favorite star and corner actions are the
+   module-owned absolutely-positioned badge/action overlays. The card markup
+   is JS-rendered, so the pattern is enforced here in CSS rather than by adding
+   a class. Freeze the optional badge slot to a zero layout box when absent so
+   a preset with no FFX badge leaves no empty container (Req 8.4). Additive and
+   behavior-neutral — only a truly empty badge is collapsed. */
+.tk-effect-card .ffx-icon:empty,
+.fx-card .ffx-icon:empty {
+    display: none;
+}

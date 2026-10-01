@@ -1,0 +1,463 @@
+/* ═══════════════════════════════════════════════════════════════
+   COLORFLOW
+   Layout-redesign: the in-toolkit #colorflow-card and the standalone
+   #flow-editor-modal are restructured into labeled, Spacing_Scale-driven
+   sections. All ids/data-* are preserved; swatch fills come from stored
+   palette colors (set inline by colorflow.js), never Design_Token colors.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── ColorFlow card (inside #toolkit-module) ─────────────────────────
+   Two stacked, labeled regions: a controls row (palette + F/L target +
+   refresh) and a swatch row (swatch grid + workshop button). Driven by
+   the Spacing_Scale so spacing matches the rest of the panel. */
+.colorflow-card {
+    gap: var(--space-2, 4px);
+}
+
+.cf-label {
+    display: none;
+    font-family: var(--font-sans, sans-serif);
+    font-size: var(--f-nano, 8px);
+    font-weight: 600;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--tx-lo, rgba(243, 245, 251, 0.44));
+}
+
+.cf-controls,
+.cf-swatch-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2, 4px);
+    width: 100%;
+    min-width: 0;
+}
+
+.cf-swatch-row .flow-swatches-grid {
+    flex: 1;
+}
+
+/* ── Palette dropdown ────────────────────────────────────────────── */
+.flow-select {
+    flex: 1;
+    height: 30px;
+    background: var(--void);
+    border: 1px solid var(--line-dim);
+    border-radius: var(--r-sm);
+    color: var(--tx-mid);
+    font-size: 11px;
+    font-family: var(--font-sans);
+    padding: 0 var(--space-2, 4px);
+    outline: none;
+    cursor: pointer;
+    min-width: 0;
+    transition: border-color 0.12s;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.flow-select:hover {
+    border-color: var(--p-rule);
+}
+
+.flow-select:focus {
+    border-color: var(--p-rule);
+    background: var(--surface);
+    /* Solid 2px primary ring for a focus indicator ≥3:1 (Req 22.1). */
+    box-shadow: 0 0 0 2px var(--primary);
+}
+
+.flow-select option,
+select option {
+    /* !important: overrides native browser default option styling.
+       Native <option> rendering does not resolve CSS custom properties in
+       Chromium 88, so an opaque literal tuned to the deep-space canvas is
+       used here (de-violetized to match the premium dark palette). */
+    background-color: #171719 !important;
+    color: var(--tx-hi) !important;
+}
+
+/* ── Fill / Stroke (F/L) target toggle — hidden as label feature is removed ── */
+.flow-target-toggle {
+    display: none !important;
+    gap: 1px;
+    background: var(--void);
+    border: 1px solid var(--line-dim);
+    border-radius: var(--r-xs);
+    padding: 1px;
+    flex-shrink: 0;
+}
+
+.flow-target-btn {
+    width: 16px;
+    height: 14px;
+    border: none;
+    border-radius: 2px;
+    background: transparent;
+    color: var(--tx-lo);
+    font-size: 7px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.1s, background 0.1s;
+}
+
+.flow-target-btn:not(.active):hover {
+    color: var(--tx-mid);
+    background: var(--lift);
+}
+
+/* Active target differs from the inactive one in background, foreground,
+   and border (box-shadow ring) — Req 15.3. Hover-stable. */
+.flow-target-btn.active {
+    background: var(--p-tint);
+    color: var(--p-200);
+    box-shadow: inset 0 0 0 1px var(--p-rule);
+}
+
+/* ── Action buttons (refresh / edit / modal mgmt) ────────────────── */
+.flow-action-btn {
+    width: 28px;
+    height: 28px;
+    background: var(--void);
+    border: 1px solid var(--line-dim);
+    border-radius: var(--r-xs);
+    color: var(--tx-lo);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.12s, border-color 0.12s, color 0.12s;
+    padding: 0;
+}
+
+.flow-action-btn:hover {
+    border-color: var(--p-rule);
+    background: var(--p-bg);
+    color: var(--p-300);
+}
+
+.flow-action-btn:active {
+    background: var(--p-tint);
+}
+
+/* ── Swatch grid — eight cells; fills are stored colors set by JS ──── */
+.flow-swatches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(24px, 1fr));
+    gap: var(--space-1, 4px);
+    align-items: center;
+    min-width: 0;
+    overflow: visible;
+    /* Recessed swatch well (Req 4.9): opaque --surface-inset fill + inner
+       --hairline; two-arg var() degrades to a defined opaque dark surface.
+       Stored swatch colors (set inline by colorflow.js) are unaffected. */
+    background: var(--surface-inset, #0b0912);
+    border: 1px solid var(--hairline, rgba(167, 139, 250, 0.08));
+    border-radius: var(--r-sm, 7px);
+    padding: var(--space-1, 3px);
+    box-sizing: border-box;
+}
+
+.flow-swatch {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 32px;
+    max-height: 32px;
+    min-height: 24px;
+    border-radius: 4px;
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform 0.12s, border-color 0.12s, box-shadow 0.12s;
+}
+
+.flow-swatch:hover {
+    transform: none;
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.15);
+}
+
+.flow-swatch.selected,
+.flow-swatch.active {
+    border-color: #fff;
+    box-shadow: 0 0 0 2px var(--p-400);
+    transform: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   COLORFLOW EDITOR MODAL (#flow-editor-modal)
+   Restructured into a vertical section stack so every element stays
+   fully visible within the modal bounds across 180–500px (Req 15.2):
+     header → palette mgmt row → picker (SV + hue) → preview/hex →
+     live-apply → palette colors → action buttons.
+   ═══════════════════════════════════════════════════════════════ */
+.flow-modal-content {
+    gap: var(--space-4, 8px);
+    width: 360px;
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.flow-modal-content > * {
+    flex-shrink: 0;
+}
+
+.flow-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.flow-modal-title {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--cs-text-primary);
+}
+
+.flow-modal-mgmt-row {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2, 4px);
+    align-items: center;
+}
+
+.flow-modal-select {
+    flex: 1 1 100px;
+    min-width: 0;
+    height: 30px;
+    font-size: 11px;
+}
+
+.flow-modal-mgmt-row .flow-action-btn {
+    width: 28px;
+    height: 28px;
+    flex: 0 0 auto;
+}
+
+/* Vertical section stack — guarantees the SV field + hue strip always
+   fit on their own row even at the 180px floor (Req 15.2). */
+.flow-modal-layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3, 6px);
+    width: 100%;
+    align-items: stretch;
+}
+
+/* SV field + hue strip share one row; SV flexes to fill, hue is fixed. */
+.flow-modal-picker {
+    display: flex;
+    gap: var(--space-3, 6px);
+    width: 100%;
+    min-width: 0;
+    align-items: stretch;
+}
+
+.flow-modal-sv {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 120px;
+    border-radius: var(--r-md);
+    border: 1px solid var(--line-dim);
+    position: relative;
+    cursor: crosshair;
+    overflow: hidden;
+    background-image:
+        linear-gradient(to bottom, transparent, #000),
+        linear-gradient(to right, #fff, transparent);
+}
+
+.flow-modal-sv-handle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+.flow-modal-hue {
+    width: 18px;
+    height: 120px;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--line-dim);
+    position: relative;
+    cursor: pointer;
+    flex: 0 0 auto;
+    background: linear-gradient(to bottom, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+}
+
+.flow-modal-hue-handle {
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    position: absolute;
+    left: 0;
+    transform: translateY(-50%);
+    pointer-events: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Preview swatch + hex code sit on their own full-width row below the
+   picker so nothing is clipped at narrow widths. */
+.flow-modal-right {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-5, 12px);
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+}
+
+.flow-modal-preview-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2, 4px);
+    align-items: center;
+}
+
+.flow-modal-preview-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--tx-lo);
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+.flow-modal-preview-swatch {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--r-md);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    box-shadow: var(--shadow-sm);
+}
+
+.flow-modal-hex-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1, 2px);
+    align-items: center;
+}
+
+.flow-modal-content .flow-modal-hex-input {
+    width: 80px;
+    min-width: 0;
+    height: 30px;
+    background: var(--void);
+    border: 1px solid var(--line-dim);
+    border-radius: var(--r-sm);
+    color: var(--tx-hi);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-align: center;
+    outline: none;
+    padding: 0;
+    transition: border-color 0.12s;
+}
+
+.flow-modal-hex-input:focus {
+    border-color: var(--p-rule);
+    /* Solid 2px primary ring for a focus indicator ≥3:1 (Req 22.1). */
+    box-shadow: 0 0 0 2px var(--primary);
+}
+
+/* ── Live-apply toggle row ───────────────────────────────────────── */
+.flow-modal-live-row {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.flow-modal-live-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2, 4px);
+    cursor: pointer;
+}
+
+.flow-modal-live-toggle input {
+    margin: 0;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.flow-modal-live-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--tx-dim);
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+/* ── Palette colors section ──────────────────────────────────────── */
+.flow-modal-palette-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2, 4px);
+}
+
+.flow-modal-palette-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.flow-modal-hint {
+    font-size: 10px;
+    color: var(--tx-dim);
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+/* ── Action buttons ──────────────────────────────────────────────── */
+.flow-modal-buttons {
+    margin-top: var(--space-1, 4px);
+    width: 100%;
+    display: flex;
+    gap: var(--space-3, 6px);
+}
+
+.flow-modal-btn {
+    flex: 1;
+    min-width: 0;
+    min-height: 30px;
+    font-size: 11px;
+}
+
+.flow-modal-btn--primary {
+    background: var(--p-600);
+    border-color: var(--p-400);
+    color: var(--cs-on-accent);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SEGMENTED CONTROL CONFORMANCE (base.css .cs-segmented — Req 6.6, 6.7)
+   The Fill/Stroke target toggle (#flow-target-toggle) is an instance of the
+   frozen Segmented control pattern: group(.cs-segmented) → segment(.cs-segment)
+   with a label slot (.cs-segment__label), exactly one segment carrying .active
+   (toggled by colorflow.js via data-target). The pattern classes are added in
+   index.html alongside .flow-target-toggle / .flow-target-btn; those module
+   classes (which load after base.css) keep every appearance detail, so adopting
+   the pattern changes no rendering and preserves the id/data-target contract. */

@@ -1,0 +1,35 @@
+<div class="tk-view" id="toolkit-colorflow-view">
+                            <div class="tk-colorflow-block colorflow-card" id="colorflow-card">
+                                <div class="cf-label">ColorFlow</div>
+                                <div class="cf-controls">
+                                    <select id="flow-palette-select" class="flow-select"></select>
+                                    <!-- Segmented control pattern: group → segment(label-slot),
+                                 exactly one .active (base.css .cs-segmented). id/data-target
+                                 preserved; the F/L text is wrapped in the label slot. -->
+                                    <div class="cs-segmented flow-target-toggle" id="flow-target-toggle" role="group"
+                                        aria-label="Apply target" style="display: none !important;">
+                                        <button type="button" class="cs-segment flow-target-btn active"
+                                            data-target="fill"><span class="cs-segment__label">F</span></button>
+                                        <button type="button" class="cs-segment flow-target-btn"
+                                            data-target="label"><span class="cs-segment__label">L</span></button>
+                                    </div>
+                                    <button type="button" class="flow-action-btn" id="btn-flow-refresh"
+                                        title="Reset Palette"><svg width="10" height="10" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                                        </svg></button>
+                                </div>
+                                <div class="cf-swatch-row">
+                                    <div class="flow-swatches-grid" id="flow-swatches"></div>
+                                    <button type="button" class="flow-action-btn" id="btn-flow-edit"
+                                        title="ColorFlow"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <path d="M12 22a10 10 0 0 1-10-10" stroke="#9900FF" stroke-width="2.5" />
+                                            <path d="M2 12a10 10 0 0 1 10-10" stroke="#FFCC00" stroke-width="2.5" />
+                                        </svg></button>
+                                </div>
+                            </div>
+</div>

@@ -1,0 +1,67 @@
+{
+    "description": "Obsidian UI redesign Test_Baseline (Req 3.1, 3.2, 20.1, 20.2). Recorded with `npx jest --json` on the unmodified repository before Milestone 1. Read by tests/helpers/compare-test-baseline.js.",
+    "recordedAt": "2026-09-27T11:09:29.267Z",
+    "command": "npx jest --json",
+    "jest": "29.7.0",
+    "totals": {
+        "suites": 130,
+        "passedSuites": 126,
+        "failedSuites": 4,
+        "runtimeErrorSuites": 1,
+        "tests": 1587,
+        "passedTests": 1578,
+        "failedTests": 8,
+        "pendingTests": 1,
+        "todoTests": 0
+    },
+    "minimums": {
+        "suites": 130,
+        "tests": 1587
+    },
+    "failingSuites": [
+        "tests/catalog-patch-ordering-exploration.test.js",
+        "tests/media-card-lifecycle-exploration.test.js",
+        "tests/media-card-lifecycle-preservation.property.test.js",
+        "tests/performance/contract-baseline.test.js"
+    ],
+    "failingTests": [
+        {
+            "suite": "tests/catalog-patch-ordering-exploration.test.js",
+            "fullName": "BUG B — UI mutation helpers scan after rewriting their shared array X5 — a shared-shape middle rename reaches the catalog mirror"
+        },
+        {
+            "suite": "tests/catalog-patch-ordering-exploration.test.js",
+            "fullName": "BUG B — UI mutation helpers scan after rewriting their shared array X6 — a shared-shape favourite toggle updates the catalog count"
+        },
+        {
+            "suite": "tests/catalog-patch-ordering-exploration.test.js",
+            "fullName": "BUG D — miniDom cannot reach the imperative card patch loops X9a — refreshCardThumbnail exposes the missing dataset and classList surfaces"
+        },
+        {
+            "suite": "tests/catalog-patch-ordering-exploration.test.js",
+            "fullName": "BUG D — miniDom cannot reach the imperative card patch loops X9b — markCardFailed exposes the missing style and textContent-setter surfaces"
+        },
+        {
+            "suite": "tests/media-card-lifecycle-exploration.test.js",
+            "fullName": "BUG 1 — a persisted thumbnail blanks on reopen E3 [DIAGNOSTIC — stays failing after the fix by design] refreshCardThumbnail withholds `thumbnail` from the index"
+        },
+        {
+            "suite": "tests/media-card-lifecycle-preservation.property.test.js",
+            "fullName": "F2 — the mutation helpers address a media entry's real folder the _findUITemplateRecord unit table a match in the wrong section is not returned, and the section clause is what excludes it"
+        },
+        {
+            "suite": "tests/media-card-lifecycle-preservation.property.test.js",
+            "fullName": "F2 — the mutation helpers address a media entry's real folder the _getTemplateFolderPath unit table every row returns the recorded value, and only the media rows take the early return"
+        },
+        {
+            "suite": "tests/media-card-lifecycle-preservation.property.test.js",
+            "fullName": "P1 — non-media _getTemplateFolderPath is byte-identical to the pre-fix rule 2000 generated non-media records resolve to the pre-fix string exactly"
+        }
+    ],
+    "flaky": [],
+    "notes": [
+        "Each failing suite was re-run once in isolation and failed again; a suite that passes on the re-run would be listed under `flaky` instead of `failingSuites`.",
+        "tests/metadata-cache-currency.test.js is named in the requirements' Test_Baseline but passed in this recording, so it has no entry in failingSuites. A later failure of it is treated as outside the fixture (and retried once by the compare script).",
+        "tests/performance/contract-baseline.test.js fails to load (missing evidence file of another spec) and contributes 0 tests."
+    ]
+}

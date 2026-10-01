@@ -1,0 +1,1083 @@
+/* ════════════════════════════════════════════════════════════════
+   CompSaver v2.0 — Flow / Curve Editor (Complete Rebuild)
+   ────────────────────────────────────────────────────────────────
+   MN Flow + MN Curve inspired split-panel Bezier studio
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── Root Container ─────────────────────────────────────────── */
+.tk-flow-root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--cs-canvas);
+    overflow: hidden;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+.tk-flow-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--cs-border-subtle);
+    background: var(--cs-surface-1);
+    flex-shrink: 0;
+    gap: 6px;
+}
+
+.tk-flow-header-left {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+.tk-flow-icon {
+    color: var(--cs-accent);
+    flex-shrink: 0;
+}
+
+.tk-flow-title {
+    font-size: 12px;
+    font-weight: var(--cs-weight-bold);
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: var(--cs-text-primary);
+    white-space: nowrap;
+}
+
+.tk-flow-mode-selector {
+    display: inline-flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    align-items: center;
+    gap: 1px !important;
+    padding: 1.5px !important;
+    background: var(--cs-canvas) !important;
+}
+
+.tk-flow-mode-selector .cs-segment {
+    padding: 2px 6px !important;
+    min-height: 28px;
+    font-size: 11px !important;
+    white-space: nowrap;
+}
+
+.tk-flow-actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.tk-flow-mini-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid transparent;
+    border-radius: var(--cs-radius-sm);
+    background: transparent;
+    color: var(--cs-text-muted);
+    cursor: pointer;
+    padding: 0;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        border-color var(--cs-duration-fast) var(--cs-ease-standard),
+        color var(--cs-duration-fast) var(--cs-ease-standard);
+    outline: none;
+}
+
+.tk-flow-mini-btn:hover {
+    background: var(--cs-surface-2);
+    border-color: var(--cs-border-subtle);
+    color: var(--cs-text-primary);
+}
+
+/* ── Split Row (Canvas Left + Presets Right) ────────────────── */
+.tk-flow-split-row {
+    display: flex;
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* ── Left Column (Canvas + Controls) ────────────────────────── */
+.tk-flow-col-left {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    min-width: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: var(--cs-canvas);
+}
+
+/* ── Bezier Canvas Wrapper ──────────────────────────────────── */
+.tk-flow-canvas-wrap {
+    position: relative;
+    padding: var(--cs-space-2) var(--cs-space-3);
+    flex-shrink: 0;
+}
+
+.tk-flow-svg {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 240px;
+    margin: 0 auto;
+    background: var(--cs-canvas);
+    border: 1px solid var(--cs-border-medium);
+    border-radius: var(--cs-radius-md);
+    cursor: crosshair;
+    box-shadow: none;
+}
+
+/* ── Handle Readouts & Values ───────────────────────────────── */
+.tk-flow-values {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2px;
+    margin-bottom: 6px;
+}
+
+.tk-flow-handle-readout {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.tk-flow-handle-tag {
+    font-size: 10px;
+    font-weight: var(--cs-weight-bold);
+    letter-spacing: 0;
+    padding: 1.5px 5px;
+    border-radius: 3px;
+    line-height: 1;
+}
+
+.tk-flow-handle-tag.in {
+    background: rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.18);
+    color: var(--cs-accent-hover);
+}
+
+.tk-flow-handle-tag.out {
+    background: var(--cs-surface-3);
+    color: var(--cs-text-primary);
+}
+
+.tk-flow-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 7px;
+    border-radius: var(--cs-radius-sm);
+    background: var(--cs-surface-2);
+    border: 1px solid var(--cs-border-subtle);
+    font-size: 10px;
+    font-weight: var(--cs-weight-semibold);
+    font-family: var(--cs-font-mono);
+    color: var(--cs-text-primary);
+    letter-spacing: 0;
+}
+
+/* ── Direction & Target Bar (Clean 2-Row Stack) ─────────────── */
+.tk-flow-direction-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 7px 10px;
+    border-top: 1px solid var(--cs-border-subtle);
+    background: var(--cs-surface-1);
+    flex-shrink: 0;
+}
+
+.tk-flow-ctrl-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 6px;
+}
+
+.tk-flow-ctrl-label {
+    font-size: 10px;
+    font-weight: var(--cs-weight-bold);
+    color: var(--cs-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0;
+    flex-shrink: 0;
+}
+
+.tk-flow-segmented {
+    display: inline-flex;
+    padding: 2px;
+    background: var(--cs-canvas);
+    border: 1px solid var(--cs-border-subtle);
+    border-radius: var(--cs-radius-sm);
+    gap: 2px;
+    flex: 1;
+    max-width: 160px;
+    justify-content: flex-end;
+}
+
+.tk-flow-segmented .cs-segment {
+    flex: 1 1 0;
+    min-width: 0;
+    text-align: center;
+    padding: 3px 4px !important;
+    min-height: 28px;
+    font-size: 11px !important;
+    white-space: nowrap;
+}
+
+.tk-flow-segmented .cs-segment__label {
+    font-size: 11px;
+    letter-spacing: 0;
+    white-space: nowrap;
+}
+
+/* ── Prevent raw unstyled text duplication ─────────────────── */
+.tk-flow-values-below {
+    display: none !important;
+}
+
+/* ── Advanced Parameters Panel (Elastic / Bounce / Steps) ──── */
+.tk-flow-advanced-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px var(--cs-space-3);
+    border-top: 1px solid var(--cs-border-subtle);
+    background: var(--cs-surface-1);
+    animation: flow-slide-down 0.2s ease-out;
+}
+
+@keyframes flow-slide-down {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tk-flow-param-row {
+    display: flex;
+    align-items: center;
+    gap: var(--cs-space-2);
+}
+
+.tk-flow-param-label {
+    font-size: 11px;
+    font-weight: var(--cs-weight-medium);
+    color: var(--cs-text-secondary);
+    width: 55px;
+    flex-shrink: 0;
+}
+
+.tk-flow-range {
+    flex: 1;
+    height: 3px;
+    background: var(--cs-surface-3);
+    border-radius: var(--cs-radius-pill);
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.tk-flow-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--cs-accent);
+    cursor: pointer;
+    box-shadow: 0 0 6px rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.5);
+}
+
+.tk-flow-param-val {
+    font-size: 11px;
+    font-family: var(--cs-font-mono);
+    color: var(--cs-text-primary);
+    width: 28px;
+    text-align: right;
+}
+
+.tk-flow-toggle-row {
+    padding-top: 2px;
+}
+
+.tk-flow-switch-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--cs-text-secondary);
+    cursor: pointer;
+}
+
+/* ── Primary Apply CTA Bar ──────────────────────────────────── */
+.tk-flow-cta-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--cs-space-2);
+    padding: 8px var(--cs-space-3);
+    border-top: 1px solid var(--cs-border-subtle);
+    background: var(--cs-surface-1);
+    margin-top: auto;
+}
+
+.tk-flow-cta-bar .cs-btn-cta {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 var(--cs-space-3);
+    border: none;
+    border-radius: var(--cs-radius-md);
+    background: var(--cs-accent);
+    color: var(--cs-on-accent);
+    font-size: 11px;
+    font-weight: var(--cs-weight-bold);
+    letter-spacing: 0;
+    cursor: pointer;
+    box-shadow: none;
+    transition: all var(--cs-duration-fast) var(--cs-ease-standard);
+    outline: none;
+}
+
+.tk-flow-cta-bar .cs-btn-cta:hover {
+    background: var(--cs-accent-hover);
+}
+
+.tk-flow-cta-bar .cs-btn-cta:active {
+    background: var(--cs-accent-active);
+}
+
+.tk-flow-save-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--cs-border-medium);
+    border-radius: var(--cs-radius-md);
+    background: var(--cs-surface-2);
+    color: var(--cs-text-secondary);
+    cursor: pointer;
+    transition: all var(--cs-duration-fast) var(--cs-ease-standard);
+    flex-shrink: 0;
+}
+
+.tk-flow-save-btn:hover {
+    background: var(--cs-surface-3);
+    border-color: var(--cs-accent);
+    color: var(--cs-accent);
+}
+
+/* ── Presets Right Column Header ────────────────────────────── */
+.tk-flow-presets-header {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 6px 6px 4px;
+    border-bottom: 1px solid var(--cs-border-subtle);
+    background: var(--cs-surface-1);
+    flex-shrink: 0;
+}
+
+.tk-flow-tabs-mini {
+    display: flex !important;
+    width: 100% !important;
+    gap: 1px !important;
+    padding: 1.5px !important;
+    box-sizing: border-box;
+    background: var(--cs-canvas) !important;
+}
+
+.tk-flow-tabs-mini .cs-segment {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    padding: 3px 0 !important;
+    justify-content: center !important;
+    text-align: center !important;
+    border-radius: var(--cs-radius-xs, 3px) !important;
+}
+
+.tk-flow-tabs-mini .cs-segment__label {
+    font-size: 10px !important;
+    font-weight: var(--cs-weight-bold) !important;
+    letter-spacing: 0 !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: block !important;
+}
+
+.tk-flow-actions-inline {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 3px;
+    width: 100%;
+    padding: 0 2px;
+}
+
+.tk-flow-action-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--cs-radius-xs, 3px);
+    border: 1px solid transparent;
+    background: var(--cs-surface-2);
+    color: var(--cs-text-muted);
+    cursor: pointer;
+    padding: 0;
+    transition: all var(--cs-duration-fast) var(--cs-ease-standard);
+    outline: none;
+}
+
+.tk-flow-action-icon:hover {
+    background: var(--cs-surface-3);
+    border-color: var(--cs-border-subtle);
+    color: var(--cs-text-primary);
+}
+
+.tk-flow-action-icon.active {
+    color: #fbbf24;
+    background: rgba(251, 191, 36, 0.15);
+    border-color: rgba(251, 191, 36, 0.3);
+}
+
+.tk-flow-action-icon:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* ── Value Badges ───────────────────────────────────────────── */
+.tk-flow-values {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--cs-space-1);
+    margin-bottom: var(--cs-space-1);
+}
+
+/* ── Graph Background ───────────────────────────────────────── */
+.flow-graph-bg {
+    fill: transparent;
+}
+
+/* ── Anchor Dots ────────────────────────────────────────────── */
+.flow-anchor-dot {
+    fill: var(--cs-text-muted);
+    stroke: none;
+}
+
+/* ── Direction & Target Controls ────────────────────────────── */
+.tk-flow-controls {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cs-space-2);
+    padding: var(--cs-space-2) var(--cs-space-3);
+    border-top: 1px solid var(--cs-border-subtle);
+}
+
+.tk-flow-control-row {
+    display: flex;
+    align-items: center;
+    gap: var(--cs-space-2);
+}
+
+.tk-flow-control-label {
+    font-size: 8px;
+    font-weight: var(--cs-weight-semibold);
+    color: var(--cs-text-secondary);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    min-width: 44px;
+}
+
+/* ── Curve Type Tabs ────────────────────────────────────────── */
+.tk-flow-curve-tabs {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: var(--cs-space-1) var(--cs-space-3);
+    border-bottom: 1px solid var(--cs-border-subtle);
+    overflow-x: auto;
+    flex-shrink: 0;
+}
+
+.tk-flow-curve-tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 10px;
+    border: none;
+    border-radius: var(--cs-radius-sm);
+    background: transparent;
+    color: var(--cs-text-secondary);
+    font-size: 8px;
+    font-weight: var(--cs-weight-medium);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        color var(--cs-duration-fast) var(--cs-ease-standard);
+    white-space: nowrap;
+    outline: none;
+}
+
+.tk-flow-curve-tab:hover {
+    background: var(--cs-surface-2);
+    color: var(--cs-text-secondary);
+}
+
+.tk-flow-curve-tab.active {
+    background: var(--cs-accent-subtle);
+    color: var(--cs-accent);
+    font-weight: var(--cs-weight-semibold);
+}
+
+/* ── Granular Sliders (Elastic/Bounce params) ───────────────── */
+.tk-flow-sliders {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cs-space-2);
+    padding: var(--cs-space-2) var(--cs-space-3);
+}
+
+.tk-flow-slider-row {
+    display: flex;
+    align-items: center;
+    gap: var(--cs-space-2);
+}
+
+.tk-flow-slider-label {
+    font-size: 8px;
+    font-weight: var(--cs-weight-medium);
+    color: var(--cs-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    min-width: 54px;
+    flex-shrink: 0;
+}
+
+.tk-flow-slider {
+    flex: 1 1 0;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 3px;
+    background: var(--cs-surface-3);
+    border-radius: var(--cs-radius-pill);
+    outline: none;
+    cursor: pointer;
+}
+
+.tk-flow-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--cs-accent);
+    border: 2px solid var(--cs-canvas);
+    box-shadow: 0 0 6px rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.35);
+    cursor: pointer;
+    transition: box-shadow var(--cs-duration-fast) var(--cs-ease-standard);
+}
+
+.tk-flow-slider::-webkit-slider-thumb:hover {
+    box-shadow: 0 0 10px rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.55);
+}
+
+.tk-flow-slider-val {
+    font-size: 8px;
+    font-weight: var(--cs-weight-semibold);
+    font-family: var(--cs-font-mono);
+    color: var(--cs-text-secondary);
+    min-width: 28px;
+    text-align: right;
+}
+
+/* ── Protect Motion Path Toggle ─────────────────────────────── */
+.tk-flow-toggle-row {
+    display: flex;
+    align-items: center;
+    gap: var(--cs-space-2);
+    padding: var(--cs-space-1) var(--cs-space-3) var(--cs-space-2);
+}
+
+.tk-flow-toggle-label {
+    font-size: 8.5px;
+    font-weight: var(--cs-weight-medium);
+    color: var(--cs-text-secondary);
+}
+
+.tk-flow-toggle {
+    position: relative;
+    width: 30px;
+    height: 16px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--cs-surface-3);
+    border-radius: var(--cs-radius-pill);
+    outline: none;
+    cursor: pointer;
+    transition: background var(--cs-duration-normal) var(--cs-ease-standard);
+    border: none;
+    flex-shrink: 0;
+}
+
+.tk-flow-toggle::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--cs-text-muted);
+    transition:
+        transform var(--cs-duration-normal) var(--cs-ease-spring),
+        background var(--cs-duration-normal) var(--cs-ease-standard);
+}
+
+.tk-flow-toggle:checked {
+    background: var(--cs-accent);
+}
+
+.tk-flow-toggle:checked::before {
+    transform: translateX(14px);
+    background: #fff;
+}
+
+/* ── Apply Row (Save + Reset + Apply CTA) ───────────────────── */
+.tk-flow-apply-row {
+    display: flex;
+    align-items: center;
+    gap: var(--cs-space-2);
+    padding: var(--cs-space-2) var(--cs-space-3);
+    border-top: 1px solid var(--cs-border-subtle);
+    flex-shrink: 0;
+}
+
+.tk-flow-save-btn,
+.tk-flow-reset-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--cs-border-medium);
+    border-radius: var(--cs-radius-md);
+    background: var(--cs-surface-1);
+    color: var(--cs-text-muted);
+    cursor: pointer;
+    padding: 0;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        color var(--cs-duration-fast) var(--cs-ease-standard),
+        border-color var(--cs-duration-fast) var(--cs-ease-standard);
+    outline: none;
+}
+
+.tk-flow-save-btn:hover,
+.tk-flow-reset-btn:hover {
+    background: var(--cs-surface-2);
+    color: var(--cs-text-primary);
+    border-color: var(--cs-border-strong);
+}
+
+/* ── Primary Apply Button (Full-width CTA) ──────────────────── */
+.tk-flow-apply-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cs-space-1);
+    flex: 1 1 0;
+    min-height: 32px;
+    height: auto;
+    min-width: 0;
+    padding: 6px var(--cs-space-3);
+    white-space: normal;
+    overflow-wrap: anywhere;
+    border: none;
+    border-radius: var(--cs-radius-md);
+    background: var(--cs-accent);
+    color: var(--cs-on-accent);
+    font-size: var(--cs-type-10);
+    font-weight: var(--cs-weight-semibold);
+    letter-spacing: 0;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        box-shadow var(--cs-duration-normal) var(--cs-ease-standard),
+        transform var(--cs-duration-fast) var(--cs-ease-standard);
+    outline: none;
+}
+
+.tk-flow-apply-btn:hover {
+    background: var(--cs-accent-hover);
+    color: var(--cs-on-accent);
+    box-shadow: 0 0 16px rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.35);
+}
+
+.tk-flow-apply-btn:active {
+    background: var(--cs-accent-active);
+    transform: scale(0.97);
+}
+
+.tk-flow-apply-btn svg {
+    width: 11px;
+    height: 11px;
+    flex-shrink: 0;
+}
+
+/* ── Preset Tabs + Actions Row ──────────────────────────────── */
+.tk-flow-tabs-actions-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--cs-space-1) var(--cs-space-3) 0;
+    gap: var(--cs-space-2);
+}
+
+.tk-flow-tabs-mini {
+    display: flex;
+    gap: 2px;
+    padding: 2px;
+    background: var(--cs-surface-1);
+    border-radius: var(--cs-radius-md);
+    border: 1px solid var(--cs-border-subtle);
+}
+
+.tk-flow-tab {
+    padding: 3px 10px;
+    border: none;
+    background: transparent;
+    color: var(--cs-text-secondary);
+    font-size: 8px;
+    font-weight: var(--cs-weight-medium);
+    border-radius: var(--cs-radius-sm);
+    cursor: pointer;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        color var(--cs-duration-fast) var(--cs-ease-standard);
+    outline: none;
+}
+
+.tk-flow-tab:hover {
+    color: var(--cs-text-secondary);
+}
+
+.tk-flow-tab.active {
+    background: var(--cs-accent-subtle);
+    color: var(--cs-accent);
+    font-weight: var(--cs-weight-semibold);
+}
+
+.tk-flow-actions-inline {
+    display: flex;
+    gap: var(--cs-space-1);
+}
+
+.tk-flow-action-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border: none;
+    border-radius: var(--cs-radius-sm);
+    background: transparent;
+    color: var(--cs-text-muted);
+    cursor: pointer;
+    padding: 0;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        color var(--cs-duration-fast) var(--cs-ease-standard);
+    outline: none;
+}
+
+.tk-flow-action-icon:hover {
+    background: var(--cs-surface-2);
+    color: var(--cs-text-primary);
+}
+
+.tk-flow-action-icon:disabled {
+    opacity: var(--cs-state-disabled-opacity);
+    cursor: var(--cs-cursor-disabled);
+}
+
+/* ── Splitter ───────────────────────────────────────────────── */
+.tk-flow-splitter {
+    flex: 0 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: col-resize;
+    background: var(--cs-border-subtle);
+    transition: background var(--cs-duration-fast) var(--cs-ease-standard);
+}
+
+.tk-flow-splitter:hover {
+    background: var(--cs-accent-subtle);
+}
+
+.tk-flow-splitter-handle {
+    width: 2px;
+    height: 24px;
+    border-radius: var(--cs-radius-pill);
+    background: var(--cs-text-disabled);
+    transition: background var(--cs-duration-fast) var(--cs-ease-standard);
+}
+
+.tk-flow-splitter:hover .tk-flow-splitter-handle {
+    background: var(--cs-accent);
+}
+
+/* ── Right Column (Presets Grid) ────────────────────────────── */
+.tk-flow-col-right {
+    flex: 0 0 150px;
+    min-width: 130px;
+    max-width: 240px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-left: 1px solid var(--cs-border-subtle);
+    background: var(--cs-surface-1);
+}
+
+/* ── Presets Grid ───────────────────────────────────────────── */
+.tk-flow-presets-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    padding: 6px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    flex: 1 1 auto;
+}
+
+/* ── Individual Preset Card (tk-flow-preset-card / flow-preset-card) ── */
+.tk-flow-preset-card,
+.flow-preset-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 3px 4px;
+    border-radius: var(--cs-radius-md, 6px);
+    border: 1px solid var(--cs-border-subtle);
+    background: var(--cs-surface-2);
+    cursor: pointer;
+    min-width: 0;
+    box-sizing: border-box;
+    position: relative;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        border-color var(--cs-duration-fast) var(--cs-ease-standard),
+        box-shadow var(--cs-duration-normal) var(--cs-ease-standard),
+        transform var(--cs-duration-fast) var(--cs-ease-standard);
+    outline: none;
+}
+
+.tk-flow-preset-card:hover,
+.flow-preset-card:hover {
+    background: var(--cs-surface-3);
+    border-color: var(--cs-accent);
+    transform: none;
+    box-shadow: none;
+}
+
+.tk-flow-preset-card.selected,
+.flow-preset-card.active {
+    border-color: var(--cs-accent);
+    background: var(--cs-accent-subtle);
+    box-shadow: none;
+}
+
+.tk-flow-preset-card:focus-visible,
+.flow-preset-card:focus-visible {
+    outline: 2px solid var(--cs-accent);
+    outline-offset: -2px;
+}
+
+.tk-flow-preset-svg,
+.flow-preset-card svg {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-height: 44px;
+    display: block;
+}
+
+.tk-flow-preset-name,
+.flow-preset-card .flow-name {
+    font-size: 10px;
+    font-weight: var(--cs-weight-medium);
+    color: var(--cs-text-secondary);
+    text-align: center;
+    margin-top: 3px;
+    overflow: hidden;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    max-width: 100%;
+    height: 2.4em;
+    line-height: 1.2;
+}
+
+.tk-flow-preset-card.selected .tk-flow-preset-name,
+.flow-preset-card.active .flow-name {
+    color: var(--cs-text-primary);
+    font-weight: var(--cs-weight-bold);
+}
+
+/* ── Expansion Zone ─────────────────────────────────────────── */
+.tk-expansion-zone {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* ── Segmented Control Overrides for Flow ────────────────────── */
+.tk-flow-root .cs-segmented {
+    display: inline-flex;
+    gap: 2px;
+    padding: 2px;
+    background: var(--cs-surface-1);
+    border-radius: var(--cs-radius-md);
+    border: 1px solid var(--cs-border-subtle);
+}
+
+.tk-flow-root .cs-segment {
+    padding: 3px 10px;
+    border: none;
+    background: transparent;
+    color: var(--cs-text-secondary);
+    font-size: 8px;
+    font-weight: var(--cs-weight-medium);
+    border-radius: var(--cs-radius-sm);
+    cursor: pointer;
+    transition: all var(--cs-duration-fast) var(--cs-ease-standard);
+    outline: none;
+}
+
+.tk-flow-root .cs-segment:hover {
+    color: var(--cs-text-secondary);
+}
+
+.tk-flow-root .cs-segment.active {
+    background: var(--cs-accent-subtle);
+    color: var(--cs-accent);
+    font-weight: var(--cs-weight-semibold);
+}
+
+.tk-flow-root .cs-segment__label {
+    font-size: inherit;
+    letter-spacing: 0;
+}
+
+/* ── Graph SVG enhancements ─────────────────────────────────── */
+#flow-curve-path {
+    stroke: var(--cs-accent-hover);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: none;
+}
+
+#flow-handle-1,
+#flow-handle-2 {
+    fill: #ffffff;
+    stroke: var(--cs-accent);
+    stroke-width: 1.8;
+    cursor: pointer;
+    filter: none;
+    transition: r var(--cs-duration-fast) var(--cs-ease-standard);
+}
+
+#flow-handle-1:hover,
+#flow-handle-2:hover {
+    r: 5;
+}
+
+#flow-handle-line-1,
+#flow-handle-line-2 {
+    stroke: var(--cs-accent);
+    stroke-width: 0.8;
+    opacity: 0.35;
+    stroke-dasharray: 3 2;
+}
+
+/* ── Interactive Drag & Flash States ───────────────────────── */
+.apply-flash {
+    animation: flow-apply-glow 0.4s ease-out;
+}
+
+@keyframes flow-apply-glow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.7);
+        filter: brightness(1.3);
+    }
+
+    100% {
+        box-shadow: 0 0 16px 4px rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0);
+        filter: brightness(1);
+    }
+}
+
+.dragging {
+    cursor: grabbing !important;
+}
+
+.flow-compact {
+    --graph-size: 110px;
+}
+
+/* ── Flow view below 551px: graph above presets in one scrolling column
+   (Req 15.3, 15.8). The splitter is only useful side by side. ── */
+@media (max-width: 550px) {
+    .tk-flow-split-row {
+        flex-direction: column;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .tk-flow-col-left {
+        flex: 0 0 auto;
+        overflow: visible;
+    }
+
+    .tk-flow-splitter {
+        display: none;
+    }
+
+    .tk-flow-col-right {
+        flex: 0 0 auto;
+        min-width: 0;
+        max-width: none;
+        overflow: visible;
+        border-left: 0;
+        border-top: 1px solid var(--cs-border-subtle);
+    }
+}

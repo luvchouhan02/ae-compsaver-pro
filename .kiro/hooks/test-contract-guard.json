@@ -1,0 +1,15 @@
+{
+  "name": "Test Contract Baseline Guard",
+  "description": "When any JS, JSX, HTML, or CSS file is saved, remind the developer to run the contract test suite and verify no regressions.",
+  "version": "1.0.0",
+  "event": {
+    "type": "onFileSave",
+    "fileMatch": ["js/**/*.js", "jsx/**/*.jsx", "index.html", "views/**/*.html", "css/**/*.css"]
+  },
+  "actions": [
+    {
+      "type": "prompt",
+      "prompt": "The file {{filePath}} was just saved. This project has 130+ test suites and 1,587+ tests that guard DOM contracts, class names, IDs, import order, and bridge encoding. Remind the developer:\n\n1. Run `npm test` to verify no contract regressions\n2. The test baseline allows exactly 5 failed suites and 9 failed tests (pre-existing)\n3. The class-contract baseline (tests/fixtures/class-contract.baseline.json) pins 106 interactive IDs, 104 static IDs, 31 classes, and 8 data attributes\n4. The CSS import order in style.css (11 modules) must not change\n5. Total test count must remain ≥ 1,587\n\nIf the saved file is a test file (tests/**), also check that no .skip, .only, xit, xtest, or xdescribe was added to existing tests."
+    }
+  ]
+}

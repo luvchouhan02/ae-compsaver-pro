@@ -1,0 +1,6 @@
+.kilocode/node_modules/
+node_modules
+.audit-tmp/
+.debug
+jest-baseline.log
+MoneyPrinterTurbo/

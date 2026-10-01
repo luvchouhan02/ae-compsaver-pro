@@ -1,0 +1,14 @@
+{
+    "name": "compsaver",
+    "version": "1.0.0",
+    "license": "MIT",
+    "description": "CompSaver — LAB.PRO Motion Panel for Adobe After Effects",
+    "scripts": {
+        "test": "jest",
+        "test:watch": "jest --watch"
+    },
+    "devDependencies": {
+        "jest": "29.7.0",
+        "fast-check": "3.22.0"
+    }
+}

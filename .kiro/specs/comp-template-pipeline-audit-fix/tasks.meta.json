@@ -1,0 +1,603 @@
+{
+  "pbtResults": {
+    "1. Write bug condition exploration test": {
+      "status": "passed",
+      "failingExample": "All 22 cases FAIL on unfixed code (22 failed / 22 total) — every root cause R1-R11 CONFIRMED. Counterexamples:\n\ncase 1 (1.1): reply=\"Error: [start] ... -> Exception: ...\" for a save whose project.aep WAS written; app.open calls=[\"C:/proj/live.aep\",\"C:/proj/live.aep\"] (2), reduceCalls=1.\ncase 2 (1.2): coreSaveLayerType returned typeof \"string\" — \"Save Error: Error: After Effects error: invalid object reference (read 'workAreaStart')\"; saveCalls=[\"PROTECTIVE\",\"C:/lib/layer/Cat/id1/project.aep\"]; openCalls=2.\ncase 3 (1.5): app.open threw post-window, reply={\"ok\":true,...}; app.project.file now = \"C:/lib/comp/Titles/My Title/project.aep\".\ncase 4 (1.3): getStrictSaveType type=\"comp\" msg=\"Active composition will be saved\" vs resolveCompForSave ok=false \"Select a precomposition first.\"\ncase 5 (1.4): announced \"Comp B\", resolveCompForSave returned \"Comp A\".\ncase 6 (1.6): libraryRoot=\"\" -> Folder.create() for [\"/comp\",\"/comp/Titles\",\"/comp/Titles/My Title\"] at the volume root; reduceCalls=1; reply={\"ok\":true,...,\"folderPath\":\"/comp/Titles/My Title\"}.\ncase 7 (1.7): create() returned false for 3 levels, ensureDeepFolder still returned a Folder (exists=false); reduceCalls=1 (destructive window entered with no target folder).\ncase 8 (1.8): getSafeName -> {\".\":\".\", \"..\":\"..\", \"...\":\"...\", \"name.\":\"name.\"}.\ncase 9 (1.9/1.10): host keys=[ok,templateId,name,category,folderPath,assetsList,oldId,needsThumbnail,renderComp,renderFrame]; missing=[width,height,pixelAspect,frameRate,duration,section,type]; panel metaObj writes dim=false width=false; assetsDir gated on resObj.section===\"comp\" (never sent).\ncase 10 (1.11): renderTemplateThumbnail.length=2; rendered=[{\"comp\":\"First Comp In Folder\",\"time\":3}] instead of \"Recorded Comp\" @ 50/25=2s.\ncase 11 (1.12): comp.time 5 -> 2 (success path); 7 -> 3 (throwing path).\ncase 12 (1.13/1.14): 3-arg itemExists probed \"C:/lib/comp/Titles\" for a layer save and returned \"My Title\"; decodeBridge(...) === \"true\" -> false.\ncase 13 (1.15): \"00480065ZZZZ00\" -> panel \"He\\u0000\\u0000\" vs host \"He\\u0000\"; \"0048006\" accepted by both with no error.\ncase 14 (1.16): jsonStringify({e:\"a\\u0001b\"}) = {\"e\":\"a<0x01>b\"} -> JSON.parse THREW \"Bad control character in string literal in JSON at position 7\"; \"a\\r\\nb\" round-tripped as \"a\\nb\".\ncase 15 (1.17): never-returning host after 250ms -> settled=false, card.importing=true; CEP sentinel \"EvalScript error.\" hex-decoded and reported as \"unparseable host result\".\ncase 16 (1.18): standalone importCompDirect -> \"No comp found!\"; item ids before=[1] after=[1,2,3,4], leaked=[2,3,4], zero remove() mutations.\ncase 17 (1.19/1.20): 3 imports -> root folders [Name, Name 2, Name 3]; solid-only import left \"Solid Only Folder\" empty at root.\ncase 18 (1.21): anchor BG#2 (selected) but the layer landed above BG#1; order=[Imported#3, BG#1, BG#2]; newLayer.index=1, anchor.index=3.\ncase 19 (1.22): anchors per template=[User Selected#2, Template 1#3, Template 2#4]; original selection selected=false at batch end.\ncase 20 (1.23): importCompDirect beginSuppressDialogs=1 endSuppressDialogs=0 (delta 1); saveActiveComp restore handler 2 vs 1 (delta 1).\ncase 21 (1.24): beginUndoGroup attempts=1, groups opened=0, endUndoGroup=0, __CS_IMPORT_BATCH_ACTIVE=[true,true] during both templates, both \"imported\" — the whole batch mutated the DOM with no undo group.\ncase 22 (1.25): [\"b.aep\",\"project.aep\"] resolved \"b.aep\"; reversed resolved \"project.aep\".\n\nBaseline suites unaffected: tests/save-window-invariants.test.js + tests/import-timings.test.js = 9 passed.",
+      "lastRunTimestamp": 1787411592255
+    }
+  },
+  "executionHistory": {
+    "1. Write bug condition exploration test": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409602614
+      },
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409631353
+      },
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787411644444
+      }
+    ],
+    "2. Write preservation property tests (BEFORE implementing fix)": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409602845
+      },
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787411658782
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787416934118
+      }
+    ],
+    "3.1 Add `validateLibraryRoot` and make `ensureDeepFolder` honest": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409603011
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787416965238
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787417972218
+      }
+    ],
+    "3.2 Guard every `ensureDeepFolder` call site that dereferences the result": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409603134
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787417973521
+      }
+    ],
+    "3.3 Verify group R3 and the ES3 gate": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409603293
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787417974711
+      }
+    ],
+    "4.1 Add `csResolveCompTarget` and route both resolvers through it": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409603402
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787417989175
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787418782868
+      }
+    ],
+    "4.2 Verify group R2 and the ES3 gate": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409603479
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787418785672
+      }
+    ],
+    "5.1 F1 — `saveActiveComp`: capture before the destructive window, report the reopen, enrich the result": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409603575
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787420237566
+      }
+    ],
+    "5.2 F2 — `coreSaveLayerType`: capture before the destructive window, report the reopen": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409603691
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787420240259
+      }
+    ],
+    "5.3 Verify group R1 and the ES3 gate": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409603791
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787420240455
+      }
+    ],
+    "6.1 Make `js/core/pathBuilders.js` canonical and load it in the panel": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409603867
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787420250117
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787422295110
+      }
+    ],
+    "6.2 Port the identical algorithm to the host and align the panel call sites": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409603946
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787422296512
+      }
+    ],
+    "6.3 Update `tests/save-path-builders.test.js` to the new contract": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409604027
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787422297766
+      }
+    ],
+    "7.1 Write the composition's format into `meta.json`": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409604114
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787422303876
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787423521891
+      }
+    ],
+    "7.2 Render the recorded thumbnail target": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409604196
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787423523574
+      }
+    ],
+    "7.3 Restore the borrowed playhead": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409604280
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787423524403
+      }
+    ],
+    "7.4 Verify group R5 and the ES3 gate": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409604364
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787423525647
+      }
+    ],
+    "8.1 Add `decodeBridgeStrict` identically to both sides": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409604451
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787423570508
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787426045045
+      }
+    ],
+    "8.2 Make `escapeJSON` always emit valid JSON": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409604533
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787426046663
+      }
+    ],
+    "8.3 Route the import call through the timeout-guarded transport": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409604620
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787426047696
+      }
+    ],
+    "8.4 Verify group R7 and the ES3 gate": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409604702
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787426049027
+      }
+    ],
+    "9.1 Replace the host `itemExists` with an explicit envelope": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409604783
+      },
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787426055990
+      },
+      {
+        "executionId": "83b40b50-026c-41f1-88b6-06660977dd63",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787428436003
+      }
+    ],
+    "9.2 Replace the panel existence check and correct the declared contract": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409604863
+      },
+      {
+        "executionId": "83b40b50-026c-41f1-88b6-06660977dd63",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787428437447
+      }
+    ],
+    "9.3 Verify group R6 and the ES3 gate": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409604945
+      },
+      {
+        "executionId": "83b40b50-026c-41f1-88b6-06660977dd63",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787428438633
+      }
+    ],
+    "10.1 Own import cleanup at scope exit": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409605018
+      },
+      {
+        "executionId": "c7bce222-b244-45db-a01b-f8aa8ec226f4",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787428555901
+      }
+    ],
+    "10.2 One reusable Project-panel container": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409605096
+      }
+    ],
+    "10.3 Verify group R8 and the ES3 gate": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409605196
+      }
+    ],
+    "11.1 Place by reference, not by name": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409605318
+      }
+    ],
+    "11.2 Latch the batch anchor once, restore the user's selection": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409605401
+      }
+    ],
+    "11.3 Verify group R9 and the ES3 gate": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409605490
+      }
+    ],
+    "12.1 Set the batch guard from the latch, not before it": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409605583
+      }
+    ],
+    "12.2 Guarantee `endSuppressDialogs(false)` with `try/finally` at every site": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409605665
+      }
+    ],
+    "12.3 Verify group R10 and the ES3 gate": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409605749
+      }
+    ],
+    "13.1 Pick the file by a documented precedence, through the memoized enumerator": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409605829
+      }
+    ],
+    "13.2 Verify group R11 and the ES3 gate": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409605920
+      }
+    ],
+    "14. Write the unit tests from the design's Testing Strategy": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409605997
+      }
+    ],
+    "15.1 `tests/comp-save-reference-capture.property.test.js`": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409606076
+      }
+    ],
+    "15.2 `tests/comp-selection-resolution.property.test.js`": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409606150
+      }
+    ],
+    "15.3 `tests/library-path-containment.property.test.js`": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409606230
+      }
+    ],
+    "15.4 `tests/sanitizer-cross-implementation.property.test.js`": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409606313
+      }
+    ],
+    "15.5 `tests/bridge-decode-agreement.property.test.js`": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409606391
+      }
+    ],
+    "15.6 `tests/host-json-validity.property.test.js`": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409606469
+      }
+    ],
+    "15.7 `tests/panel-script-manifest.test.js`": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409606551
+      }
+    ],
+    "15.8 `tests/import-atomicity.property.test.js`": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409606631
+      }
+    ],
+    "15.9 `tests/import-anchor-placement.property.test.js`": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409606713
+      }
+    ],
+    "15.10 `tests/host-balance-invariants.property.test.js`": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409606840
+      }
+    ],
+    "15.11 `tests/template-file-resolution.property.test.js`": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409606915
+      }
+    ],
+    "15.12 `tests/thumbnail-target-fidelity.property.test.js`": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409606997
+      }
+    ],
+    "15.13 `tests/comp-meta-fidelity.property.test.js`": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409607091
+      }
+    ],
+    "16. Write the integration flows": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409607174
+      }
+    ],
+    "17. Verify the existing suites still pass unchanged": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409607251
+      }
+    ],
+    "18.1 Verify the bug condition exploration test now passes": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409607333
+      }
+    ],
+    "18.2 Verify the preservation tests still pass": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409607413
+      }
+    ],
+    "19. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "8904573e-a590-4c1a-bcf5-7923a0f9a5d8",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787409607496
+      }
+    ],
+    "3. F4 — R3: library-root validation and an honest `ensureDeepFolder`": [
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787417974852
+      }
+    ],
+    "4. F3 — R2: one canonical comp resolver": [
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787418785796
+      }
+    ],
+    "5. F1 + F2 — R1: pre-window capture and a reported reopen failure": [
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787420240572
+      }
+    ],
+    "6. F5 — R4: one canonical sanitizer, loaded at runtime": [
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787422297911
+      }
+    ],
+    "7. F6 — R5: metadata fidelity, targeted thumbnail, borrowed playhead": [
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787423525779
+      }
+    ],
+    "8. F8 — R7: transport integrity": [
+      {
+        "executionId": "b0c1c23a-63c2-4587-bee3-da13f233ccc3",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787426049248
+      }
+    ],
+    "9. F7 — R6: one `itemExists` contract, with the section": [
+      {
+        "executionId": "83b40b50-026c-41f1-88b6-06660977dd63",
+        "chatSessionId": "sess_d34c4fc1-e1a7-4522-821e-f1d5b56203fe",
+        "timestamp": 1787428438818
+      }
+    ]
+  }
+}

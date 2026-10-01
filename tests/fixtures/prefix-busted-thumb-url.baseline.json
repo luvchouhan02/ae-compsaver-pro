@@ -1,0 +1,278 @@
+{
+  "schema": 1,
+  "feature": "media-card-lifecycle-edge-fixes",
+  "source": "js/templates/templates.js refreshCardThumbnail — the PRE-FIX inline construction (pre-BUG-4 lines 2888-2890)",
+  "generatedBy": "the procedure documented in tests/media-card-lifecycle-preservation.property.test.js (P2c)",
+  "rule": "fwd = String(raw).replace(/\\\\/g,'/'); if (fwd[0] === '/') fwd = fwd.slice(1); url = 'file:///' + encodeURI(fwd) + '?v=' + token",
+  "byteIdenticalRows": [
+    {
+      "raw": "C:/lib/icon/Logos/Acme/thumbnail.png",
+      "token": "1700000000000-1",
+      "url": "file:///C:/lib/icon/Logos/Acme/thumbnail.png?v=1700000000000-1"
+    },
+    {
+      "raw": "C:\\lib\\icon\\Logos\\Acme\\thumbnail.png",
+      "token": "1700000000000-2",
+      "url": "file:///C:/lib/icon/Logos/Acme/thumbnail.png?v=1700000000000-2"
+    },
+    {
+      "raw": "C:/lib\\icon/Logos\\Acme/thumbnail.png",
+      "token": "1700000000000-3",
+      "url": "file:///C:/lib/icon/Logos/Acme/thumbnail.png?v=1700000000000-3"
+    },
+    {
+      "raw": "D:/Archive/footage/Broll/media-0063-006c/thumbnail.png",
+      "token": "1700000000000-4",
+      "url": "file:///D:/Archive/footage/Broll/media-0063-006c/thumbnail.png?v=1700000000000-4"
+    },
+    {
+      "raw": "E:\\archive\\overlay\\Uncategorized\\Glow\\thumbnail.png",
+      "token": "1700000000000-5",
+      "url": "file:///E:/archive/overlay/Uncategorized/Glow/thumbnail.png?v=1700000000000-5"
+    },
+    {
+      "raw": "/var/lib/compsaver/icon/Logos/Acme/thumbnail.png",
+      "token": "1700000000000-6",
+      "url": "file:///var/lib/compsaver/icon/Logos/Acme/thumbnail.png?v=1700000000000-6"
+    },
+    {
+      "raw": "/lib/icon/TestCat/MyTemplate/thumbnail.png",
+      "token": "1700000000000-7",
+      "url": "file:///lib/icon/TestCat/MyTemplate/thumbnail.png?v=1700000000000-7"
+    },
+    {
+      "raw": "/thumbnail.png",
+      "token": "1700000000000-8",
+      "url": "file:///thumbnail.png?v=1700000000000-8"
+    },
+    {
+      "raw": "/",
+      "token": "1700000000000-9",
+      "url": "file:///?v=1700000000000-9"
+    },
+    {
+      "raw": "lib/icon/Logos/Acme/thumbnail.png",
+      "token": "1700000000000-10",
+      "url": "file:///lib/icon/Logos/Acme/thumbnail.png?v=1700000000000-10"
+    },
+    {
+      "raw": "thumbnail.png",
+      "token": "1700000000000-11",
+      "url": "file:///thumbnail.png?v=1700000000000-11"
+    },
+    {
+      "raw": "//server/share/lib/icon/Logos/Acme/thumbnail.png",
+      "token": "1700000000000-12",
+      "url": "file:////server/share/lib/icon/Logos/Acme/thumbnail.png?v=1700000000000-12"
+    },
+    {
+      "raw": "\\\\server\\share\\lib\\icon\\Logos\\Acme\\thumbnail.png",
+      "token": "1700000000000-13",
+      "url": "file:////server/share/lib/icon/Logos/Acme/thumbnail.png?v=1700000000000-13"
+    },
+    {
+      "raw": "C:/My Library/icon/My Cat/Lower Third 01/thumbnail.png",
+      "token": "1700000000000-14",
+      "url": "file:///C:/My%20Library/icon/My%20Cat/Lower%20Third%2001/thumbnail.png?v=1700000000000-14"
+    },
+    {
+      "raw": "C:/lib/icon/Two  Spaces/Acme/thumbnail.png",
+      "token": "1700000000000-15",
+      "url": "file:///C:/lib/icon/Two%20%20Spaces/Acme/thumbnail.png?v=1700000000000-15"
+    },
+    {
+      "raw": "C:/lib/icon/Trailing /Acme/thumbnail.png",
+      "token": "1700000000000-16",
+      "url": "file:///C:/lib/icon/Trailing%20/Acme/thumbnail.png?v=1700000000000-16"
+    },
+    {
+      "raw": "C:/lib/icon/quote\"cat/Acme/thumbnail.png",
+      "token": "1700000000000-17",
+      "url": "file:///C:/lib/icon/quote%22cat/Acme/thumbnail.png?v=1700000000000-17"
+    },
+    {
+      "raw": "C:/lib/icon/angle<lt>gt/Acme/thumbnail.png",
+      "token": "1700000000000-18",
+      "url": "file:///C:/lib/icon/angle%3Clt%3Egt/Acme/thumbnail.png?v=1700000000000-18"
+    },
+    {
+      "raw": "C:/lib/icon/brace{a}b/Acme/thumbnail.png",
+      "token": "1700000000000-19",
+      "url": "file:///C:/lib/icon/brace%7Ba%7Db/Acme/thumbnail.png?v=1700000000000-19"
+    },
+    {
+      "raw": "C:/lib/icon/pipe|cat/Acme/thumbnail.png",
+      "token": "1700000000000-20",
+      "url": "file:///C:/lib/icon/pipe%7Ccat/Acme/thumbnail.png?v=1700000000000-20"
+    },
+    {
+      "raw": "C:/lib/icon/caret^cat/Acme/thumbnail.png",
+      "token": "1700000000000-21",
+      "url": "file:///C:/lib/icon/caret%5Ecat/Acme/thumbnail.png?v=1700000000000-21"
+    },
+    {
+      "raw": "C:/lib/icon/back`tick/Acme/thumbnail.png",
+      "token": "1700000000000-22",
+      "url": "file:///C:/lib/icon/back%60tick/Acme/thumbnail.png?v=1700000000000-22"
+    },
+    {
+      "raw": "C:/lib/icon/square[a]b/Acme/thumbnail.png",
+      "token": "1700000000000-23",
+      "url": "file:///C:/lib/icon/square%5Ba%5Db/Acme/thumbnail.png?v=1700000000000-23"
+    },
+    {
+      "raw": "C:/lib/icon/percent%cat/Acme/thumbnail.png",
+      "token": "1700000000000-24",
+      "url": "file:///C:/lib/icon/percent%25cat/Acme/thumbnail.png?v=1700000000000-24"
+    },
+    {
+      "raw": "C:/lib/icon/already%20encoded/Acme/thumbnail.png",
+      "token": "1700000000000-25",
+      "url": "file:///C:/lib/icon/already%2520encoded/Acme/thumbnail.png?v=1700000000000-25"
+    },
+    {
+      "raw": "C:/lib/icon/hash#cat/Acme/thumbnail.png",
+      "token": "1700000000000-26",
+      "url": "file:///C:/lib/icon/hash#cat/Acme/thumbnail.png?v=1700000000000-26"
+    },
+    {
+      "raw": "C:/lib/icon/query?cat/Acme/thumbnail.png",
+      "token": "1700000000000-27",
+      "url": "file:///C:/lib/icon/query?cat/Acme/thumbnail.png?v=1700000000000-27"
+    },
+    {
+      "raw": "C:/lib/icon/amp&cat/Acme/thumbnail.png",
+      "token": "1700000000000-28",
+      "url": "file:///C:/lib/icon/amp&cat/Acme/thumbnail.png?v=1700000000000-28"
+    },
+    {
+      "raw": "C:/lib/icon/plus+cat/Acme/thumbnail.png",
+      "token": "1700000000000-29",
+      "url": "file:///C:/lib/icon/plus+cat/Acme/thumbnail.png?v=1700000000000-29"
+    },
+    {
+      "raw": "C:/lib/icon/semi;cat/Acme/thumbnail.png",
+      "token": "1700000000000-30",
+      "url": "file:///C:/lib/icon/semi;cat/Acme/thumbnail.png?v=1700000000000-30"
+    },
+    {
+      "raw": "C:/lib/icon/at@cat/Acme/thumbnail.png",
+      "token": "1700000000000-31",
+      "url": "file:///C:/lib/icon/at@cat/Acme/thumbnail.png?v=1700000000000-31"
+    },
+    {
+      "raw": "C:/lib/icon/eq=cat/Acme/thumbnail.png",
+      "token": "1700000000000-32",
+      "url": "file:///C:/lib/icon/eq=cat/Acme/thumbnail.png?v=1700000000000-32"
+    },
+    {
+      "raw": "C:/lib/icon/dollar$cat/Acme/thumbnail.png",
+      "token": "1700000000000-33",
+      "url": "file:///C:/lib/icon/dollar$cat/Acme/thumbnail.png?v=1700000000000-33"
+    },
+    {
+      "raw": "C:/lib/icon/comma,cat/Acme/thumbnail.png",
+      "token": "1700000000000-34",
+      "url": "file:///C:/lib/icon/comma,cat/Acme/thumbnail.png?v=1700000000000-34"
+    },
+    {
+      "raw": "C:/lib/icon/colon:cat/Acme/thumbnail.png",
+      "token": "1700000000000-35",
+      "url": "file:///C:/lib/icon/colon:cat/Acme/thumbnail.png?v=1700000000000-35"
+    },
+    {
+      "raw": "C:/lib/icon/tilde~cat/Acme/thumbnail.png",
+      "token": "1700000000000-36",
+      "url": "file:///C:/lib/icon/tilde~cat/Acme/thumbnail.png?v=1700000000000-36"
+    },
+    {
+      "raw": "C:/lib/icon/bang!cat/Acme/thumbnail.png",
+      "token": "1700000000000-37",
+      "url": "file:///C:/lib/icon/bang!cat/Acme/thumbnail.png?v=1700000000000-37"
+    },
+    {
+      "raw": "C:/lib/icon/star*cat/Acme/thumbnail.png",
+      "token": "1700000000000-38",
+      "url": "file:///C:/lib/icon/star*cat/Acme/thumbnail.png?v=1700000000000-38"
+    },
+    {
+      "raw": "C:/lib/icon/apos'cat/Acme/thumbnail.png",
+      "token": "1700000000000-39",
+      "url": "file:///C:/lib/icon/apos'cat/Acme/thumbnail.png?v=1700000000000-39"
+    },
+    {
+      "raw": "C:/lib/icon/paren(a)b/Acme/thumbnail.png",
+      "token": "1700000000000-40",
+      "url": "file:///C:/lib/icon/paren(a)b/Acme/thumbnail.png?v=1700000000000-40"
+    },
+    {
+      "raw": "C:/lib/icon/dash-under_dot.cat/Acme/thumbnail.png",
+      "token": "1700000000000-41",
+      "url": "file:///C:/lib/icon/dash-under_dot.cat/Acme/thumbnail.png?v=1700000000000-41"
+    },
+    {
+      "raw": "C:/lib/icon/café/Acme/thumbnail.png",
+      "token": "1700000000000-42",
+      "url": "file:///C:/lib/icon/caf%C3%A9/Acme/thumbnail.png?v=1700000000000-42"
+    },
+    {
+      "raw": "C:/lib/icon/日本語/Acme/thumbnail.png",
+      "token": "1700000000000-43",
+      "url": "file:///C:/lib/icon/%E6%97%A5%E6%9C%AC%E8%AA%9E/Acme/thumbnail.png?v=1700000000000-43"
+    },
+    {
+      "raw": "C:/lib/icon/Заголовки/Acme/thumbnail.png",
+      "token": "1700000000000-44",
+      "url": "file:///C:/lib/icon/%D0%97%D0%B0%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%BA%D0%B8/Acme/thumbnail.png?v=1700000000000-44"
+    },
+    {
+      "raw": "C:/lib/icon/😀emoji/Acme/thumbnail.png",
+      "token": "1700000000000-45",
+      "url": "file:///C:/lib/icon/%F0%9F%98%80emoji/Acme/thumbnail.png?v=1700000000000-45"
+    },
+    {
+      "raw": "C:/lib/icon/tab\tcat/Acme/thumbnail.png",
+      "token": "1700000000000-46",
+      "url": "file:///C:/lib/icon/tab%09cat/Acme/thumbnail.png?v=1700000000000-46"
+    },
+    {
+      "raw": "C:/lib/icon/nl\ncat/Acme/thumbnail.png",
+      "token": "1700000000000-47",
+      "url": "file:///C:/lib/icon/nl%0Acat/Acme/thumbnail.png?v=1700000000000-47"
+    },
+    {
+      "raw": "C:/lib/icon/delcat/Acme/thumbnail.png",
+      "token": "1700000000000-48",
+      "url": "file:///C:/lib/icon/del%7Fcat/Acme/thumbnail.png?v=1700000000000-48"
+    },
+    {
+      "raw": "C:/lib/icon/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/Acme/thumbnail.png",
+      "token": "1700000000000-49",
+      "url": "file:///C:/lib/icon/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/Acme/thumbnail.png?v=1700000000000-49"
+    },
+    {
+      "raw": "C:/lib/icon/Logos/Acme/",
+      "token": "1700000000000-50",
+      "url": "file:///C:/lib/icon/Logos/Acme/?v=1700000000000-50"
+    },
+    {
+      "raw": "C:/lib/icon/Logos/Acme//thumbnail.png",
+      "token": "1700000000000-51",
+      "url": "file:///C:/lib/icon/Logos/Acme//thumbnail.png?v=1700000000000-51"
+    }
+  ],
+  "deliberateDivergences": [
+    {
+      "raw": "",
+      "token": "1700000000000-901",
+      "inlineUrl": "file:///?v=1700000000000-901",
+      "buildBustedThumbUrlExpected": ""
+    },
+    {
+      "raw": null,
+      "token": "1700000000000-902",
+      "inlineUrl": "file:///null?v=1700000000000-902",
+      "buildBustedThumbUrlExpected": ""
+    }
+  ]
+}

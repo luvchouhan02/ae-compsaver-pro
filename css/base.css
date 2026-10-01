@@ -1,0 +1,1187 @@
+/* ════════════════════════════════════════════════════════════════
+   CompSaver v2.0 — Base Component Styles
+   ────────────────────────────────────────────────────────────────
+   Foundational UI components, resets, and shared patterns.
+   All values reference tokens from tokens.css.
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── Legacy Token Compatibility Layer ───────────────────────── */
+:root {
+     --canvas: var(--cs-canvas);
+     --surface-1: var(--cs-surface-1);
+     --surface-2: var(--cs-surface-2);
+     --surface-3: var(--cs-surface-3);
+     --surface-4: var(--cs-surface-4);
+     --hairline: var(--cs-border-subtle);
+     --hairline-strong: var(--cs-border-medium);
+     --hairline-tertiary: var(--cs-border-strong);
+    --primary: #4f8cff;
+    --primary-hover: #6ba3ff;
+    --primary-focus: #3b70e0;
+    --primary-bright: #7db4ff;
+    --accent-purple: #ffb347;
+    --ink: var(--cs-text-primary);
+    --ink-muted: var(--cs-text-secondary);
+    --ink-subtle: var(--cs-text-muted);
+    --ink-tertiary: var(--cs-text-disabled);
+    --void: var(--canvas);
+    --base: var(--canvas);
+    --raised: var(--surface-1);
+    --surface: var(--surface-2);
+    --lift: var(--surface-3);
+    --ui: var(--surface-4);
+    --line-sub: var(--hairline);
+    --line-dim: var(--hairline-strong);
+    --line-mid: var(--hairline-tertiary);
+    --line-hi: rgba(140, 178, 255, 0.28);
+    --p-700: var(--primary-focus);
+    --p-600: var(--primary);
+    --p-500: var(--primary);
+    --p-400: var(--primary-hover);
+    --p-300: #9cc2ff;
+    --p-200: #d2e3ff;
+    --p-bg: rgba(79, 140, 255, 0.11);
+    --p-tint: rgba(79, 140, 255, 0.19);
+    --p-rule: rgba(79, 140, 255, 0.40);
+    --p-glow: rgba(79, 140, 255, 0.60);
+    --t-400: var(--accent-purple);
+    --t-bg: rgba(255, 179, 71, 0.11);
+    --t-glow: rgba(255, 179, 71, 0.40);
+    --accent-on-color: #ffffff;
+    --tx-hi: var(--ink);
+    --tx-mid: var(--ink-muted);
+    --tx-lo: var(--ink-subtle);
+    --tx-mute: var(--ink-tertiary);
+    --danger: #ff2a5f;
+    --danger-bg: rgba(255, 42, 95, 0.12);
+    --danger-rule: rgba(255, 42, 95, 0.3);
+    --gold: #ffc24b;
+    --gold-bg: rgba(255, 194, 75, 0.12);
+    --gold-rule: rgba(255, 194, 75, 0.3);
+    --font-sans: var(--cs-font-sans);
+    --font-mono: var(--cs-font-mono);
+    --r-xs: 4px;
+    --r-sm: 6px;
+    --r-md: 8px;
+    --r-lg: 8px;
+    --r-xl: 8px;
+    --r-pill: 9999px;
+    --f-ui: 13px;
+    --f-sm: 12px;
+    --f-xs: 11px;
+    --f-xxs: 10px;
+    --f-micro: 9px;
+    --f-nano: 8px;
+    --tk-min-width: 170px;
+    --tm-min-width: 180px;
+    --tk-bg-deep: var(--base);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.45), 0 1px 1px rgba(20, 40, 90, 0.18);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.50), 0 2px 6px rgba(15, 35, 80, 0.22);
+    --shadow-lg: 0 14px 38px rgba(0, 0, 0, 0.60), 0 6px 16px rgba(15, 35, 80, 0.28);
+    --shadow-pop: 0 12px 30px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--p-rule), 0 0 24px rgba(79, 140, 255, 0.22);
+    --glow-violet-soft: 0 0 10px rgba(79, 140, 255, 0.25);
+    --focus-ring: 0 0 0 2px var(--primary);
+    --card-grad: linear-gradient(180deg, var(--cs-surface-2), var(--cs-surface-1));
+    --glass-blur: none;
+    --hover-lift: 0px;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --dur-fast: 0.12s;
+    --dur-base: 0.18s;
+    --dur-slow: 0.32s;
+
+    /* ── Spacing Scale — Req 4.3/4.4: --space-0..7, pairwise distinct ── */
+    --space-0: 2px;
+    --space-1: 4px;
+    --space-2: 6px;
+    --space-3: 8px;
+    --space-4: 12px;
+    --space-5: 16px;
+    --space-6: 24px;
+    --space-7: 32px;
+
+    /* ── Density tokens — Req 4.3 ── */
+    --density-pad: 6px;
+    --density-gap: 4px;
+
+    /* ── Grid tokens — Req 4.3 ── */
+    --grid-gap: 8px;
+    --grid-min-col: 72px;
+    --grid-col-max: 1fr;
+
+    /* ── Structure tokens — Req 4.3 ── */
+    --toolbar-h: 36px;
+    --control-h: 28px;
+    --section-gap: 12px;
+    --section-pad: 8px;
+
+    /* Additive primary RGB tokens */
+    --primary-rgb: 79, 140, 255;
+    --primary-hover-rgb: 107, 163, 255;
+    --primary-focus-rgb: 59, 112, 224;
+    --primary-bright-rgb: 125, 180, 255;
+
+    /* Additive surface tokens */
+    --surface-panel: var(--cs-surface-1);
+    --surface-card: var(--cs-surface-2);
+    --surface-inset: var(--cs-canvas);
+    --elev-1: 0 1px 2px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(40, 20, 90, 0.22);
+    --elev-2: 0 6px 20px rgba(0, 0, 0, 0.55), 0 3px 10px rgba(40, 20, 90, 0.3);
+}
+
+/* ── Box Reset ──────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ── Base Typography ────────────────────────────────────────── */
+body {
+    font-family: var(--cs-font-sans);
+    font-size: var(--cs-type-11);
+    line-height: var(--cs-line-control);
+    color: var(--cs-text-primary);
+    background: radial-gradient(120% 70% at 50% -10%, rgba(var(--primary-rgb, 79, 140, 255), 0.14) 0%, transparent 55%),
+        radial-gradient(90% 60% at 100% 105%, rgba(255, 179, 71, 0.07) 0%, transparent 60%),
+        radial-gradient(70% 50% at 0% 50%, rgba(var(--primary-focus-rgb, 59, 112, 224), 0.06) 0%, transparent 60%),
+        var(--cs-canvas, var(--base));
+    background-color: var(--cs-canvas, var(--base));
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── Links ──────────────────────────────────────────────────── */
+a {
+    color: var(--cs-accent);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--cs-accent-hover);
+}
+
+/* ── Unified single-stroke icon system (Req 6.3) ────────────── */
+.main-nav-btn svg,
+.section-btn svg,
+.tk-section-btn svg,
+.flow-target-btn svg {
+    stroke-width: 1.75 !important;
+    fill: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BUTTONS
+   ═══════════════════════════════════════════════════════════════ */
+
+button {
+    font-family: var(--cs-font-sans);
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: inherit;
+}
+
+/* ── Primary Button ─────────────────────────────────────────── */
+.cs-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cs-space-1);
+    padding: 6px 14px;
+    border: none;
+    border-radius: var(--cs-radius-md);
+    background: var(--cs-accent);
+    color: var(--cs-on-accent);
+    font-size: var(--cs-type-10);
+    font-weight: var(--cs-weight-semibold);
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        box-shadow var(--cs-duration-normal) var(--cs-ease-standard),
+        transform var(--cs-duration-fast) var(--cs-ease-standard);
+}
+
+.cs-btn-primary:hover {
+    background: var(--cs-accent-hover);
+    color: var(--cs-on-accent);
+    box-shadow: var(--cs-elevation-glow);
+}
+
+.cs-btn-primary:active {
+    background: var(--cs-accent-active);
+    transform: scale(0.97);
+}
+
+/* ── Ghost Button ───────────────────────────────────────────── */
+.cs-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cs-space-1);
+    padding: 5px 12px;
+    border: 1px solid var(--cs-border-medium);
+    border-radius: var(--cs-radius-md);
+    background: transparent;
+    color: var(--cs-text-secondary);
+    font-size: var(--cs-type-10);
+    font-weight: var(--cs-weight-medium);
+    cursor: pointer;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        border-color var(--cs-duration-fast) var(--cs-ease-standard),
+        color var(--cs-duration-fast) var(--cs-ease-standard);
+}
+
+.cs-btn-ghost:hover {
+    background: var(--cs-surface-2);
+    border-color: var(--cs-border-strong);
+    color: var(--cs-text-primary);
+}
+
+/* ── Neon Outline Button (Save Template CTA) ────────────────── */
+.btn-neon-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cs-space-1);
+    width: 100%;
+    padding: 8px 16px;
+    border: 1px solid var(--cs-accent);
+    border-radius: var(--cs-radius-md);
+    background: var(--cs-accent-subtle);
+    color: var(--cs-accent);
+    font-size: var(--cs-type-10);
+    font-weight: var(--cs-weight-semibold);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        box-shadow var(--cs-duration-normal) var(--cs-ease-standard),
+        color var(--cs-duration-fast) var(--cs-ease-standard);
+}
+
+.btn-neon-outline:hover {
+    background: var(--cs-accent);
+    color: var(--cs-on-accent);
+    box-shadow: 0 0 20px rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.3);
+}
+
+.btn-neon-outline:active {
+    background: var(--cs-accent-active);
+    transform: scale(0.98);
+}
+
+.btn-neon-outline svg {
+    width: 11px;
+    height: 11px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   INPUTS & SELECTS
+   ═══════════════════════════════════════════════════════════════ */
+
+input[type="text"],
+input[type="number"],
+input[type="search"],
+textarea {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid var(--cs-border-medium);
+    border-radius: var(--cs-radius-md);
+    background: var(--cs-surface-1);
+    color: var(--cs-text-primary);
+    font-family: var(--cs-font-sans);
+    font-size: var(--cs-type-10);
+    outline: none;
+    transition:
+        border-color var(--cs-duration-fast) var(--cs-ease-standard),
+        box-shadow var(--cs-duration-fast) var(--cs-ease-standard);
+}
+
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible {
+    border-color: var(--cs-accent);
+    box-shadow: 0 0 0 2px var(--cs-focus-halo);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--cs-text-secondary);
+}
+
+select {
+    padding: 4px 8px;
+    border: 1px solid var(--cs-border-medium);
+    border-radius: var(--cs-radius-sm);
+    background: var(--cs-surface-1);
+    color: var(--cs-text-primary);
+    font-family: var(--cs-font-sans);
+    font-size: var(--cs-type-9);
+    outline: none;
+    cursor: pointer;
+}
+
+select:focus {
+    border-color: var(--cs-accent);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SEGMENTED CONTROLS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* .cs-segmented and the shared .cs-segment properties (padding, border,
+   border-radius, background, color, font-size, cursor, transition) are set
+   by css/components.css. Only the properties it does not set remain here. */
+.cs-segment {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--cs-weight-medium);
+    outline: none;
+}
+
+.cs-segment:hover {
+    color: var(--cs-text-secondary);
+    background: var(--cs-surface-2);
+}
+
+.cs-segment.active {
+    background: var(--cs-accent-subtle);
+    color: var(--cs-accent);
+    font-weight: var(--cs-weight-semibold);
+}
+
+.cs-segment__label {
+    font-size: inherit;
+    letter-spacing: 0.3px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   VALUE CHIPS (Stepper Controls)
+   ═══════════════════════════════════════════════════════════════ */
+
+.cs-value-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 2px 3px;
+    border-radius: var(--cs-radius-md);
+    background: var(--cs-surface-1);
+    border: 1px solid var(--cs-border-subtle);
+}
+
+.cs-value-chip__label {
+    font-size: 8px;
+    font-weight: var(--cs-weight-semibold);
+    color: var(--cs-text-secondary);
+    padding: 0 4px;
+    letter-spacing: 0.5px;
+}
+
+.cs-value-chip__value {
+    width: 28px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    color: var(--cs-text-primary);
+    font-family: var(--cs-font-mono);
+    font-size: var(--cs-type-9);
+    font-weight: var(--cs-weight-medium);
+    outline: none;
+    cursor: default;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MODALS
+   ═══════════════════════════════════════════════════════════════ */
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: var(--cs-z-modal);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.active,
+.modal-overlay.open {
+    display: flex;
+}
+
+.highlight-flash {
+    animation: cs-highlight-pulse 1.2s ease-out;
+}
+
+@keyframes cs-highlight-pulse {
+    0% {
+        outline: 2px solid var(--cs-accent);
+        box-shadow: 0 0 16px rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.6);
+    }
+
+    100% {
+        outline: 2px solid transparent;
+        box-shadow: none;
+    }
+}
+
+.modal-content {
+    width: 260px;
+    max-width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: var(--cs-space-4);
+    background: var(--cs-surface-1);
+    border: 1px solid var(--cs-border-medium);
+    border-radius: var(--cs-radius-lg);
+    box-shadow: var(--cs-elevation-3);
+    animation: cs-modal-in 200ms var(--cs-ease-spring);
+}
+
+@keyframes cs-modal-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-title {
+    font-size: var(--cs-type-11);
+    font-weight: var(--cs-weight-bold);
+    color: var(--cs-text-primary);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: var(--cs-space-3);
+}
+
+.modal-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cs-space-1);
+    margin-bottom: var(--cs-space-3);
+}
+
+.modal-field label {
+    font-size: var(--cs-type-9);
+    font-weight: var(--cs-weight-semibold);
+    color: var(--cs-text-secondary);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+.modal-field .label-hint {
+    font-weight: var(--cs-weight-regular);
+    color: var(--cs-text-secondary);
+    text-transform: none;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: var(--cs-space-2);
+    margin-top: var(--cs-space-2);
+}
+
+.modal-overlay .modal-buttons button,
+.modal-buttons button {
+    flex: 1;
+    padding: 7px 12px;
+    border: 1px solid var(--cs-border-medium);
+    border-radius: var(--cs-radius-md);
+    background: var(--cs-surface-2);
+    color: var(--cs-text-secondary);
+    font-size: var(--cs-type-10);
+    font-weight: var(--cs-weight-medium);
+    cursor: pointer;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        border-color var(--cs-duration-fast) var(--cs-ease-standard),
+        color var(--cs-duration-fast) var(--cs-ease-standard);
+}
+
+.modal-overlay .modal-buttons button {
+    flex: 1;
+    padding: 7px 12px;
+    border-radius: var(--cs-radius-md);
+    font-size: var(--cs-type-10);
+    font-weight: var(--cs-weight-medium);
+    cursor: pointer;
+}
+
+.modal-overlay .modal-buttons button.danger,
+.modal-overlay .modal-buttons button.btn-danger,
+.modal-overlay .modal-buttons button[data-variant='danger'],
+.modal-overlay .modal-buttons .cs-btn--danger {
+    background: var(--danger-bg);
+    border: 1px solid var(--danger-rule);
+    color: var(--danger);
+}
+
+.modal-buttons button:hover {
+    background: var(--cs-surface-3);
+    border-color: var(--cs-border-strong);
+    color: var(--cs-text-primary);
+}
+
+.modal-buttons button:last-child {
+    background: var(--cs-accent);
+    border-color: var(--cs-accent);
+    color: var(--cs-on-accent);
+}
+
+.modal-buttons button:last-child:hover {
+    background: var(--cs-accent-hover);
+    color: var(--cs-on-accent);
+    border-color: var(--cs-accent-hover);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CUSTOM SELECT DROPDOWNS
+   ═══════════════════════════════════════════════════════════════ */
+
+.custom-select {
+    position: relative;
+}
+
+.custom-select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px;
+    border: 1px solid var(--cs-border-medium);
+    border-radius: var(--cs-radius-md);
+    background: var(--cs-surface-1);
+    color: var(--cs-text-primary);
+    font-size: var(--cs-type-10);
+    cursor: pointer;
+    transition:
+        border-color var(--cs-duration-fast) var(--cs-ease-standard);
+}
+
+.custom-select-trigger:hover {
+    border-color: var(--cs-border-strong);
+}
+
+.custom-select-trigger svg {
+    flex-shrink: 0;
+}
+
+.custom-select-trigger svg path {
+    fill: var(--cs-accent);
+}
+
+.custom-select-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 4px;
+    padding: var(--cs-space-1);
+    background: var(--cs-surface-2);
+    border: 1px solid var(--cs-border-medium);
+    border-radius: var(--cs-radius-md);
+    box-shadow: var(--cs-elevation-2);
+    z-index: var(--cs-z-dropdown);
+    max-height: 160px;
+    overflow-y: auto;
+}
+
+.custom-select-dropdown.open {
+    display: block;
+}
+
+.custom-select-option {
+    padding: 5px 10px;
+    border-radius: var(--cs-radius-sm);
+    font-size: var(--cs-type-10);
+    color: var(--cs-text-secondary);
+    cursor: pointer;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        color var(--cs-duration-fast) var(--cs-ease-standard);
+}
+
+.custom-select-option:hover {
+    background: var(--cs-surface-3);
+    color: var(--cs-text-primary);
+}
+
+.custom-select-option.active {
+    background: var(--cs-accent-subtle);
+    color: var(--cs-accent);
+    font-weight: var(--cs-weight-medium);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TOAST NOTIFICATIONS
+   ═══════════════════════════════════════════════════════════════ */
+
+.toast {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%) translateY(60px);
+    padding: 8px 16px;
+    border-radius: var(--cs-radius-md);
+    background: var(--cs-surface-glass);
+    border: 1px solid var(--cs-border-medium);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--cs-text-primary);
+    font-size: var(--cs-type-10);
+    font-weight: var(--cs-weight-medium);
+    z-index: var(--cs-z-toast);
+    pointer-events: none;
+    opacity: 0;
+    transition:
+        transform 300ms var(--cs-ease-spring),
+        opacity 200ms ease;
+    white-space: nowrap;
+    box-shadow: var(--cs-elevation-2);
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+.toast.error {
+    border-color: var(--cs-danger-border);
+    color: var(--cs-danger);
+}
+
+.toast.success {
+    border-color: var(--cs-success-border);
+    color: var(--cs-success);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   EMPTY STATES
+   ═══════════════════════════════════════════════════════════════ */
+
+.cs-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--cs-space-7) var(--cs-space-4);
+    gap: var(--cs-space-2);
+    text-align: center;
+}
+
+.cs-empty-state__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--cs-radius-lg);
+    background: var(--cs-surface-2);
+    color: var(--cs-text-disabled);
+}
+
+.cs-empty-state__icon svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 1.5;
+}
+
+.cs-empty-state__title {
+    font-size: var(--cs-type-11);
+    font-weight: var(--cs-weight-semibold);
+    color: var(--cs-text-secondary);
+}
+
+.cs-empty-state__text {
+    font-size: var(--cs-type-9);
+    color: var(--cs-text-secondary);
+    max-width: 180px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SAVE PATH INFO
+   ═══════════════════════════════════════════════════════════════ */
+
+.save-path-info {
+    display: flex;
+    align-items: center;
+    gap: var(--cs-space-1);
+    padding: var(--cs-space-1) var(--cs-space-2);
+    border-radius: var(--cs-radius-sm);
+    background: var(--cs-accent-subtle);
+    margin-bottom: var(--cs-space-2);
+}
+
+.save-path-info svg {
+    flex-shrink: 0;
+}
+
+.save-path-info svg path,
+.save-path-info svg circle,
+.save-path-info svg line {
+    stroke: var(--cs-accent);
+}
+
+#save-dest-info {
+    font-size: var(--cs-type-8);
+    color: var(--cs-text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SAVE TYPE PICKER
+   ═══════════════════════════════════════════════════════════════ */
+
+.save-type-picker {
+    display: flex;
+    gap: var(--cs-space-1);
+    flex-wrap: wrap;
+}
+
+.save-type-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 28px;
+    border: 1px solid var(--cs-border-medium);
+    border-radius: var(--cs-radius-md);
+    background: var(--cs-surface-1);
+    color: var(--cs-text-muted);
+    cursor: pointer;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        border-color var(--cs-duration-fast) var(--cs-ease-standard),
+        color var(--cs-duration-fast) var(--cs-ease-standard);
+    outline: none;
+}
+
+.save-type-btn:hover {
+    background: var(--cs-surface-2);
+    color: var(--cs-text-primary);
+    border-color: var(--cs-border-strong);
+}
+
+.save-type-btn.active {
+    background: var(--cs-accent-subtle);
+    border-color: var(--cs-accent);
+    color: var(--cs-accent);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TOOLKIT SHARED COMPONENTS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Toolkit icon buttons */
+.tk-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 26px;
+    border: 1px solid var(--cs-border-subtle);
+    border-radius: var(--cs-radius-sm);
+    background: var(--cs-surface-1);
+    color: var(--cs-text-muted);
+    cursor: pointer;
+    padding: 0;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        color var(--cs-duration-fast) var(--cs-ease-standard),
+        border-color var(--cs-duration-fast) var(--cs-ease-standard),
+        transform var(--cs-duration-fast) var(--cs-ease-standard);
+    outline: none;
+}
+
+.tk-icon-btn:hover {
+    background: var(--cs-surface-2);
+    color: var(--cs-text-primary);
+    border-color: var(--cs-border-medium);
+}
+
+.tk-icon-btn:active {
+    transform: scale(0.94);
+}
+
+.tk-icon-btn--accent {
+    border-color: rgba(var(--cs-accent-r), var(--cs-accent-g), var(--cs-accent-b), 0.25);
+    color: var(--cs-accent);
+}
+
+.tk-icon-btn--accent:hover {
+    background: var(--cs-accent-subtle);
+    color: var(--cs-accent-hover);
+    border-color: var(--cs-accent);
+}
+
+.tk-icon-btn--muted {
+    border-color: transparent;
+    background: transparent;
+}
+
+.tk-icon-btn--muted:hover {
+    background: var(--cs-surface-2);
+    border-color: var(--cs-border-subtle);
+}
+
+.tk-icon-btn--danger:hover {
+    color: var(--cs-danger);
+    background: var(--cs-danger-subtle);
+    border-color: var(--cs-danger-border);
+}
+
+.tk-icon-btn svg {
+    stroke-width: 1.8;
+}
+
+/* ── Stepper Buttons ────────────────────────────────────────── */
+.tk-stepper-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border: none;
+    border-radius: var(--cs-radius-xs);
+    background: transparent;
+    color: var(--cs-text-secondary);
+    font-size: 11px;
+    font-weight: var(--cs-weight-bold);
+    cursor: pointer;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        color var(--cs-duration-fast) var(--cs-ease-standard);
+    outline: none;
+    padding: 0;
+    line-height: 1;
+}
+
+.tk-stepper-btn:hover {
+    background: var(--cs-surface-3);
+    color: var(--cs-text-primary);
+}
+
+.tk-stepper-label {
+    font-size: 8px;
+    font-weight: var(--cs-weight-semibold);
+    color: var(--cs-text-secondary);
+    padding: 0 4px;
+}
+
+.tk-stepper-val {
+    width: 24px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    color: var(--cs-text-primary);
+    font-family: var(--cs-font-mono);
+    font-size: 9px;
+    font-weight: var(--cs-weight-medium);
+    outline: none;
+}
+
+/* ── Bounce Modal Reset Icon ────────────────────────────────── */
+.bounce-modal-reset-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 22px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: var(--cs-radius-sm);
+    background: transparent;
+    color: var(--cs-text-muted);
+    cursor: pointer;
+    padding: 0;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        color var(--cs-duration-fast) var(--cs-ease-standard);
+}
+
+.bounce-modal-reset-icon:hover {
+    background: var(--cs-surface-2);
+    color: var(--cs-text-primary);
+}
+
+/* ── Category Tabs (shared across effects/text) ─────────────── */
+.category-tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 10px;
+    border: none;
+    border-radius: var(--cs-radius-sm);
+    background: transparent;
+    color: var(--cs-text-secondary);
+    font-size: 8.5px;
+    font-weight: var(--cs-weight-medium);
+    cursor: pointer;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        color var(--cs-duration-fast) var(--cs-ease-standard);
+    outline: none;
+    white-space: nowrap;
+}
+
+.category-tab:hover {
+    background: var(--cs-surface-2);
+    color: var(--cs-text-secondary);
+}
+
+.category-tab.active {
+    background: var(--cs-accent-subtle);
+    color: var(--cs-accent);
+    font-weight: var(--cs-weight-semibold);
+}
+
+/* ── Category Bar Wrap ──────────────────────────────────────── */
+.tk-category-bar-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--cs-space-1) var(--cs-space-2);
+    border-bottom: 1px solid var(--cs-border-subtle);
+    gap: var(--cs-space-2);
+    flex-shrink: 0;
+}
+
+.tk-category-left {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    overflow-x: auto;
+    min-width: 0;
+}
+
+.tk-category-right {
+    display: flex;
+    align-items: center;
+    gap: var(--cs-space-1);
+    flex-shrink: 0;
+    position: relative;
+}
+
+/* ── Dropdown Menu ──────────────────────────────────────────── */
+.tk-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 4px;
+    width: 160px;
+    padding: var(--cs-space-1);
+    background: var(--cs-surface-2);
+    border: 1px solid var(--cs-border-medium);
+    border-radius: var(--cs-radius-md);
+    box-shadow: var(--cs-elevation-2);
+    z-index: var(--cs-z-dropdown);
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.tk-dropdown-menu.open {
+    display: block;
+}
+
+.tk-dropdown-header {
+    font-size: 8px;
+    font-weight: var(--cs-weight-bold);
+    color: var(--cs-text-secondary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: var(--cs-space-1) var(--cs-space-2);
+}
+
+/* ── Category Badge ─────────────────────────────────────────── */
+.tk-category-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 14px;
+    height: 14px;
+    padding: 0 3px;
+    border-radius: var(--cs-radius-pill);
+    background: var(--cs-accent-subtle);
+    color: var(--cs-accent);
+    font-size: 7px;
+    font-weight: var(--cs-weight-bold);
+}
+
+/* ── Menu Toggle Button ─────────────────────────────────────── */
+.tk-menu-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    width: 28px;
+    height: 24px;
+    border: none;
+    border-radius: var(--cs-radius-sm);
+    background: transparent;
+    color: var(--cs-text-muted);
+    cursor: pointer;
+    padding: 0;
+    transition:
+        background var(--cs-duration-fast) var(--cs-ease-standard),
+        color var(--cs-duration-fast) var(--cs-ease-standard);
+    outline: none;
+    position: relative;
+}
+
+.tk-menu-toggle-btn:hover {
+    background: var(--cs-surface-2);
+    color: var(--cs-text-primary);
+}
+
+/* ── Bulk Delete Confirm ────────────────────────────────────── */
+.tk-bulk-delete-confirm-wrap,
+.ta-bulk-confirm {
+    display: none;
+    padding: var(--cs-space-2) var(--cs-space-3);
+    background: var(--cs-surface-glass);
+    border: 1px solid var(--cs-danger-border);
+    border-radius: var(--cs-radius-md);
+    margin: var(--cs-space-1) var(--cs-space-2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.tk-bulk-delete-confirm-wrap.active,
+.ta-bulk-confirm.active {
+    display: block;
+}
+
+.tk-delete-confirm-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cs-space-2);
+}
+
+.tk-delete-warning-text,
+.ta-bulk-warning {
+    display: flex;
+    align-items: center;
+    gap: var(--cs-space-1);
+    font-size: 9px;
+    color: var(--cs-danger);
+    line-height: 1.4;
+}
+
+.tk-delete-confirm-actions,
+.ta-bulk-actions {
+    display: flex;
+    gap: var(--cs-space-2);
+}
+
+.tk-confirm-btn,
+.ta-confirm-btn {
+    flex: 1;
+    padding: 5px 10px;
+    border: 1px solid var(--cs-danger-border);
+    border-radius: var(--cs-radius-sm);
+    background: var(--cs-danger-subtle);
+    color: var(--cs-danger);
+    font-size: 9px;
+    font-weight: var(--cs-weight-semibold);
+    cursor: pointer;
+    transition: background var(--cs-duration-fast) var(--cs-ease-standard);
+}
+
+.tk-confirm-btn:hover,
+.ta-confirm-btn:hover {
+    background: var(--cs-danger);
+    color: #fff;
+}
+
+.tk-cancel-btn,
+.ta-cancel-btn {
+    flex: 1;
+    padding: 5px 10px;
+    border: 1px solid var(--cs-border-medium);
+    border-radius: var(--cs-radius-sm);
+    background: var(--cs-surface-2);
+    color: var(--cs-text-secondary);
+    font-size: 9px;
+    font-weight: var(--cs-weight-medium);
+    cursor: pointer;
+    transition: background var(--cs-duration-fast) var(--cs-ease-standard);
+}
+
+.tk-cancel-btn:hover,
+.ta-cancel-btn:hover {
+    background: var(--cs-surface-3);
+}
+
+/* ── Suggestions Wrap (rename modal) ────────────────────────── */
+.modal-suggestions-wrap {
+    max-height: 80px;
+    overflow-y: auto;
+    margin-bottom: var(--cs-space-2);
+}
+
+/* ── Paste Drop Zone ────────────────────────────────────────── */
+#paste-drop-zone {
+    display: none;
+}
+
+/* ── Tooltips container ─────────────────────────────────────── */
+[data-tooltip] {
+    position: relative;
+}
+
+/* ── Toggle Container ───────────────────────────────────────── */
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: var(--cs-space-2);
+    cursor: pointer;
+}
+
+.toggle-label {
+    font-size: var(--cs-type-9);
+    color: var(--cs-text-secondary);
+}
+
+/* ── Footer Area ────────────────────────────────────────────── */
+.footer-area {
+    flex-shrink: 0;
+    padding: var(--cs-space-2) var(--cs-space-3);
+    border-top: 1px solid var(--cs-border-subtle);
+}
+
+/* ── Separator Utilities ────────────────────────────────────── */
+.tk-align-sep,
+.tk-row-sep,
+.tk-inline-sep {
+    display: inline-block;
+    width: 1px;
+    height: 16px;
+    background: var(--cs-border-subtle);
+    margin: 0 2px;
+    flex-shrink: 0;
+}

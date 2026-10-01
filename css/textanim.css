@@ -1,0 +1,1299 @@
+/* ═══════════════════════════════════════════════════════════════
+   TEXT ANIMATION MODULE  (nested inside Toolkit > Text 'T' tab)
+   Isolated namespace: .ta-*  — no overlap with effects (.tk-effect-*)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Text animation view fills all available vertical space inside its tk-view.
+   flex:1 1 0 + min-height:0 allow proper shrinking; .ta-grid-wrap scrolls. */
+#toolkit-text-anim-view {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    width: 100%;
+    min-height: 0;
+    overflow: hidden;
+    background: var(--cs-canvas);
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    box-sizing: border-box;
+    box-shadow: none;
+}
+
+/* ─── Compact single-row toolbar (search + save + icon buttons) ─── */
+.ta-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    /* Spacing_Scale-driven gap/padding so the toolbar shares the panel's
+       layout rhythm; spans the full content width as the first stack region
+       (Req 13.1). */
+    gap: var(--space-3, 6px);
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    /* Reduced bottom padding to tighten the gap to the category dropdown row. */
+    padding: var(--space-3, 6px) var(--space-3, 6px) var(--space-1, 2px);
+    flex: 0 0 auto;
+}
+
+.ta-toolbar .tk-effects-save-btn {
+    height: 30px;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.ta-search-wrap {
+    flex: 1 1 100px;
+    min-width: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 30px;
+}
+
+.ta-search-icon {
+    position: absolute;
+    left: 7px;
+    color: var(--tx-lo);
+    pointer-events: none;
+}
+
+@media (max-width: 300px) {
+    .ta-toolbar .tk-effects-save-btn,
+    .ta-search-wrap {
+        flex-basis: 100%;
+    }
+}
+
+.ta-search-input {
+    width: 100%;
+    min-width: 0;
+    height: 30px;
+    box-sizing: border-box;
+    padding: 0 8px 0 24px;
+    background: var(--void);
+    border: 1px solid var(--line-dim);
+    border-radius: var(--r-md);
+    color: var(--tx-hi);
+    font-family: var(--font-sans);
+    font-size: var(--f-xs);
+    outline: none;
+    transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.ta-search-input::placeholder {
+    color: var(--tx-lo);
+}
+
+.ta-search-input:focus {
+    border-color: var(--p-rule);
+    background: var(--surface);
+    /* Solid 2px primary ring for a focus indicator ≥3:1 (Req 22.1). */
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35), 0 0 0 2px var(--primary);
+}
+
+.ta-icon-btn {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    background: var(--surface-1);
+    border: 1px solid var(--line-dim);
+    border-radius: var(--r-md);
+    color: var(--tx-mid);
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+}
+
+.ta-icon-btn:hover {
+    color: var(--tx-hi);
+    border-color: var(--p-rule);
+    background: var(--p-bg);
+}
+
+.ta-icon-btn:active {
+    background: var(--cs-surface-3);
+}
+
+.ta-icon-btn.spinning svg {
+    animation: ta-spin 0.6s linear;
+}
+
+@keyframes ta-spin {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.ta-icon-btn--danger.active {
+    color: #fff;
+    border-color: var(--danger);
+    background: var(--danger);
+    box-shadow: 0 0 0 1px var(--danger), 0 0 12px rgba(255, 42, 95, 0.4);
+    width: auto;
+    padding: 0 6px;
+    gap: 3px;
+}
+
+.ta-icon-btn--danger.has-selection {
+    box-shadow: 0 0 0 1px var(--danger), 0 0 18px rgba(255, 42, 95, 0.6);
+}
+
+
+.ta-delete-count {
+    display: none;
+    font-size: var(--f-nano);
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* ─── Bulk delete confirmation ─── */
+.ta-bulk-confirm {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    margin: 0 6px 5px;
+    padding: 5px 7px;
+    background: rgba(255, 42, 95, 0.08);
+    border: 1px solid var(--danger-rule);
+    border-radius: var(--r-md);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.ta-bulk-confirm.show {
+    display: flex;
+}
+
+.ta-bulk-warning {
+    display: flex;
+    align-items: center;
+    color: var(--tx-mid);
+    font-family: var(--font-sans);
+    font-size: var(--f-nano);
+    line-height: 1.3;
+}
+
+.ta-bulk-warning svg {
+    color: var(--danger);
+    margin-right: 4px;
+    flex-shrink: 0;
+}
+
+.ta-bulk-actions {
+    display: flex;
+    gap: 4px;
+    flex: 0 0 auto;
+}
+
+.ta-confirm-btn,
+.ta-cancel-btn {
+    height: 18px;
+    padding: 0 8px;
+    border-radius: var(--r-sm);
+    font-family: var(--font-sans);
+    font-size: var(--f-nano);
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter 0.15s ease, transform 0.12s ease;
+}
+
+.ta-confirm-btn {
+    background: var(--danger);
+    border: 1px solid var(--danger);
+    color: #fff;
+}
+
+.ta-cancel-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--line-mid);
+    color: var(--tx-mid);
+}
+
+.ta-confirm-btn:hover,
+.ta-cancel-btn:hover {
+    filter: brightness(1.12);
+}
+
+.ta-confirm-btn:active,
+.ta-cancel-btn:active {
+    transform: scale(0.95);
+}
+
+/* ─── Preset cards matrix ─── */
+/* Fills remaining vertical space in the text-anim view and scrolls.
+   flex:1 1 0 + min-height:0 allows proper shrinking in the flex column. */
+.ta-grid-wrap {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* Padding: top gives the hover lift (translateY(-2px)) headroom so the card
+       top isn't clipped; left/right keep cards off the panel edges; the larger
+       RIGHT value (14px) leaves room beside the vertical scrollbar so cards
+       never sit under or touch it. (top right bottom left). Spacing_Scale tokens
+       drive the symmetric edges; the 14px right keeps its scrollbar clearance. */
+    padding: var(--space-3, 6px) 14px var(--space-4, 8px) var(--space-4, 8px);
+}
+
+/* Styled scrollbar for text animation grid — matches Design_Language */
+.ta-grid-wrap::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ta-grid-wrap::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.ta-grid-wrap::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--p-rule), var(--p-tint));
+    border-radius: var(--r-pill);
+}
+
+.ta-grid-wrap::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--accent-purple), var(--primary));
+}
+
+/* Card_Grid pattern (Component_System): auto-fill + minmax derives the column
+   count from the available content width, so it is ≥1 and non-decreasing as the
+   panel widens, fills left-to-right / top-to-bottom, and wraps remaining cards
+   onto new rows with NO horizontal overflow (Req 13.2, 13.3). The grid spans the
+   full content width as the third stack region (Req 13.1).
+   MIN = 60px: keeps 2 columns at narrow panel widths (~154px usable) while
+   staying readable; the body.ta-cards-medium/large variants below raise this to
+   80/100px. Gap uses the shared --grid-gap token so spacing matches other
+   Card_Grids; --grid-col-max (1fr) lets the populated tracks stretch to fill the
+   row. Card itself keeps aspect-ratio: 1/1 so height tracks width (square). */
+.ta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, var(--grid-col-max, 1fr)));
+    align-content: start;
+    justify-content: start;
+    align-items: start;
+    gap: var(--grid-gap, 6px);
+    width: 100%;
+    box-sizing: border-box;
+    /* Smooth gap transition across breakpoints.
+       (Requirement 3.4: reflow without visual glitches or element jumping) */
+    transition: gap 0.2s var(--ease-out);
+}
+
+/* Adopts the shared .cs-empty-state pattern (base.css §2.2, Req 7.5–7.6):
+   the instance carries `ta-empty-state cs-empty-state` and its children the
+   ordered slot classes (.cs-empty-state__icon → __title → __text). The
+   `.ta-empty-state span`/`small` rules below still match the same
+   title/text elements so appearance is preserved. The former bespoke `::before`
+   'Aa' glyph is replaced by an icon-slot single-stroke glyph (Req 6.3). */
+.ta-empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 28px 12px;
+    text-align: center;
+    border: 1px dashed var(--p-rule);
+    border-radius: var(--r-lg);
+    background: radial-gradient(80% 100% at 50% 0%, var(--p-bg) 0%, transparent 70%);
+}
+
+/* Icon slot — single-stroke glyph (stroke width comes from base.css). */
+.ta-empty-state .cs-empty-state__icon {
+    margin-bottom: 4px;
+    color: var(--primary-hover);
+    opacity: 0.6;
+}
+
+.ta-empty-state .cs-empty-state__icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+.ta-empty-state span {
+    color: var(--tx-mid);
+    font-family: var(--font-sans);
+    font-size: var(--f-sm);
+    font-weight: 600;
+}
+
+.ta-empty-state small {
+    color: var(--tx-lo);
+    font-family: var(--font-sans);
+    font-size: var(--f-xxs);
+}
+
+/* ─── Single card — dynamic square aspect ratio ─── */
+@keyframes ta-card-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.ta-card {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    box-sizing: border-box;
+    border-radius: var(--r-xl);
+    /* Card_Grid tile surface (Req 4.9): opaque --surface-card base under the
+       --card-grad sheen, --hairline border, --elev-1 lift; two-arg var()
+       degrades to a defined opaque dark surface. */
+    background: var(--card-grad), var(--surface-card, #17122a);
+    border: 1px solid var(--hairline, rgba(167, 139, 250, 0.08));
+    overflow: hidden;
+    cursor: pointer;
+    /* Performance: box-shadow is static in default state — does not change during
+       scroll, only on hover interaction. No per-frame repaint. (Req 13.3) */
+    box-shadow: var(--elev-1, 0 1px 2px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(40, 20, 90, 0.22)), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    transition: border-color 0.18s var(--ease-out), transform 0.16s var(--ease-out), box-shadow 0.18s var(--ease-out);
+    animation: ta-card-in 0.32s var(--ease-out) backwards;
+}
+
+
+.ta-card:nth-child(2) {
+    animation-delay: 0.03s;
+}
+
+.ta-card:nth-child(3) {
+    animation-delay: 0.06s;
+}
+
+.ta-card:nth-child(4) {
+    animation-delay: 0.09s;
+}
+
+.ta-card:nth-child(5) {
+    animation-delay: 0.12s;
+}
+
+.ta-card:nth-child(6) {
+    animation-delay: 0.15s;
+}
+
+.ta-card:nth-child(7) {
+    animation-delay: 0.18s;
+}
+
+.ta-card:nth-child(8) {
+    animation-delay: 0.21s;
+}
+
+.ta-card:nth-child(n+9) {
+    animation-delay: 0.24s;
+}
+
+.ta-card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, transparent 0%, transparent 40%, var(--t-400) 100%);
+    -webkit-mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s var(--ease-out);
+    z-index: 2;
+}
+
+.ta-card:hover {
+    border-color: var(--t-400);
+    transform: translateY(-3px) scale(1.012);
+    box-shadow: 0 0 0 1px var(--t-400), 0 10px 30px var(--t-bg), var(--shadow-lg);
+}
+
+.ta-card:hover::before {
+    opacity: 1;
+}
+
+.ta-card:active {
+    transform: translateY(0) scale(0.97);
+}
+
+.ta-card:focus-visible {
+    outline: none;
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 0 2px var(--accent-purple), 0 0 24px var(--t-bg);
+}
+
+.ta-card.selected-for-delete {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 1px var(--danger), 0 0 18px rgba(255, 42, 95, 0.45);
+}
+
+.ta-card.selected-for-delete::before {
+    opacity: 0;
+}
+
+/* ─── Thumbnail canvas with uniform "TEXT" word ─── */
+.ta-card-canvas {
+    position: absolute;
+    inset: 0;
+    bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background:
+        radial-gradient(120% 90% at 50% 0%, var(--t-bg) 0%, transparent 62%),
+        radial-gradient(100% 80% at 50% 120%, var(--t-bg) 0%, transparent 55%),
+        linear-gradient(160deg, var(--surface-2) 0%, var(--canvas) 100%),
+        repeating-linear-gradient(0deg, var(--hairline) 0 1px, transparent 1px 12px);
+}
+
+/* CANONICAL text style — MUST match the AE preview text document built in
+   taRenderPresetPreview() (jsx/compSaver.jsx): Arial Bold, white, 17px (AE
+   renders at 2x = 34px), centered, no letter-spacing. Keeping these in sync
+   is what makes the static thumbnail and the hover APNG look identical. */
+.ta-card-text {
+    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: #ffffff;
+    text-align: center;
+    /* No will-change: a persistent will-change here promoted EVERY card's text
+       to its own compositor layer, which made panel resize jerky/laggy (a
+       repaint storm across all promoted layers). The static "TEXT" word never
+       animates, so the hint was pure overhead. Removing it = smooth reflow. */
+}
+
+/* Real rendered preview image — a TRANSPARENT (RGBA) APNG sibling next to the
+   .ffx. It contains ONLY the animated "TEXT", no baked background, so the
+   .ta-card-canvas grid/gradient shows through and the hover state shares the
+   exact same backdrop as the static thumbnail. It sits in the SAME box as the
+   static .ta-card-text (inset:0 inside the canvas), and object-fit:contain +
+   object-position:center letterbox the 200x164 render identically in every
+   card — no cropping, no stretching, perfectly centered. */
+.ta-card-preview {
+    /* FIXED size, centered — NOT absolute/inset:0/100%. The canvas stretches
+       with the card (1fr track), so a width:100% preview used to grow/distort
+       as the card widened. Pinning the preview to the card's natural content
+       size (100x82 = card 100px minus the 18px label footer) keeps the
+       thumbnail visually identical in every card no matter how wide the card
+       stretches. It's a normal flex child, so .ta-card-canvas's flex centering
+       (align/justify-center) centers it; max-width: 100%; max-height: 100%; */
+    width: 100px;
+    height: 82px;
+    max-width: 100%;
+    max-height: 100%;
+    flex: 0 0 auto;
+    object-fit: contain;
+    object-position: center center;
+    display: block;
+    pointer-events: none;
+    user-select: none;
+    background: transparent;
+}
+
+.ta-card-label {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 20px;
+    display: block;
+    text-align: center;
+    padding: 0 6px;
+    box-sizing: border-box;
+    background: linear-gradient(90deg, transparent, var(--t-bg) 50%, transparent), var(--canvas);
+    border-top: 1px solid var(--p-rule);
+    color: var(--tx-hi);
+    font-family: var(--font-sans);
+    font-size: 8.5px;
+    line-height: 19px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.18s ease, background 0.18s ease;
+}
+
+.ta-card:hover .ta-card-label {
+    color: #fff;
+    background: linear-gradient(90deg, var(--t-bg), var(--t-bg) 50%, var(--t-bg)), var(--canvas);
+}
+
+/* ─── Hover overlays: favorite (top-right) + delete (top-left) ─── */
+.ta-card-fav,
+.ta-card-del,
+.ta-card-rename {
+    position: absolute;
+    top: 4px;
+    width: 17px;
+    height: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--r-sm);
+    opacity: 0;
+    transform: scale(0.8);
+    cursor: pointer;
+    z-index: 3;
+    /* Performance: backdrop-filter acceptable — elements are opacity:0 by default and
+       only rendered on individual card hover (fixed 17×17px size). (Req 13.3, 13.4) */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: opacity 0.15s ease, transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.ta-card-fav {
+    right: 4px;
+    background: rgba(0, 0, 0, 0.55);
+    color: var(--tx-lo);
+    border: 1px solid var(--line-dim);
+}
+
+.ta-card-del {
+    left: 4px;
+    background: rgba(0, 0, 0, 0.55);
+    color: var(--tx-lo);
+    border: 1px solid var(--line-dim);
+}
+
+.ta-card-rename {
+    right: 25px;
+    background: rgba(0, 0, 0, 0.55);
+    color: var(--tx-lo);
+    border: 1px solid var(--line-dim);
+}
+
+.ta-card:hover .ta-card-fav,
+.ta-card:hover .ta-card-del,
+.ta-card:hover .ta-card-rename {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.ta-card-fav:hover {
+    color: var(--gold);
+    border-color: var(--gold-rule);
+    background: var(--gold-bg);
+    transform: scale(1.1);
+}
+
+.ta-card-del:hover {
+    color: #fff;
+    border-color: var(--danger);
+    background: var(--danger);
+    transform: scale(1.1);
+}
+
+.ta-card-rename:hover {
+    color: #fff;
+    border-color: var(--p-rule);
+    background: var(--p-bg);
+    transform: scale(1.1);
+}
+
+.ta-card-fav.active {
+    opacity: 1;
+    transform: scale(1);
+    color: var(--gold);
+    border-color: var(--gold-rule);
+    background: var(--gold-bg);
+    box-shadow: 0 0 8px rgba(247, 199, 75, 0.4);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARD-HOVER-CONTROLS REALIZATION (base.css §2.4 — Req 13.8, 13.9, 21.2, 22.2, 22.4)
+   The text-anim card's existing per-card controls — the favorite (.ta-card-fav),
+   delete (.ta-card-del), rename (.ta-card-rename), and manual-preview
+   (.ta-card-genprev) overlays — ARE the hover-revealed control cluster: they
+   hold fixed in-card positions identical across every card of the grid, are
+   hidden + non-interactive at rest, and are revealed together on card :hover
+   (rules above). This block completes the cluster contract with NO JavaScript
+   and WITHOUT touching a single existing binding or class:
+     • :focus-within reveal so tabbing to a control shows the cluster (Req 22.2)
+     • instant reveal under Reduced_Motion (Req 22.4)
+   The persistent favorite badge is that same favorite overlay kept visible by
+   the existing .ta-card-fav.active class while the card is not hovered (see the
+   .ta-card-fav.active rule above, Req 13.9). No new wrapper, no new class. */
+.ta-card:focus-within .ta-card-fav,
+.ta-card:focus-within .ta-card-del,
+.ta-card:focus-within .ta-card-rename {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.ta-card:focus-within .ta-card-genprev {
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .ta-card-fav,
+    .ta-card-del,
+    .ta-card-rename,
+    .ta-card-genprev,
+    .ta-card-check {
+        /* !important: accessibility override — reveal must be instant (no tween) */
+        transition: none !important;
+    }
+}
+
+/* ─── Bulk-select checkbox indicator ─── */
+.ta-card-check {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 15px;
+    height: 15px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--r-xs);
+    background: rgba(4, 5, 8, 0.8);
+    border: 1.5px solid var(--line-hi);
+    color: transparent;
+    z-index: 4;
+    transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.ta-grid.bulk-mode .ta-card-check {
+    display: flex;
+}
+
+/* Bulk-delete destructive-mode treatment on the card-grid REGION itself, so the
+   whole grid reads as "armed for deletion" while bulk mode is active (Req 13.4).
+   Background tint + inset danger ring stay inside the grid box (no outline-offset
+   that the scrolling .ta-grid-wrap could clip), and the box model is unchanged so
+   toggling bulk mode causes no card reflow/jump. Individual selected cards keep
+   their own .selected-for-delete treatment above. */
+.ta-grid.bulk-mode {
+    border-radius: var(--r-md, 8px);
+    background: radial-gradient(120% 70% at 50% 0%, rgba(255, 42, 95, 0.07), transparent 72%);
+    box-shadow: inset 0 0 0 1px var(--danger-rule);
+}
+
+.ta-card.selected-for-delete .ta-card-check {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: #fff;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LIVE HOVER PREVIEW MOTION  (per category)
+   Only the hovered card's "TEXT" string plays its loop.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Fade In */
+.ta-card[data-motion="fade"]:hover .ta-card-text {
+    animation: ta-motion-fade 1.4s ease-in-out infinite;
+}
+
+@keyframes ta-motion-fade {
+    0% {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    40% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    80% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+}
+
+/* Flicker */
+.ta-card[data-motion="flicker"]:hover .ta-card-text {
+    animation: ta-motion-flicker 1.1s steps(1, end) infinite;
+}
+
+@keyframes ta-motion-flicker {
+
+    0%,
+    12%,
+    28%,
+    44%,
+    100% {
+        opacity: 1;
+        filter: drop-shadow(0 0 6px var(--t-400));
+    }
+
+    6%,
+    20%,
+    36% {
+        opacity: 0.15;
+        filter: none;
+    }
+
+    52% {
+        opacity: 0.65;
+    }
+}
+
+/* Bounce */
+.ta-card[data-motion="bounce"]:hover .ta-card-text {
+    animation: ta-motion-bounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+}
+
+@keyframes ta-motion-bounce {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+
+    25% {
+        transform: translateY(-12px) scale(1.05);
+    }
+
+    45% {
+        transform: translateY(0) scale(0.96);
+    }
+
+    60% {
+        transform: translateY(-5px) scale(1.02);
+    }
+
+    78% {
+        transform: translateY(0) scale(1);
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Default / My Presets / uncategorized — subtle premium pulse */
+.ta-card[data-motion="default"]:hover .ta-card-text {
+    animation: ta-motion-default 1.6s ease-in-out infinite;
+}
+
+@keyframes ta-motion-default {
+    0% {
+        transform: scale(1);
+        letter-spacing: 1.5px;
+    }
+
+    50% {
+        transform: scale(1.06);
+        letter-spacing: 3px;
+    }
+
+    100% {
+        transform: scale(1);
+        letter-spacing: 1.5px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ta-card .ta-card-text {
+        /* !important: accessibility override — must suppress all motion animations */
+        animation: none !important;
+    }
+
+    /* Disable the card-entrance stagger under Reduced_Motion (Req 22.4) so the
+       grid settles instantly. !important: overrides the staggered ta-card-in. */
+    .ta-card {
+        animation: none !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TEMPLATES CARD OVERLAY BUTTONS
+   ═══════════════════════════════════════════════════════════════ */
+.card-btn-del,
+.card-btn-rename,
+.card-btn-more {
+    position: absolute;
+    top: 4px;
+    width: 17px;
+    height: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--r-sm);
+    opacity: 0;
+    transform: scale(0.8);
+    cursor: pointer;
+    z-index: 10;
+    /* Performance: backdrop-filter acceptable — elements are opacity:0 by default and
+       only rendered on individual card hover (fixed 17×17px size). (Req 13.3, 13.4) */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    background: rgba(0, 0, 0, 0.55);
+    color: var(--tx-lo);
+    border: 1px solid var(--line-dim);
+    transition: opacity 0.15s ease, transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.card:hover .card-btn-del,
+.card:hover .card-btn-rename,
+.card:hover .card-btn-more {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.card-btn-del {
+    left: 4px;
+    top: 4px;
+}
+
+.card-btn-rename {
+    left: 4px;
+    top: auto;
+    bottom: 22px;
+}
+
+.card-btn-more {
+    right: 4px;
+    top: 4px;
+}
+
+.card-btn-del:hover {
+    color: var(--danger);
+    border-color: var(--danger-rule);
+    background: var(--danger-bg);
+}
+
+.card-btn-rename:hover {
+    color: var(--gold);
+    border-color: var(--gold-rule);
+    background: var(--gold-bg);
+}
+
+.card-btn-more:hover {
+    color: var(--tx-hi);
+    border-color: var(--p-rule);
+    background: var(--p-bg);
+}
+
+/* ─── Text Animation Manual Preview Button ─── */
+.ta-card-genprev {
+    position: absolute;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%) scale(1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: var(--r-sm);
+    background: rgba(0, 0, 0, 0.65);
+    color: var(--tx-lo);
+    border: 1px solid var(--line-dim);
+    font-family: inherit;
+    font-size: var(--f-nano);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    z-index: 5;
+    opacity: 0;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition: opacity 0.15s ease, transform 0.15s ease, background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.ta-card:hover .ta-card-genprev {
+    opacity: 1;
+}
+
+.ta-card-genprev svg {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.ta-card-genprev:hover {
+    background: var(--p-bg);
+    color: var(--p-300);
+    border-color: var(--p-rule);
+    transform: translateX(-50%) scale(1.05);
+}
+
+.ta-card-genprev:active {
+    transform: translateX(-50%) scale(0.95);
+}
+
+.ta-card-genprev.is-rendering {
+    /* !important: overrides hover-based opacity:0 and pointer-events:none base states */
+    opacity: 1 !important;
+    background: var(--p-bg) !important;
+    border-color: var(--p-rule) !important;
+    color: var(--p-300) !important;
+    pointer-events: none;
+}
+
+/* ─── COMP Template Preview Button (mirrors ta-card-genprev) ─── */
+.card-genprev {
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%) scale(1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: var(--r-sm);
+    background: rgba(0, 0, 0, 0.65);
+    color: var(--tx-lo);
+    border: 1px solid var(--line-dim);
+    font-family: inherit;
+    font-size: var(--f-nano);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    z-index: 5;
+    opacity: 0;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition: opacity 0.15s ease, transform 0.15s ease, background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.card:hover .card-genprev {
+    opacity: 1;
+}
+
+.card-genprev svg {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.card-genprev:hover {
+    background: var(--p-bg);
+    color: var(--p-300);
+    border-color: var(--p-rule);
+    transform: translateX(-50%) scale(1.05);
+}
+
+.card-genprev:active {
+    transform: translateX(-50%) scale(0.95);
+}
+
+.card-genprev.rendering {
+    /* !important: overrides hover-based opacity:0 and pointer-events:none base states */
+    opacity: 1 !important;
+    background: var(--p-bg) !important;
+    border-color: var(--p-rule) !important;
+    color: var(--p-300) !important;
+    pointer-events: none;
+}
+
+/* !important: overrides base .ta-card-preview fixed sizing (100×82) for COMP card
+   thumb-box context where the preview must fill like .thumb-img */
+.thumb-box .ta-card-preview {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    flex: 1 1 auto !important;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+    pointer-events: none;
+    user-select: none;
+    background: transparent;
+    border-radius: inherit;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ICON MODE (Compact Cards for Icons)
+   Compound selectors (.icon-mode .X) have higher specificity (0-0-2-0)
+   than templates.css base selectors (.card, .card-name, etc. at 0-0-1-0),
+   and textanim.css loads later in the cascade — no !important needed.
+   The .icon-mode gap rule uses #icon-list-container.icon-mode to beat
+   templates.css #icon-list-container.grid-container (equal specificity,
+   wins by cascade order).
+   ═══════════════════════════════════════════════════════════════ */
+#icon-list-container.icon-mode {
+    gap: 5px;
+}
+
+.icon-mode .card {
+    border-radius: var(--r-md);
+}
+
+.icon-mode .card-name {
+    height: 12px;
+    font-size: 7px;
+    padding: 0 3px;
+    background: rgba(4, 5, 8, 0.9);
+}
+
+.icon-mode .thumb-box {
+    bottom: 12px;
+}
+
+.icon-mode .thumb-img {
+    object-fit: contain;
+    padding: 3px;
+    box-sizing: border-box;
+}
+
+.icon-mode .btn-favorite {
+    top: 2px;
+    left: 2px;
+    width: 13px;
+    height: 13px;
+    border-radius: var(--r-xs);
+}
+
+.icon-mode .btn-favorite svg {
+    width: 7px;
+    height: 7px;
+}
+
+.icon-mode .card-btn-more {
+    top: 2px;
+    right: 2px;
+    width: 13px;
+    height: 13px;
+    border-radius: var(--r-xs);
+}
+
+.icon-mode .card-btn-more svg {
+    width: 7px;
+    height: 7px;
+}
+
+/* ─── Templates Bulk-select checkbox indicator ─── */
+.card-check {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 15px;
+    height: 15px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--r-xs);
+    background: rgba(4, 5, 8, 0.8);
+    border: 1.5px solid var(--line-hi);
+    color: transparent;
+    z-index: 12;
+    transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.grid-container.bulk-mode .card-check {
+    display: flex;
+}
+
+.card.selected-for-delete {
+    /* !important: overrides .card:hover border-color and box-shadow */
+    border-color: var(--danger) !important;
+    box-shadow: 0 0 0 1px var(--danger), 0 0 18px rgba(255, 42, 95, 0.45) !important;
+}
+
+.card.selected-for-delete .card-check {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: #fff;
+}
+
+.grid-container.bulk-mode .card-btn-del,
+.grid-container.bulk-mode .card-btn-rename,
+.grid-container.bulk-mode .card-btn-more,
+.grid-container.bulk-mode .btn-favorite {
+    /* !important: overrides .card:hover opacity/display reveal rules */
+    display: none !important;
+}
+
+/* !important: overrides .icon-btn base styles with higher compound specificity */
+.icon-btn--danger {
+    color: var(--danger) !important;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease, transform 0.12s ease !important;
+}
+
+.icon-btn--danger:hover {
+    /* !important: overrides .icon-btn:hover in header.css */
+    color: var(--danger) !important;
+    border-color: var(--danger-rule) !important;
+    background: var(--danger-bg) !important;
+}
+
+.icon-btn--danger.active {
+    /* !important: overrides .icon-btn base/hover styles for active danger state */
+    color: #fff !important;
+    border-color: var(--danger) !important;
+    background: var(--danger) !important;
+    box-shadow: 0 0 0 1px var(--danger), 0 0 12px rgba(255, 42, 95, 0.4) !important;
+    width: auto !important;
+    padding: 0 6px !important;
+    gap: 3px !important;
+}
+
+.icon-btn--danger.active svg {
+    /* !important: overrides inline SVG stroke attribute */
+    stroke: #fff !important;
+}
+
+.icon-btn--danger.has-selection {
+    /* !important: overrides .icon-btn--danger.active box-shadow */
+    box-shadow: 0 0 0 1px var(--danger), 0 0 18px rgba(255, 42, 95, 0.6) !important;
+}
+
+.tmp-delete-count {
+    font-size: var(--f-nano);
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* ─── Card importing/loading feedback style ─── */
+.card.importing {
+    /* !important: overrides .card:hover border-color and box-shadow */
+    border-color: var(--accent-purple) !important;
+    box-shadow: 0 0 0 1px var(--accent-purple), 0 0 12px var(--t-bg) !important;
+}
+
+/* ─── Refresh button spin animation ─── */
+@keyframes spinOnce {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spin-once svg {
+    animation: spinOnce 0.5s ease-in-out;
+}
+
+/* Dead-by-cascade: #btn-refresh-templates:hover removed — element is
+   unconditionally hidden via settings.css display:none !important */
+
+/* ─── Custom Context Menu for Text Animation Preset Cards ─── */
+.ta-custom-context-menu {
+    display: none;
+    position: absolute;
+    z-index: 10000;
+    background: var(--canvas);
+    border: 1px solid var(--p-rule);
+    border-radius: var(--r-md);
+    padding: 4px;
+    min-width: 110px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    animation: ta-menu-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes ta-menu-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.ta-context-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    font-size: var(--f-xxs);
+    font-weight: 500;
+    color: var(--tx-mid);
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.ta-context-item svg {
+    opacity: 0.7;
+    transition: opacity 0.15s ease;
+}
+
+.ta-context-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+}
+
+.ta-context-item:hover svg {
+    opacity: 1;
+}
+
+.ta-context-item--danger:hover {
+    /* !important: overrides .ta-context-item:hover above */
+    background: var(--danger) !important;
+    color: #fff !important;
+}
+
+/* Visually highlight card when context menu is open */
+.ta-card.context-menu-active {
+    /* !important: overrides .ta-card base border-color and box-shadow */
+    border-color: var(--t-400) !important;
+    box-shadow: 0 0 12px var(--t-bg) !important;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   TEXT ANIMATION CARD SIZE VARIANTS
+   ═══════════════════════════════════════════════════════════════ */
+
+body.ta-cards-medium .ta-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+}
+
+body.ta-cards-medium .ta-card-label {
+    height: 24px;
+    font-size: 9.5px;
+}
+
+body.ta-cards-medium .ta-card-canvas {
+    bottom: 24px;
+}
+
+body.ta-cards-large .ta-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+}
+
+body.ta-cards-large .ta-card-label {
+    height: 28px;
+    font-size: 10.5px;
+}
+
+body.ta-cards-large .ta-card-canvas {
+    bottom: 28px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARD PATTERN CONFORMANCE (base.css .cs-card — Req 6.6, 6.7, 8.4)
+   The text-anim card (.ta-card) is an instance of the frozen Card pattern:
+   the in-flow stack reads container → preview(icon-slot, .ta-card-canvas) →
+   title(.ta-card-label), while the favorite (.ta-card-fav), delete/rename,
+   and bulk-select check are the module-owned absolutely-positioned badge/
+   action overlays. The card markup is JS-rendered, so the pattern is enforced
+   here in CSS rather than by adding a class. Freeze the optional badge slot to
+   a zero layout box when absent so a card with no favorite badge leaves no
+   empty container (Req 8.4). Additive and behavior-neutral — only a truly
+   empty badge collapses. */
+.ta-card .ta-card-fav:empty {
+    display: none;
+}
